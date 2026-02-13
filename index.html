@@ -11,21 +11,22 @@
         content="software developer, platform engineer, DevOps, cloud infrastructure, AWS, Python, data engineering, computer science">
     <meta name="author" content="Abhishek Ahirrao">
 
-    <!-- Open Graph tags for social sharing -->
+    <!-- Open Graph -->
     <meta property="og:title" content="Abhishek Ahirrao - Software Developer & Platform Engineer">
-    <meta property="og:description"
-        content="Experienced software developer specializing in cloud infrastructure and data platforms. Building scalable solutions with cutting-edge technology.">
+    <meta property="og:description" content="Experienced software developer specializing in cloud infrastructure and data platforms.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://abhishekahirrao.dev">
     <meta property="og:image" content="https://abhishekahirrao.dev/og-image.jpg">
 
-    <!-- Twitter Card tags -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Abhishek Ahirrao - Software Developer">
-    <meta name="twitter:description"
-        content="Platform engineer with expertise in cloud infrastructure and data systems.">
+    <meta name="twitter:description" content="Platform engineer with expertise in cloud infrastructure and data systems.">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='35' r='20' fill='%23708090'/><ellipse cx='50' cy='65' r='25' ry='30' fill='%23FFD700'/><circle cx='42' cy='30' r='2' fill='%23000'/><circle cx='58' cy='30' r='2' fill='%23000'/><path d='M45 38 Q50 42 55 38' stroke='%23000' stroke-width='2' fill='none'/></svg>"
         type="image/svg+xml">
@@ -45,397 +46,299 @@
             "https://instagram.com/colmeabhi"
         ],
         "alumniOf": [
-            {
-                "@type": "EducationalOrganization",
-                "name": "San José State University"
-            },
-            {
-                "@type": "EducationalOrganization",
-                "name": "Fr. Conceicao Rodrigues College of Engineering"
-            }
+            { "@type": "EducationalOrganization", "name": "San José State University" },
+            { "@type": "EducationalOrganization", "name": "Fr. Conceicao Rodrigues College of Engineering" }
         ],
-        "worksFor": {
-            "@type": "Organization",
-            "name": "Quantiphi"
-        }
+        "worksFor": { "@type": "Organization", "name": "Quantiphi" }
     }
     </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            background: #fafaf9;
-            color: #1c1917;
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 80px 24px 60px;
-        }
-
-        /* Hero */
-        .hero {
-            margin-bottom: 120px;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 4px;
-        }
-
-        .pronunciation {
-            font-size: 0.95rem;
-            color: #a3a3a3;
-            margin-bottom: 40px;
-        }
-
-        .intro {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: #44403c;
-        }
-
-        .intro a {
-            color: #171717;
-            text-decoration: underline;
-            text-decoration-color: #d4d4d4;
-            text-underline-offset: 3px;
-            transition: text-decoration-color 0.2s;
-        }
-
-        .intro a:hover {
-            text-decoration-color: #171717;
-        }
-
-        /* Sections */
-        section {
-            margin-bottom: 100px;
-        }
-
-        section h2 {
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #a3a3a3;
-            margin-bottom: 32px;
-        }
-
-        /* Work & Education entries */
-        .entry {
-            margin-bottom: 32px;
-        }
-
-        .entry:last-child {
-            margin-bottom: 0;
-        }
-
-        .entry-title {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #1c1917;
-        }
-
-        .entry-org {
-            font-size: 0.95rem;
-            color: #57534e;
-        }
-
-        .entry-meta {
-            font-size: 0.85rem;
-            color: #a3a3a3;
-            margin-bottom: 4px;
-        }
-
-        .entry-desc {
-            font-size: 0.95rem;
-            color: #57534e;
-            margin-top: 4px;
-        }
-
-        /* Projects */
-        .project {
-            margin-bottom: 24px;
-        }
-
-        .project:last-child {
-            margin-bottom: 0;
-        }
-
-        .project-name {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #1c1917;
-        }
-
-        .project-name a {
-            color: #1c1917;
-            text-decoration: underline;
-            text-decoration-color: #d4d4d4;
-            text-underline-offset: 3px;
-            transition: text-decoration-color 0.2s;
-        }
-
-        .project-name a:hover {
-            text-decoration-color: #171717;
-        }
-
-        .project-desc {
-            font-size: 0.95rem;
-            color: #57534e;
-        }
-
-        .project-tech {
-            font-size: 0.85rem;
-            color: #a3a3a3;
-        }
-
-        /* Skills */
-        .skill-group {
-            margin-bottom: 20px;
-        }
-
-        .skill-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .skill-label {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #1c1917;
-        }
-
-        .skill-items {
-            font-size: 0.95rem;
-            color: #57534e;
-        }
-
-        /* Resume */
-        .resume-links {
-            margin-bottom: 32px;
-        }
-
-        .resume-links a {
-            color: #171717;
-            text-decoration: underline;
-            text-decoration-color: #d4d4d4;
-            text-underline-offset: 3px;
-            font-size: 0.95rem;
-            margin-right: 24px;
-            transition: text-decoration-color 0.2s;
-        }
-
-        .resume-links a:hover {
-            text-decoration-color: #171717;
-        }
-
-        .resume-embed {
-            width: 100%;
-            height: 700px;
-            border: 1px solid #e7e5e4;
-            border-radius: 4px;
-        }
-
-        /* Footer */
-        footer {
-            font-size: 0.9rem;
-            color: #a3a3a3;
-            font-style: italic;
-            text-align: center;
-            padding: 40px 0;
-            border-top: 1px solid #e7e5e4;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container {
-                padding: 48px 20px 40px;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .hero {
-                margin-bottom: 80px;
-            }
-
-            section {
-                margin-bottom: 72px;
-            }
-
-            .resume-embed {
-                height: 500px;
-            }
-        }
-    </style>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
+    <!-- ─── Path bar (top nav) ─── -->
+    <nav class="pathbar">
+        <a class="path-root" onclick="navigate('home')">~/abhi</a>
+        <span class="path-sep">/</span>
+        <div class="path-links">
+            <a class="path-link" data-page="work" onclick="navigate('work')">work</a>
+            <span class="path-sep">/</span>
+            <a class="path-link" data-page="education" onclick="navigate('education')">education</a>
+            <span class="path-sep">/</span>
+            <a class="path-link" data-page="projects" onclick="navigate('projects')">projects</a>
+            <span class="path-sep">/</span>
+            <a class="path-link" data-page="skills" onclick="navigate('skills')">skills</a>
+            <span class="path-sep">/</span>
+            <a class="path-link" data-page="certs" onclick="navigate('certs')">certs</a>
+            <span class="path-sep">/</span>
+            <a class="path-link" data-page="resume" onclick="navigate('resume')">resume</a>
+        </div>
+    </nav>
+
+    <!-- ─── Main container ─── -->
     <div class="container">
 
-        <!-- Hero -->
+<!-- ═══ HOME ═══ -->
+<div class="page active" id="page-home">
+    <div class="hero-wrapper">
         <header class="hero">
             <h1>Abhishek Ahirrao</h1>
             <p class="pronunciation">abhi /uh-bhee/</p>
-            <p class="intro">
-                I'm a software developer working at the intersection of technology and impact.
-                I've spent 4+ years building cloud infrastructure and data platforms at
-                <a href="#work">Quantiphi</a>, and I'm now pursuing my
-                <a href="#education">MS in Computer Science</a> at San Jos&eacute; State University.
-                Take a look at my <a href="#projects">projects</a>,
-                <a href="#skills">skills</a>, or grab my <a href="#resume">resume</a>.
-                Say hello via
-                <a href="mailto:ahirraoabhishek007@gmail.com">email</a>,
-                <a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank">LinkedIn</a>, or
-                <a href="https://instagram.com/colmeabhi" target="_blank">Instagram</a>.
-            </p>
+            <div class="intro">
+                <p>
+                    I believe the best engineering is quiet &mdash; infrastructure that just works,
+                    systems that let people focus on what actually matters. That's the kind of work I care about.
+                </p>
+                <p>
+                    I spent three years at <a onclick="navigate('work')">Quantiphi</a> building cloud platforms
+                    and data pipelines on AWS, learning that the most impactful code is often the code
+                    nobody notices. Now I'm at San Jos&eacute; State pursuing my
+                    <a onclick="navigate('education')">MS in Computer Science</a>, exploring where that foundation
+                    can take me next.
+                </p>
+                <p>
+                    When I'm not deep in Terraform configs or Kubernetes manifests, I'm probably
+                    at a hackathon, at a meetup somewhere in the Bay, or just trying to ask better
+                    questions than I did yesterday.
+                </p>
+                <p>
+                    Feel free to explore my <a onclick="navigate('projects')">projects</a>,
+                    browse my <a onclick="navigate('skills')">skills</a>, or grab my
+                    <a onclick="navigate('resume')">resume</a>. I'd love to hear from you &mdash; say hello via
+                    <a href="mailto:ahirraoabhishek007@gmail.com">email</a>,
+                    <a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank">LinkedIn</a>, or
+                    <a href="https://instagram.com/colmeabhi" target="_blank">Instagram</a>.
+                </p>
+            </div>
         </header>
+    </div>
+</div>
 
-        <!-- Work Experience -->
-        <section id="work">
-            <h2>Work Experience</h2>
+<!-- ═══ WORK EXPERIENCE ═══ -->
+<div class="page" id="page-work">
+    <div class="page-header">
+        <div class="page-title"><span>Work Experience</span></div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Senior Platform Engineer</div>
-                <div class="entry-org">Quantiphi</div>
-                <div class="entry-meta">Jan 2024 &ndash; Jul 2025 &middot; Mumbai</div>
-                <div class="entry-desc">Worked with Solutions Architects to design and plan data migration, covering tools, costs, and architecture. End-to-end deployment of data lakes.</div>
-            </div>
+    <div class="entry">
+        <div class="entry-title">Senior Platform Engineer</div>
+        <div class="entry-org">Quantiphi</div>
+        <div class="entry-meta">Jan 2024 &ndash; Jul 2025 &middot; Mumbai</div>
+        <div class="entry-desc">Built scalable AWS infrastructure for Fortune 500 companies. Worked with Solutions Architects to design data migration strategies covering tools, costs, and architecture. End-to-end deployment of data lakes. Built the foundational platform layers powering AI/ML workloads at scale.</div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Platform Engineer</div>
-                <div class="entry-org">Quantiphi</div>
-                <div class="entry-meta">Nov 2021 &ndash; Dec 2023 &middot; Mumbai</div>
-                <div class="entry-desc">Designed, modified, and monitored cloud ETL and data pipeline architectures. Automated deployments across environments.</div>
-            </div>
+    <div class="entry">
+        <div class="entry-title">Platform Engineer</div>
+        <div class="entry-org">Quantiphi</div>
+        <div class="entry-meta">Nov 2021 &ndash; Dec 2023 &middot; Mumbai</div>
+        <div class="entry-desc">Designed, modified, and monitored cloud ETL and data pipeline architectures. Snowflake &amp; Redshift optimization, SOC 2 &amp; GDPR compliance. Automated deployments across environments.</div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Framework Engineer Intern</div>
-                <div class="entry-org">Quantiphi</div>
-                <div class="entry-meta">Jul 2021 &ndash; Nov 2021 &middot; Remote</div>
-                <div class="entry-desc">Worked on understanding AWS-based ETL architectures.</div>
-            </div>
+    <div class="entry">
+        <div class="entry-title">Framework Engineer Intern</div>
+        <div class="entry-org">Quantiphi</div>
+        <div class="entry-meta">Jul 2021 &ndash; Nov 2021 &middot; Remote</div>
+        <div class="entry-desc">Worked on understanding and building AWS-based ETL architectures and containerized deployments.</div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Web Development Intern</div>
-                <div class="entry-org">Felis Leo Ventures</div>
-                <div class="entry-meta">Jul 2020 &ndash; Oct 2020 &middot; Mumbai</div>
-                <div class="entry-desc">Built a web-based video calling application.</div>
-            </div>
+    <div class="entry">
+        <div class="entry-title">Web Development Intern</div>
+        <div class="entry-org">Felis Leo Ventures</div>
+        <div class="entry-meta">Jul 2020 &ndash; Oct 2020 &middot; Mumbai</div>
+        <div class="entry-desc">Built a web-based video calling application with real-time communication capabilities.</div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Summer Research Intern</div>
-                <div class="entry-org">Bennett University</div>
-                <div class="entry-meta">May 2020 &ndash; Jun 2020 &middot; Noida</div>
-                <div class="entry-desc">Worked with data cleaning, neural networks, and ML algorithms. Compared performances for hyperspectral image dataset solutions.</div>
-            </div>
-        </section>
+    <div class="entry">
+        <div class="entry-title">Summer Research Intern</div>
+        <div class="entry-org">Bennett University</div>
+        <div class="entry-meta">May 2020 &ndash; Jun 2020 &middot; Noida</div>
+        <div class="entry-desc">GPU-accelerated computing research and CV/ML projects. Data cleaning, neural networks, and ML algorithms for hyperspectral image classification.</div>
+    </div>
 
-        <!-- Education -->
-        <section id="education">
-            <h2>Education</h2>
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
 
-            <div class="entry">
-                <div class="entry-title">Master of Science, Computer Science</div>
-                <div class="entry-org">San Jos&eacute; State University</div>
-                <div class="entry-meta">Aug 2025 &ndash; May 2027</div>
-            </div>
+<!-- ═══ EDUCATION ═══ -->
+<div class="page" id="page-education">
+    <div class="page-header">
+        <div class="page-title"><span>Education</span></div>
+    </div>
 
-            <div class="entry">
-                <div class="entry-title">Bachelor of Engineering, Computer Engineering</div>
-                <div class="entry-org">Fr. Conceicao Rodrigues College of Engineering</div>
-                <div class="entry-meta">2017 &ndash; 2021</div>
-                <div class="entry-desc">Mozilla Campus Club &ndash; Logistics Incharge, Training and Placement coordinator, college basketball team.</div>
-            </div>
-        </section>
+    <div class="entry">
+        <div class="entry-title">Master of Science, Computer Science</div>
+        <div class="entry-org">San Jos&eacute; State University</div>
+        <div class="entry-meta">Aug 2025 &ndash; May 2027</div>
+        <div class="entry-desc">Coursework: Design &amp; Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning. Currently working in domains of computer communication and parallel programming.</div>
+    </div>
 
-        <!-- Projects -->
-        <section id="projects">
-            <h2>Projects</h2>
+    <div class="entry">
+        <div class="entry-title">Bachelor of Engineering, Computer Engineering</div>
+        <div class="entry-org">Fr. Conceicao Rodrigues College of Engineering</div>
+        <div class="entry-meta">2017 &ndash; 2021</div>
+        <div class="entry-desc">Mozilla Campus Club &ndash; Logistics Incharge, Training and Placement coordinator, college basketball team.</div>
+    </div>
 
-            <div class="project">
-                <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Cloud Data Platform Migration</a></div>
-                <div class="project-desc">Designed and deployed end-to-end data lake architecture on AWS, handling petabyte-scale data migration with optimized ETL pipelines.</div>
-                <div class="project-tech">AWS, Python, ETL, Terraform</div>
-            </div>
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
 
-            <div class="project">
-                <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">CI/CD Pipeline Automation</a></div>
-                <div class="project-desc">Built automated deployment pipelines reducing deployment time by 70% with comprehensive monitoring.</div>
-                <div class="project-tech">Docker, Kubernetes, Jenkins, GitLab CI</div>
-            </div>
+<!-- ═══ PROJECTS ═══ -->
+<div class="page" id="page-projects">
+    <div class="page-header">
+        <div class="page-title"><span>Projects</span></div>
+    </div>
 
-            <div class="project">
-                <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Hyperspectral Image Analysis</a></div>
-                <div class="project-desc">Developed neural network models for hyperspectral image classification, comparing performance across multiple ML algorithms.</div>
-                <div class="project-tech">Python, TensorFlow, Neural Networks</div>
-            </div>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">AI Sprint Planning Assistant</a></div>
+        <div class="project-desc">Automated spreadsheet-to-Jira workflows with RAG pipeline and multi-tool orchestration. Won the "Agents with Superpowers: Context Engineering Hackathon" sponsored by Composio &amp; Redis.</div>
+        <div class="project-tech">Python, LangChain, OpenAI, Redis, Composio</div>
+    </div>
 
-            <div class="project">
-                <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Real-time Video Platform</a></div>
-                <div class="project-desc">Created a scalable web-based video calling application with real-time communication capabilities.</div>
-                <div class="project-tech">JavaScript, Node.js, WebRTC, Express</div>
-            </div>
-        </section>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">GPU-Accelerated Matrix Multiplication</a></div>
+        <div class="project-desc">CUDA kernel implementations achieving 60x speedup over sequential CPU execution.</div>
+        <div class="project-tech">C++, CUDA, Parallel Programming</div>
+    </div>
 
-        <!-- Skills -->
-        <section id="skills">
-            <h2>Skills</h2>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Automated Database Migration Platform</a></div>
+        <div class="project-desc">Self-service Python CLI/REST API for Fivetran &amp; Snowflake provisioning with RBAC.</div>
+        <div class="project-tech">Python, Flask, REST APIs, Fivetran, Snowflake</div>
+    </div>
 
-            <div class="skill-group">
-                <span class="skill-label">Cloud & DevOps:</span>
-                <span class="skill-items">AWS (EC2, S3, Lambda, Glue), Docker, Kubernetes, Terraform, CI/CD (Jenkins, GitLab), Monitoring & Logging</span>
-            </div>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Recruiter/Judge Agent</a></div>
+        <div class="project-desc">Learning agent system that evaluates resumes and improves through feedback.</div>
+        <div class="project-tech">Python, LangChain, OpenAI</div>
+    </div>
 
-            <div class="skill-group">
-                <span class="skill-label">Programming:</span>
-                <span class="skill-items">Python, JavaScript, Node.js, SQL, NoSQL, Bash, Java</span>
-            </div>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">MCP Wikipedia Agent</a></div>
+        <div class="project-desc">Context-aware Wikipedia retrieval with token optimization and caching.</div>
+        <div class="project-tech">Python, MCP, NLP</div>
+    </div>
 
-            <div class="skill-group">
-                <span class="skill-label">Data Engineering:</span>
-                <span class="skill-items">ETL Pipeline Design, Data Lake Architecture, Apache Spark, Airflow, Data Warehousing, Stream Processing</span>
-            </div>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">California Fishing Compliance App</a></div>
+        <div class="project-desc">Computer vision system with 91% accuracy for regulated species classification.</div>
+        <div class="project-tech">Python, OpenCV, PyTorch, ML</div>
+    </div>
 
-            <div class="skill-group">
-                <span class="skill-label">Tools & Frameworks:</span>
-                <span class="skill-items">Git, Express.js, Flask, TensorFlow, PyTorch, Bootstrap, jQuery, Agile & Scrum</span>
-            </div>
-        </section>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Pothole Detection Pipeline</a></div>
+        <div class="project-desc">PyTorch-based computer vision with 89% accuracy and real-time processing.</div>
+        <div class="project-tech">Python, PyTorch, Computer Vision</div>
+    </div>
 
-        <!-- Resume -->
-        <section id="resume">
-            <h2>Resume</h2>
+    <div class="project">
+        <div class="project-name"><a href="https://github.com/colmeabhi" target="_blank">Cloud Data Platform Migration</a></div>
+        <div class="project-desc">End-to-end data lake architecture on AWS, handling petabyte-scale data migration with optimized ETL pipelines.</div>
+        <div class="project-tech">AWS, Python, ETL, Terraform</div>
+    </div>
 
-            <div class="resume-links">
-                <a href="https://drive.google.com/uc?export=download&id=1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ" download="Abhishek_Ahirrao_Resume.pdf" target="_blank">Download PDF</a>
-                <a href="https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view" target="_blank">Open in Google Drive</a>
-            </div>
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
 
-            <iframe class="resume-embed" src="https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/preview" allow="autoplay" loading="lazy"></iframe>
-        </section>
+<!-- ═══ SKILLS ═══ -->
+<div class="page" id="page-skills">
+    <div class="page-header">
+        <div class="page-title"><span>Skills</span></div>
+    </div>
 
-        <!-- Footer -->
-        <footer>
-            "how you do anything is how you do everything"
-        </footer>
+    <div class="skill-group">
+        <span class="skill-label">Cloud & Infrastructure:</span>
+        <span class="skill-items">AWS (EC2, S3, RDS, Lambda, ECS, EKS, Step Functions, DMS, VPC, SQS, SNS), Terraform, CloudFormation</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Containers & Orchestration:</span>
+        <span class="skill-items">Docker, Kubernetes, ECS (Fargate), Helm</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Data Platforms:</span>
+        <span class="skill-items">Snowflake, Redshift, SQL Server, Fivetran, AWS DMS</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Monitoring & Observability:</span>
+        <span class="skill-items">Prometheus, Alertmanager, Grafana, Loki, CloudWatch, SLOs/MTTD/MTTR</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">AI/ML Frameworks:</span>
+        <span class="skill-items">PyTorch, LangChain, OpenAI, OpenCV, NLTK, MLflow, Composio</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Languages:</span>
+        <span class="skill-items">Python, C++, Bash, SQL, CUDA</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Databases & Caching:</span>
+        <span class="skill-items">Redis (Vector Store), SQL Server, Snowflake, Redshift</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Web & API:</span>
+        <span class="skill-items">Flask, REST APIs, HTML/CSS</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">CI/CD:</span>
+        <span class="skill-items">Jenkins, GitHub Actions, Git</span>
+    </div>
+
+    <div class="skill-group">
+        <span class="skill-label">Security & Governance:</span>
+        <span class="skill-items">IAM, KMS, WAF, Vault/Secrets Manager, SOC 2, GDPR compliance</span>
+    </div>
+
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
+
+<!-- ═══ CERTIFICATIONS ═══ -->
+<div class="page" id="page-certs">
+    <div class="page-header">
+        <div class="page-title"><span>Certifications</span></div>
+    </div>
+
+    <div class="entry">
+        <div class="entry-title">AWS Solutions Architect Associate</div>
+    </div>
+
+    <div class="entry">
+        <div class="entry-title">AWS Developer Associate</div>
+    </div>
+
+    <div class="entry">
+        <div class="entry-title">HashiCorp Terraform Associate</div>
+    </div>
+
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
+
+<!-- ═══ RESUME ═══ -->
+<div class="page" id="page-resume">
+    <div class="page-header">
+        <div class="page-title"><span>Resume</span></div>
+    </div>
+
+    <div class="resume-links">
+        <a href="https://drive.google.com/uc?export=download&id=1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ" download="Abhishek_Ahirrao_Resume.pdf" target="_blank">Download PDF</a>
+        <a href="https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view" target="_blank">Open in Google Drive</a>
+    </div>
+
+    <footer>"how you do anything is how you do everything"</footer>
+</div>
 
     </div>
+
+    <!-- Navigation -->
+    <script src="js/main.js"></script>
 </body>
 
 </html>
