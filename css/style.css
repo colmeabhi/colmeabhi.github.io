@@ -186,9 +186,6 @@ h1 {
     text-transform: uppercase;
     letter-spacing: -0.02em;
     margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
 }
 
 .page-title span {
@@ -197,30 +194,6 @@ h1 {
     padding: 4px 16px;
     display: inline-block;
 }
-
-/* ── Neo-brutalist icons ── */
-.page-icon {
-    width: 48px;
-    height: 48px;
-    border: 3px solid #000;
-    box-shadow: 4px 4px 0 #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.page-icon svg {
-    width: 26px;
-    height: 26px;
-}
-
-.page-icon.icon-work     { background: #c3f73a; }
-.page-icon.icon-edu      { background: #ff5c00; }
-.page-icon.icon-projects { background: #5b8dff; }
-.page-icon.icon-skills   { background: #ffde59; }
-.page-icon.icon-certs    { background: #ff6b9d; }
-.page-icon.icon-resume   { background: #a78bfa; }
 
 
 /* ── Entry cards (work, education, certs) ── */
