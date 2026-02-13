@@ -174,6 +174,63 @@ h1 {
 }
 
 
+/* ── Decorative background icons ── */
+.page {
+    position: relative;
+}
+
+.page-bg {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.deco {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.07;
+}
+
+.deco svg {
+    width: 24px;
+    height: 24px;
+}
+
+.deco-sm { width: 32px; height: 32px; }
+.deco-sm svg { width: 18px; height: 18px; }
+.deco-lg { width: 56px; height: 56px; }
+.deco-lg svg { width: 30px; height: 30px; }
+
+.deco-work     { background: #c3f73a; }
+.deco-edu      { background: #ff5c00; }
+.deco-projects { background: #5b8dff; }
+.deco-skills   { background: #ffde59; }
+.deco-certs    { background: #ff6b9d; }
+.deco-resume   { background: #a78bfa; }
+
+.page-header,
+.hero-wrapper,
+.entry,
+.project,
+.skill-group,
+.resume-links,
+footer {
+    position: relative;
+    z-index: 1;
+}
+
+
 /* ── Section page headers ── */
 .page-header {
     padding: 48px 0 8px;
@@ -186,6 +243,9 @@ h1 {
     text-transform: uppercase;
     letter-spacing: -0.02em;
     margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .page-title span {
@@ -194,6 +254,30 @@ h1 {
     padding: 4px 16px;
     display: inline-block;
 }
+
+/* ── Neo-brutalist icons ── */
+.page-icon {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.page-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.page-icon.icon-work     { background: #c3f73a; }
+.page-icon.icon-edu      { background: #ff5c00; }
+.page-icon.icon-projects { background: #5b8dff; }
+.page-icon.icon-skills   { background: #ffde59; }
+.page-icon.icon-certs    { background: #ff6b9d; }
+.page-icon.icon-resume   { background: #a78bfa; }
 
 
 /* ── Entry cards (work, education, certs) ── */
@@ -412,4 +496,10 @@ footer {
     .resume-links a {
         text-align: center;
     }
+
+    .page-bg {
+        top: 42px;
+    }
+
+    .deco { opacity: 0.05; }
 }
