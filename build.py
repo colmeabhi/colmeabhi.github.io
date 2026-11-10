@@ -11,6 +11,7 @@ Only the standard library is used. Run with ./build.sh or python3 build.py.
 """
 
 import json
+import urllib.request
 from datetime import date
 from html import escape as e
 from pathlib import Path
@@ -35,6 +36,31 @@ def fmt_month(ym):
 def date_range(item):
     end = item.get("endDate")
     return f"{fmt_month(item['startDate'])} – {fmt_month(end) if end else 'present'}"
+
+
+def year_range(item):
+    """Education shows years only: '2025 – 2027'"""
+    return f"{item['startDate'][:4]} – {item['endDate'][:4]}"
+
+
+def fetch_contributions():
+    """Snapshot of GitHub contributions for the last year -> data/contributions.json.
+
+    The page tries the live API first and falls back to this snapshot, so a failed
+    fetch here just keeps the previous snapshot.
+    """
+    out = ROOT / "data" / "contributions.json"
+    url = f"https://github-contributions-api.jogruber.de/v4/{B['handle']}?y=last"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "portfolio-build"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            raw = json.load(r)
+        days = [[d["date"], d["count"]] for d in raw["contributions"]]
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps({"fetched": TODAY.isoformat(), "days": days}, separators=(",", ":")) + "\n")
+        print(f"Fetched {len(days)} days of GitHub contributions")
+    except Exception as err:  # offline, rate-limited, API gone: keep what we have
+        print(f"Kept existing contributions snapshot ({err})")
 
 
 def icon(paths, cls=""):
@@ -93,11 +119,14 @@ def render_hero():
     )
     socials += f'<a href="{e(B["resumeView"])}" target="_blank" rel="noopener">{icon(ICONS["resume"])}resume</a>'
     intro = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
+    # The photo covers the monogram. It is only used once the file exists.
+    photo = (f'<img src="{e(B["image"])}" alt="" width="160" height="160">'
+             if B.get("image") and (ROOT / B["image"]).is_file() else "")
     return f'''
 <header class="hero" id="home">
     <div class="hero-top">
         <div class="identity">
-            <div class="avatar" aria-hidden="true">aa</div>
+            <div class="avatar" aria-hidden="true">aa{photo}</div>
             <h1>{e(B["name"])}</h1>
             <p class="handle"><span>[</span>{e(B["handle"])}<span>]</span> <span class="say">{e(B["nickname"])} · /{e(B["pronunciation"])}/ · {e(B["location"]["region"])}</span></p>
         </div>
@@ -124,16 +153,12 @@ def render_glance():
         f'<div class="stat"><dt>{e(h["value"])}</dt><dd>{e(h["label"])}</dd></div>'
         for h in DATA["highlights"]
     )
+    github = next(p["url"] for p in B["profiles"] if p["network"] == "GitHub")
     return f'''
 <section class="glance" aria-label="At a glance">
     <dl class="stats">{stats}</dl>
-    <div class="strip" id="strip"></div>
-    <p class="strip-caption">
-        <span id="strip-count">70+</span> months of building ·
-        <span class="key key-work">work</span>
-        <span class="key key-intern">internships</span>
-        <span class="key key-school">grad school</span>
-    </p>
+    <div class="strip" id="strip" data-user="{e(B["handle"])}" role="img" aria-label="GitHub contributions per week over the last year"></div>
+    <p class="strip-caption"><span id="strip-count">–</span> contributions on <a class="link" href="{e(github)}" target="_blank" rel="noopener">GitHub</a> in the last year</p>
 </section>'''
 
 
@@ -203,7 +228,7 @@ def render_education():
         <li class="row">
             <div class="row-top">
                 <h3>{e(ed["studyType"])}, {e(ed["area"])} <span class="at">{e(ed["institution"])}</span></h3>
-                <span class="date">{date_range(ed)}</span>
+                <span class="date">{year_range(ed)}</span>
             </div>
             {bullets(ed["highlights"])}
         </li>''')
@@ -266,6 +291,7 @@ def json_ld():
         "url": SITE + "/",
         "address": {"@type": "PostalAddress", "addressRegion": B["location"]["region"], "addressCountry": "US"},
         "sameAs": [p["url"] for p in B["profiles"]],
+        **({"image": f"{SITE}/{B['image']}"} if (ROOT / B.get("image", "-")).is_file() else {}),
         "alumniOf": [{"@type": "CollegeOrUniversity", "name": ed["institution"]} for ed in DATA["education"]],
         "hasCredential": [
             {"@type": "EducationalOccupationalCredential", "name": c["name"]} for c in DATA["certificates"]
@@ -329,11 +355,12 @@ def build_markdown():
             L += [f"<{p['url']}>", ""]
         L += [p["description"], ""]
         L += [f"- {h}" for h in p.get("highlights", [])]
+        L += [f"- See also: [{l['label']}]({l['url']})" for l in p.get("links", [])]
         L += [f"- Stack: {', '.join(p['keywords'])}", ""]
 
     L += ["## Education", ""]
     for ed in DATA["education"]:
-        L += [f"### {ed['studyType']}, {ed['area']} — {ed['institution']}", f"_{date_range(ed)}_", ""]
+        L += [f"### {ed['studyType']}, {ed['area']} — {ed['institution']}", f"_{year_range(ed)}_", ""]
         L += [f"- {h}" for h in ed["highlights"]] + [""]
 
     L += ["## Skills", ""]
@@ -389,6 +416,7 @@ def build_sitemap():
 
 
 if __name__ == "__main__":
+    fetch_contributions()
     outputs = {
         "index.html": build_html(),
         "profile.md": build_markdown(),

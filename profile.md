@@ -1,11 +1,11 @@
 # Abhishek Ahirrao
 
-> Platform engineer with four years at Quantiphi building AWS data platforms and deployment tooling for Fortune 100 clients, now an MS Computer Science student at San José State University working on LLM inference infrastructure, distributed systems and GPU programming.
+> Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.
 
 - **Role:** Platform & Software Engineer
-- **Status:** Open to full-time platform, infrastructure and backend roles · MS CS, May 2027
-- **Location:** San Francisco Bay Area, CA
-- **Email:** ahirraoabhishek007@gmail.com
+- **Status:** Open to full-time platform, infrastructure and backend roles · MS CS, 2027
+- **Location:** San Jose, CA
+- **Email:** abhishekahirrao09@gmail.com
 - **Website:** https://colmeabhi.github.io
 - **Resume (PDF):** https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view
 - **GitHub:** https://github.com/colmeabhi
@@ -17,67 +17,68 @@ _Goes by abhi (/uh-bhee/). Last updated 2026-11-10. Structured version: https://
 
 ## At a glance
 
-- **4 yrs** — platform engineering at Quantiphi
-- **~$90K** — annual AWS spend saved (17%)
-- **500GB+** — processed daily on client data platforms
-- **3×** — certified: AWS SAA, AWS Developer, Terraform
+- **3.5 yrs** — platform engineering at Quantiphi
+- **3 h → 10 min** — MTTR across 6 on-call production services
+- **~85%** — fewer platform-team requests after self-service tooling
+- **600 GB/day** — ingested under a T+1 freshness SLA
 
 ## Experience
 
-### Senior Platform Engineer — Quantiphi
-_jul 2021 – jul 2025 · Mumbai_
+### SDE-Platform II — Quantiphi
+_jan 2024 – jun 2025 · Mumbai_
 
-Progression: Framework Engineer Intern → Platform Engineer → Senior Platform Engineer
+- Built a self-service infrastructure platform adopted by 50 data engineers across 5 data platforms: a Python CLI and a Claude-on-Bedrock interface that turned plain-English requests into pre-approved Terraform and CloudFormation stacks, with approval gates and TTL teardown. Cut platform-team requests ~85% and dev spend ~18%.
+- Architected the migration of an Informatica-on-EC2 ETL platform to Lambda and ECS Fargate services orchestrated by Step Functions, ingesting change data from 8+ sources across 5 countries into Redshift. Authored the design and cost model (projected 70% lower compute) and mentored 2 juniors.
+- Split day-long full loads into restartable 2-hour batches, holding a T+1 freshness SLA on 95%+ of runs as volume doubled from 300 GB to 600 GB/day.
+- Enforced policy-as-code guardrails on 120 CloudFormation and Terraform stacks across 3 accounts with Control Tower, SCPs and Lambda checks; non-compliant stacks rolled back automatically.
+- On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.
+- Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image.
 
-- Engineered data platforms processing 500GB+ daily for Fortune 100 clients in retail and healthcare, delivering sub-second query performance on Snowflake and Redshift.
-- Saved 17% of annual AWS spend (~$90K) through rightsizing, Savings Plans and cost-allocation tagging.
-- Built deployment tooling in Python and Bash — CLIs and REST APIs that hid infrastructure complexity from 20+ engineers.
-- Automated IaC and CI/CD with Jenkins, CloudFormation and Vault across dev, staging and production, cutting deployment errors by 20%.
-- Consolidated monitoring for 15+ services into one logging, metrics and alerting stack (Grafana, Loki, Prometheus).
-- As an intern: broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL on ECS.
+### SDE-Platform I — Quantiphi
+_jan 2022 – dec 2023 · Mumbai_
 
-### Web Development Intern — Felis Leo Ventures
-_jul 2020 – oct 2020 · Mumbai_
+- Authored CloudFormation and Terraform for 40 interdependent stacks per environment and built the platform network: segmented VPC subnets, NACLs, security groups and IAM isolation between team workloads.
+- Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.
+- Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour.
 
-- Built a web-based video calling application with real-time communication.
+### Framework Engineer Intern — Quantiphi
+_jul 2021 – dec 2021 · Remote_
 
-### Summer Research Intern — Bennett University
-_may 2020 – jun 2020 · Noida_
-
-- GPU-accelerated computing research; neural networks and ML algorithms for hyperspectral image classification.
+- Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS.
 
 ## Projects
 
-### Cache-aware scale-in for vLLM on Kubernetes (research · in progress)
-
-<https://github.com/colmeabhi/cache-aware-scale-in>
-
-A Kubernetes controller that scores each vLLM replica's KV-cache hit rate and writes it to the pod-deletion-cost annotation, so a scale-down removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.
-
-- Built as a six-stage ladder: laptop prototype with fake pods → kind/k3s mock cluster → Llama 3 8B on 3 A100 replicas with llm-d routing.
-- Ships as an in-cluster image with RBAC, Prometheus/Loki/Grafana dashboards, and CI that runs the scale-in trial on kind for every push.
-- Stack: python, kubernetes, vllm, k3s, prometheus, grafana
-
-### Idempotent Order API
-
-<https://github.com/colmeabhi/idempotent-order-cloud-api>
-
-A retry-safe order service: the Idempotency-Key is claimed in the same Postgres transaction as the order, so concurrent duplicates get the same order back instead of a second order or a 500.
-
-- Found and fixed a select-then-insert race that returned 500s under parallel retries; replaced with a single INSERT … ON CONFLICT claim.
-- 11.7× throughput and 8.6× lower p95 at saturation after adding a threadpool and connection pool (3,558 req/s, p95 22 ms, k6 on one machine).
-- Deployed ALB → ECS Fargate → RDS with Terraform and GitHub Actions; Redis rate limiter; 41 tests.
-- Stack: python, fastapi, postgres, redis, terraform, ecs fargate
-
-### IaC Drift Reconciliation SaaS (team project)
+### Phantom: IaC Drift Reconciliation SaaS (hackathon winner · led team of 3)
 
 <https://github.com/Kunal23002/iac-drift-saas>
 
-Multi-tenant pipeline that reads CloudTrail across AWS accounts, finds console changes that drifted from CloudFormation, has an LLM on Bedrock rewrite the template, validates it with cfn-lint and opens a GitHub pull request.
+Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.
 
-- Five Lambdas fanned out per stack, with DynamoDB de-duplication, an SQS dead-letter queue and CloudWatch health checks every five minutes.
-- Self-service customer portal (FastAPI + React) on App Runner; SaaS and customer-side infrastructure in Terraform.
-- Stack: aws lambda, bedrock, terraform, dynamodb, cloudtrail, fastapi
+- Reads each customer's CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.
+- Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.
+- See also: [hackathon prototype](https://github.com/krishmula/phantom)
+- Stack: python, aws lambda, bedrock, dynamodb, terraform
+
+### Cache-aware scale-in for vLLM on Kubernetes (M.S. project · in progress)
+
+<https://github.com/colmeabhi/cache-aware-scale-in>
+
+A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.
+
+- Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.
+- Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.
+- Stack: python, kubernetes, vllm, llm-d, prometheus
+
+### Duplicate-Safe Order Ledger Service
+
+<https://github.com/colmeabhi/idempotent-order-cloud-api>
+
+An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.
+
+- Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.
+- k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.
+- Found and fixed a select-then-insert race that returned 500s under parallel retries.
+- Stack: python, fastapi, postgresql, ecs fargate, rds, k6
 
 ### Parallel N-body simulation
 
@@ -89,11 +90,11 @@ A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenM
 - Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.
 - Stack: c++, cuda, openmp, barnes–hut, nsight
 
-### AI Sprint Planning Assistant (1st place · hackathon)
+### AI Sprint Planning Assistant (1st of ~50 teams)
 
 <https://devpost.com/colmeabhi>
 
-Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Won the “Agents with Superpowers: Context Engineering Hackathon” sponsored by Composio and Redis.
+Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.
 
 - Stack: python, langchain, openai, redis, composio
 
@@ -101,42 +102,10 @@ Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool o
 
 <https://github.com/colmeabhi/sdn-load-balance>
 
-A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.
+RYU (OpenFlow 1.3) controller that balances HTTP to a virtual IP with five swappable algorithms, benchmarked with an automated Locust sweep.
 
 - Automated Locust sweep across 5 algorithms × 5 load levels, with throughput and p95/p99 latency plots.
 - Stack: python, ryu, openflow, mininet, locust
-
-### Phantom (team project)
-
-<https://github.com/krishmula/phantom>
-
-Drift analysis for CloudFormation: combines CloudTrail and Datadog context and asks Claude on Bedrock whether a console change should be legitimised, reverted or refactored.
-
-- Stack: aws, bedrock, datadog, cloudformation
-
-### dualstack-chat
-
-<https://github.com/colmeabhi/dualstack-chat>
-
-Concurrent chat server exposing one in-memory state over a custom TCP protocol and a JSON/HTTP API; standard library only, cleans up after dead clients.
-
-- Stack: python, sockets, threads
-
-### ResuMatch (hackathon · team)
-
-<https://github.com/7shantanu7/Weave-Hackathon>
-
-Agent that refines a resume against feedback from a judge LLM and finds matching jobs. Built at WeaveHacks 2.0.
-
-- Stack: python, agents, llm
-
-### DevSecOps AI Agent (hackathon · team)
-
-<https://github.com/Tejas-Chakkarwar/DevSecOps>
-
-Watches a repository's commits, scans them for vulnerabilities, researches the fix and opens a pull request. Built at Daytona HackSprint.
-
-- Stack: python, langgraph, bandit
 
 ### GPU matrix multiplication (team project)
 
@@ -146,14 +115,6 @@ CUDA kernels reaching a 60× speedup over sequential CPU execution.
 
 - Stack: c++, cuda
 
-### MCP Wikipedia agent
-
-<https://github.com/colmeabhi/mcp-wikipedia-research-agent>
-
-MCP server and client for context-aware Wikipedia research with token optimisation and caching.
-
-- Stack: python, mcp
-
 ### California fishing compliance
 
 <https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining>
@@ -162,44 +123,35 @@ Dataset builder, training and evaluation for classifying regulated fish species;
 
 - Stack: python, pytorch, opencv
 
-### Text summarisation API
+### ResuMatch (hackathon · team)
 
-<https://github.com/colmeabhi/summarization-model>
+<https://github.com/7shantanu7/Weave-Hackathon>
 
-Flask API with an NLTK text-processing pipeline, containerised with Docker; 82% ROUGE-1.
+Agent that refines a resume against feedback from a judge LLM and finds matching jobs. Built at WeaveHacks 2.0.
 
-- Stack: python, flask, nltk, docker
-
-### Database migration platform (at work)
-
-Self-service Python CLI and REST API for Fivetran and Snowflake provisioning with RBAC and SSO/SCIM; Lambda-based monitoring with sub-minute incident detection.
-
-- Stack: python, fivetran, snowflake
+- Stack: python, agents, llm
 
 ## Education
 
 ### MS, Computer Science — San José State University
-_aug 2025 – may 2027_
+_2025 – 2027_
 
+- GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.
 - Coursework: Design & Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning.
-- Research project (CS 297): cache-aware scale-in for LLM inference on Kubernetes.
 
-### BE, Computer Engineering — Fr. Conceicao Rodrigues College of Engineering, Mumbai University
-_aug 2017 – jun 2021_
+### BE, Computer Engineering — University of Mumbai
+_2017 – 2021_
 
-- Grade 8.4/10. Mozilla Campus Club logistics in-charge, Training and Placement coordinator, college basketball team.
+- GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.
 
 ## Skills
 
-- **cloud & infra:** AWS (Lambda, API Gateway, Step Functions, S3, EC2, ECS, EKS, RDS, DMS, VPC, SQS, SNS), Terraform, CloudFormation
-- **containers:** Docker, Kubernetes, ECS (Fargate), Helm, k3s
-- **languages:** Python, C++, SQL, Bash, CUDA, Go (learning)
-- **backend:** FastAPI, Flask, REST APIs, PostgreSQL, Redis, Message queues (SQS, SNS)
-- **data platforms:** Snowflake, Redshift, SQL Server, Fivetran, AWS DMS
-- **observability:** Prometheus, Alertmanager, Grafana, Loki, CloudWatch, SLOs/MTTD/MTTR
-- **ai / ml:** vLLM, PyTorch, LangChain, Amazon Bedrock, OpenAI, MCP, OpenCV, NLTK
-- **ci / cd:** GitHub Actions, Jenkins, Ansible, Git, Linux
-- **security:** IAM, KMS, WAF, Vault / Secrets Manager, SOC 2, GDPR compliance
+- **cloud:** AWS (Lambda, ECS Fargate, EC2, Step Functions, S3, VPC, IAM, RDS, Redshift, DMS, DynamoDB, Bedrock), GCP
+- **infra & delivery:** Terraform, CloudFormation, Docker, Kubernetes, Jenkins, GitHub Actions, Vault, Trivy
+- **observability:** CloudWatch, Prometheus, Grafana, Loki, SLOs, Incident response, Disaster recovery
+- **languages:** Python, SQL, Bash, C++ / CUDA
+- **data:** PostgreSQL, Redshift, Snowflake, DynamoDB
+- **ai infra:** vLLM, llm-d, Amazon Bedrock, LangChain, MCP
 
 ## Certifications
 
@@ -209,9 +161,9 @@ _aug 2017 – jun 2021_
 
 ## Awards
 
-- 1st place, “Agents with Superpowers” Context Engineering Hackathon (Composio & Redis)
-- All India Rank 223, Technothlon
+- Winner, AWS × Datadog GenAI Hackathon (2025)
+- 1st place of ~50 teams, Composio × Redis Hackathon (2025)
 
 ## Contact
 
-Email ahirraoabhishek007@gmail.com — the fastest way to reach him. LinkedIn also works.
+Email abhishekahirrao09@gmail.com — the fastest way to reach him. LinkedIn also works.

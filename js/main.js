@@ -53,47 +53,125 @@ document.querySelectorAll('[data-copy-url]').forEach(function (btn) {
 });
 
 /* ============================================
-   Timeline strip — one tick per month since
-   May 2020, coloured by what I was doing.
-   Edit PERIODS to keep it current.
+   GitHub contributions strip
+   One bar per week for the last year. Bar height
+   and colour follow the week's contribution count;
+   hovering (or tapping) a bar shows the numbers.
+   Tries the live API, falls back to the snapshot
+   that build.py saves in data/contributions.json.
    ============================================ */
 
 (function () {
     var strip = document.getElementById('strip');
     if (!strip) return;
 
-    // [start, end, kind, label] — months are "YYYY-MM", end is inclusive
-    var PERIODS = [
-        ['2020-05', '2020-06', 'intern', 'Research Intern · Bennett University'],
-        ['2020-07', '2020-10', 'intern', 'Web Dev Intern · Felis Leo Ventures'],
-        ['2021-07', '2021-12', 'intern', 'Framework Engineer Intern · Quantiphi'],
-        ['2022-01', '2025-07', 'work', 'Platform Engineering · Quantiphi'],
-        ['2025-08', '2027-05', 'school', 'MS Computer Science · SJSU']
-    ];
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var user = strip.getAttribute('data-user');
+    var tip = document.createElement('div');
+    tip.className = 'strip-tip';
+    tip.hidden = true;
 
-    var idx = function (ym) { var p = ym.split('-'); return p[0] * 12 + (p[1] - 1); };
-    var now = new Date();
-    var first = idx('2020-05');
-    var last = now.getFullYear() * 12 + now.getMonth();
-    var active = 0;
-
-    for (var m = first; m <= last; m++) {
-        var kind = 'gap', label = '';
-        PERIODS.forEach(function (p) {
-            if (m >= idx(p[0]) && m <= idx(p[1])) { kind = p[2]; label = p[3]; }
-        });
-        if (kind !== 'gap') active++;
-
-        var tick = document.createElement('i');
-        tick.className = 'tick tick-' + kind;
-        // small deterministic tilt so the strip feels hand-drawn
-        tick.style.setProperty('--tilt', (((m * 7) % 5) - 2) * 2.5 + 'deg');
-        tick.style.animationDelay = (m - first) * 8 + 'ms';
-        tick.title = MONTHS[m % 12] + ' ' + Math.floor(m / 12) + (label ? ' — ' + label : '');
-        strip.appendChild(tick);
+    function label(iso) {
+        var p = iso.split('-');
+        return MONTHS[p[1] - 1] + ' ' + (+p[2]);
     }
 
-    var count = document.getElementById('strip-count');
-    if (count) count.textContent = active;
+    // [[date, count], ...] -> [{from, to, count}, ...] grouped Sunday to Saturday
+    function toWeeks(days) {
+        var weeks = [];
+        days.forEach(function (d) {
+            var p = d[0].split('-');
+            var weekday = new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay();
+            if (!weeks.length || weekday === 0) weeks.push({ from: d[0], to: d[0], count: 0 });
+            var w = weeks[weeks.length - 1];
+            w.to = d[0];
+            w.count += d[1];
+        });
+        return weeks;
+    }
+
+    function show(bar, w) {
+        tip.innerHTML = '';
+        var strong = document.createElement('strong');
+        strong.textContent = w.count + (w.count === 1 ? ' contribution' : ' contributions');
+        var span = document.createElement('span');
+        span.textContent = label(w.from) + ' – ' + label(w.to) + ', ' + w.to.slice(0, 4);
+        tip.appendChild(strong);
+        tip.appendChild(span);
+        tip.hidden = false;
+
+        // centre over the bar, but keep the tooltip inside the strip
+        var x = bar.offsetLeft + bar.offsetWidth / 2;
+        var half = tip.offsetWidth / 2;
+        var clamped = Math.max(half, Math.min(strip.offsetWidth - half, x));
+        tip.style.left = clamped + 'px';
+        tip.style.setProperty('--nub', (x - clamped) + 'px');
+    }
+
+    function render(days) {
+        var weeks = toWeeks(days);
+        var max = Math.max.apply(null, weeks.map(function (w) { return w.count; })) || 1;
+        var total = 0;
+
+        strip.innerHTML = '';
+        weeks.forEach(function (w, i) {
+            total += w.count;
+            var bar = document.createElement('button');
+            bar.type = 'button';
+            bar.className = 'bar';
+            bar.setAttribute('aria-label', w.count + ' contributions, ' + label(w.from) + ' to ' + label(w.to));
+
+            // sqrt keeps quiet weeks visible next to one very busy week
+            var share = w.count ? Math.sqrt(w.count / max) : 0;
+            var level = w.count ? Math.min(4, 1 + Math.floor(share * 3.999)) : 0;
+            bar.style.setProperty('--h', (w.count ? 22 + share * 78 : 10) + '%');
+            bar.style.setProperty('--i', i);
+            bar.setAttribute('data-level', level);
+
+            bar.addEventListener('mouseenter', function () { show(bar, w); });
+            bar.addEventListener('focus', function () { show(bar, w); });
+            bar.addEventListener('click', function () { show(bar, w); });
+            strip.appendChild(bar);
+        });
+        strip.appendChild(tip);
+
+        var count = document.getElementById('strip-count');
+        if (count) count.textContent = total.toLocaleString('en-US');
+    }
+
+    strip.addEventListener('mouseleave', function () { tip.hidden = true; });
+    strip.addEventListener('focusout', function () { tip.hidden = true; });
+
+    function snapshot() {
+        return fetch('data/contributions.json').then(function (r) { return r.json(); }).then(function (d) { return d.days; });
+    }
+
+    var ctrl = window.AbortController ? new AbortController() : null;
+    if (ctrl) setTimeout(function () { ctrl.abort(); }, 4000);
+
+    fetch('https://github-contributions-api.jogruber.de/v4/' + encodeURIComponent(user) + '?y=last', ctrl ? { signal: ctrl.signal } : {})
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) { return d.contributions.map(function (c) { return [c.date, c.count]; }); })
+        .catch(snapshot)
+        .then(render)
+        .catch(function () { strip.parentNode.hidden = false; strip.hidden = true; });
+})();
+
+/* ============================================
+   Reveal sections as they scroll into view
+   ============================================ */
+
+(function () {
+    var items = document.querySelectorAll('.section, .glance, .foot');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            en.target.classList.add('in');
+            io.unobserve(en.target);
+        });
+    }, { rootMargin: '0px 0px -8% 0px' });
+
+    items.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
 })();
