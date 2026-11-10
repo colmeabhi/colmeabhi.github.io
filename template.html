@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{NAME}} — {{LABEL}}</title>
+    <title>{{NAME}} | {{LABEL}}</title>
     <meta name="description" content="{{SUMMARY}}">
     <meta name="author" content="{{NAME}}">
     <meta name="color-scheme" content="light dark">
@@ -23,7 +23,7 @@
     <link rel="alternate" type="text/plain" href="{{SITE}}/llms.txt" title="llms.txt">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="{{NAME}} — {{LABEL}}">
+    <meta property="og:title" content="{{NAME}} | {{LABEL}}">
     <meta property="og:description" content="{{SUMMARY}}">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="{{SITE}}/">
@@ -55,7 +55,7 @@
 {{JSONLD}}
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v={{V}}">
 </head>
 
 <body>
@@ -98,7 +98,7 @@
 {{CONTENT}}
     </main>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v={{V}}"></script>
 </body>
 
 </html>

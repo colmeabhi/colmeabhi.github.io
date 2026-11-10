@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhishek Ahirrao — Platform &amp; Software Engineer</title>
+    <title>Abhishek Ahirrao | Platform &amp; Software Engineer</title>
     <meta name="description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta name="author" content="Abhishek Ahirrao">
     <meta name="color-scheme" content="light dark">
@@ -23,7 +23,7 @@
     <link rel="alternate" type="text/plain" href="https://colmeabhi.github.io/llms.txt" title="llms.txt">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Abhishek Ahirrao — Platform &amp; Software Engineer">
+    <meta property="og:title" content="Abhishek Ahirrao | Platform &amp; Software Engineer">
     <meta property="og:description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://colmeabhi.github.io/">
@@ -72,6 +72,7 @@
         "https://devpost.com/colmeabhi",
         "https://instagram.com/colmeabhi"
     ],
+    "image": "https://colmeabhi.github.io/assets/profilepic.jpeg",
     "alumniOf": [
         {
             "@type": "CollegeOrUniversity",
@@ -131,7 +132,7 @@
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=36e80ffb">
 </head>
 
 <body>
@@ -175,7 +176,7 @@
 <header class="hero" id="home">
     <div class="hero-top">
         <div class="identity">
-            <div class="avatar" aria-hidden="true">aa</div>
+            <div class="avatar" aria-hidden="true">aa<img src="assets/profilepic.jpeg" alt="" width="160" height="160"></div>
             <h1>Abhishek Ahirrao</h1>
             <p class="handle"><span>[</span>colmeabhi<span>]</span> <span class="say">abhi · /uh-bhee/ · San Jose, CA</span></p>
         </div>
@@ -185,18 +186,17 @@
     <p class="status"><i></i>Open to full-time platform, infrastructure and backend roles · MS CS, 2027</p>
 
     <div class="intro">
-        <p>I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet — systems that just work and let people focus on what actually matters.</p><p>At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I&#x27;m in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down.</p>
+        <p>I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet: systems that just work and let people focus on what actually matters.</p><p>At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I&#x27;m in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down.</p>
         <p class="now"><span>Currently</span> MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming</p>
     </div>
 
     <div class="actions">
-        <a class="btn btn-primary" href="mailto:abhishekahirrao09@gmail.com">Say hello</a>
+        <a class="btn btn-primary" href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Say hello</span></a>
         <button class="btn" type="button" data-copy="abhishekahirrao09@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span data-copy-label>Copy email</span></button>
         <a class="btn" href="https://drive.google.com/uc?export=download&amp;id=1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Resume.pdf</a>
     </div>
 </header>
-<section class="glance" aria-label="At a glance">
-    <dl class="stats"><div class="stat"><dt>3.5 yrs</dt><dd>platform engineering at Quantiphi</dd></div><div class="stat"><dt>3 h → 10 min</dt><dd>MTTR across 6 on-call production services</dd></div><div class="stat"><dt>~85%</dt><dd>fewer platform-team requests after self-service tooling</dd></div><div class="stat"><dt>600 GB/day</dt><dd>ingested under a T+1 freshness SLA</dd></div></dl>
+<section class="glance" aria-label="GitHub activity">
     <div class="strip" id="strip" data-user="colmeabhi" role="img" aria-label="GitHub contributions per week over the last year"></div>
     <p class="strip-caption"><span id="strip-count">–</span> contributions on <a class="link" href="https://github.com/colmeabhi" target="_blank" rel="noopener">GitHub</a> in the last year</p>
 </section>
@@ -249,7 +249,7 @@
                 <h3>Cache-aware scale-in for vLLM on Kubernetes</h3><span class="badge">M.S. project · in progress</span>
                 <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
-            <p>A Kubernetes controller that scores each vLLM replica&#x27;s KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.</p>
+            <p>A Kubernetes controller that scores each vLLM replica&#x27;s KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.</p>
             <ul class="bullets"><li>Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.</li><li>Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.</li></ul>
             <div class="chips"><span>python</span><span>kubernetes</span><span>vllm</span><span>llm-d</span><span>prometheus</span></div>
         </a>
@@ -368,7 +368,7 @@
     <ul class="certs"><li><span class="cert-name">AWS Solutions Architect Associate</span><span class="date">aws</span></li><li><span class="cert-name">AWS Developer Associate</span><span class="date">aws</span></li><li><span class="cert-name">HashiCorp Terraform Associate</span><span class="date">hashicorp</span></li><li><span class="cert-name">Winner, AWS × Datadog GenAI Hackathon</span><span class="date">2025</span></li><li><span class="cert-name">1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">2025</span></li></ul>
 </section>
 <section class="section chat" id="contact" aria-label="Contact">
-    <p class="bubble them">nice work — what's the best way to reach you?</p>
+    <p class="bubble them">nice work! what's the best way to reach you?</p>
     <p class="bubble me">thanks! email is the fastest</p>
     <p class="bubble me">
         write to <button type="button" class="link" data-copy="abhishekahirrao09@gmail.com"><span data-copy-label>abhishekahirrao09@gmail.com</span></button>
@@ -380,7 +380,12 @@
 
 <footer class="foot">
     <blockquote>"how you do anything is how you do everything"</blockquote>
-    <p class="foot-agents">agents: <a href="llms.txt">/llms.txt</a> · <a href="profile.md">/profile.md</a> · <a href="resume.json">/resume.json</a></p>
+    <nav class="foot-agents" aria-label="Machine-readable versions">
+        <span class="foot-agents-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/></svg>for agents</span>
+        <a href="llms.txt">/llms.txt</a>
+        <a href="profile.md">/profile.md</a>
+        <a href="resume.json">/resume.json</a>
+    </nav>
     <div class="foot-row">
         <span>© 2026 abhishek ahirrao</span>
         <span>last updated: november 2026</span>
@@ -388,7 +393,7 @@
 </footer>
     </main>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=36e80ffb"></script>
 </body>
 
 </html>

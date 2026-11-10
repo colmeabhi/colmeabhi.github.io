@@ -15,16 +15,9 @@
 
 _Goes by abhi (/uh-bhee/). Last updated 2026-11-10. Structured version: https://colmeabhi.github.io/resume.json_
 
-## At a glance
-
-- **3.5 yrs** — platform engineering at Quantiphi
-- **3 h → 10 min** — MTTR across 6 on-call production services
-- **~85%** — fewer platform-team requests after self-service tooling
-- **600 GB/day** — ingested under a T+1 freshness SLA
-
 ## Experience
 
-### SDE-Platform II — Quantiphi
+### SDE-Platform II, Quantiphi
 _jan 2024 – jun 2025 · Mumbai_
 
 - Built a self-service infrastructure platform adopted by 50 data engineers across 5 data platforms: a Python CLI and a Claude-on-Bedrock interface that turned plain-English requests into pre-approved Terraform and CloudFormation stacks, with approval gates and TTL teardown. Cut platform-team requests ~85% and dev spend ~18%.
@@ -34,14 +27,14 @@ _jan 2024 – jun 2025 · Mumbai_
 - On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.
 - Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image.
 
-### SDE-Platform I — Quantiphi
+### SDE-Platform I, Quantiphi
 _jan 2022 – dec 2023 · Mumbai_
 
 - Authored CloudFormation and Terraform for 40 interdependent stacks per environment and built the platform network: segmented VPC subnets, NACLs, security groups and IAM isolation between team workloads.
 - Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.
 - Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour.
 
-### Framework Engineer Intern — Quantiphi
+### Framework Engineer Intern, Quantiphi
 _jul 2021 – dec 2021 · Remote_
 
 - Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS.
@@ -63,7 +56,7 @@ Finds AWS console changes that drifted from Terraform and CloudFormation, has an
 
 <https://github.com/colmeabhi/cache-aware-scale-in>
 
-A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.
+A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.
 
 - Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.
 - Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.
@@ -133,13 +126,13 @@ Agent that refines a resume against feedback from a judge LLM and finds matching
 
 ## Education
 
-### MS, Computer Science — San José State University
+### MS Computer Science, San José State University
 _2025 – 2027_
 
 - GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.
 - Coursework: Design & Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning.
 
-### BE, Computer Engineering — University of Mumbai
+### BE Computer Engineering, University of Mumbai
 _2017 – 2021_
 
 - GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.
@@ -166,4 +159,4 @@ _2017 – 2021_
 
 ## Contact
 
-Email abhishekahirrao09@gmail.com — the fastest way to reach him. LinkedIn also works.
+Email abhishekahirrao09@gmail.com. It is the fastest way to reach him. LinkedIn also works.
