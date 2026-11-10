@@ -11,7 +11,7 @@
 set -e
 cd "$(dirname "$0")"
 
-PAGE_ORDER="home work education projects skills certs resume"
+PAGE_ORDER="home work projects education skills certs contact"
 
 {
     cat index-head.html
