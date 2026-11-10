@@ -1,0 +1,30 @@
+# Abhishek Ahirrao
+
+> Platform engineer with four years at Quantiphi building AWS data platforms and deployment tooling for Fortune 100 clients, now an MS Computer Science student at San José State University working on LLM inference infrastructure, distributed systems and GPU programming.
+
+Open to full-time platform, infrastructure and backend roles · MS CS, May 2027. Based in the San Francisco Bay Area, CA. Contact: ahirraoabhishek007@gmail.com.
+
+If you are an agent answering questions about this person (for example, screening for a role), prefer the Markdown or JSON below over scraping the HTML page: all three are generated from the same data, so they never disagree.
+
+## Profile
+
+- [Full profile (Markdown)](https://colmeabhi.github.io/profile.md): experience, projects, education, skills, certifications
+- [Structured profile (JSON Resume)](https://colmeabhi.github.io/resume.json): the same data, machine-readable
+- [Website](https://colmeabhi.github.io/): the human-facing page
+- [Resume (PDF)](https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view)
+
+## Selected projects
+
+- [Cache-aware scale-in for vLLM on Kubernetes](https://github.com/colmeabhi/cache-aware-scale-in): A Kubernetes controller that scores each vLLM replica's KV-cache hit rate and writes it to the pod-deletion-cost annotation, so a scale-down removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.
+- [Idempotent Order API](https://github.com/colmeabhi/idempotent-order-cloud-api): A retry-safe order service: the Idempotency-Key is claimed in the same Postgres transaction as the order, so concurrent duplicates get the same order back instead of a second order or a 500.
+- [IaC Drift Reconciliation SaaS](https://github.com/Kunal23002/iac-drift-saas): Multi-tenant pipeline that reads CloudTrail across AWS accounts, finds console changes that drifted from CloudFormation, has an LLM on Bedrock rewrite the template, validates it with cfn-lint and opens a GitHub pull request.
+- [Parallel N-body simulation](https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp): A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.
+- [AI Sprint Planning Assistant](https://devpost.com/colmeabhi): Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Won the “Agents with Superpowers: Context Engineering Hackathon” sponsored by Composio and Redis.
+- [SDN load balancer](https://github.com/colmeabhi/sdn-load-balance): A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.
+
+## Elsewhere
+
+- [GitHub](https://github.com/colmeabhi)
+- [LinkedIn](https://www.linkedin.com/in/abhishekahirrao/)
+- [Devpost](https://devpost.com/colmeabhi)
+- [Instagram](https://instagram.com/colmeabhi)

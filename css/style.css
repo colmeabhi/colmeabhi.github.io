@@ -18,6 +18,9 @@
     --chip-fg: #1d4ed8;
     --chip-bg: #dbeafe99;
     --bubble: #ececec;
+    --live: #15803d;
+    --live-bg: #22c55e14;
+    --live-border: #22c55e59;
     --selection-bg: #dbeafe;
     --selection-fg: #1e3a8a;
 
@@ -42,6 +45,9 @@
     --chip-fg: #93c5fd;
     --chip-bg: #60a5fa1f;
     --bubble: #222222;
+    --live: #4ade80;
+    --live-bg: #22c55e14;
+    --live-border: #22c55e59;
     --selection-bg: #19283d;
     --selection-fg: #7fb4f5;
 }
@@ -107,12 +113,73 @@ svg { display: block; flex: none; }
     top: 1rem;
     right: 1rem;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
     padding: 0.25rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: color-mix(in srgb, var(--bg) 80%, transparent);
     backdrop-filter: blur(8px);
 }
+
+.pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 1.75rem;
+    padding: 0 0.6rem 0 0.5rem;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: color 0.15s, background-color 0.15s;
+}
+.pill-btn:hover { color: var(--fg); background: var(--surface); }
+.pill-btn svg { width: 14px; height: 14px; }
+
+/* ============================================
+   Agent menu (native popover)
+   ============================================ */
+
+.agent-menu {
+    position: fixed;
+    inset: auto;
+    top: 3.75rem;
+    right: 1rem;
+    width: min(22rem, calc(100vw - 2rem));
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.9rem;
+    background: var(--surface);
+    color: var(--fg);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.12);
+}
+.agent-menu:popover-open { animation: rise 0.25s var(--ease) both; }
+.agent-menu::backdrop { background: transparent; }
+
+.agent-title { font-weight: 500; letter-spacing: -0.01em; }
+.agent-title span { color: var(--muted); font-weight: 400; }
+.agent-sub { margin-top: 0.2rem; font-size: 0.8125rem; color: var(--muted); }
+
+.agent-list { display: grid; margin: 0.85rem -0.5rem; }
+.agent-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    transition: background-color 0.15s;
+}
+.agent-list a:hover { background: var(--bg); }
+.agent-list code { font: inherit; color: var(--fg); }
+.agent-list span { color: var(--muted); text-align: right; }
+
+.agent-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 .icon-btn {
     display: grid;
@@ -190,8 +257,32 @@ h1 {
 .socials a:hover { color: var(--fg); background: var(--surface); }
 .socials svg { width: 14px; height: 14px; }
 
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 0.25rem 0.7rem 0.25rem 0.6rem;
+    border: 1px solid var(--live-border);
+    border-radius: 999px;
+    background: var(--live-bg);
+    color: var(--live);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+.status i {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.35; } }
+
 .intro {
-    margin-top: 2.5rem;
+    margin-top: 1.25rem;
     display: grid;
     gap: 0.75rem;
     color: var(--fg-soft);
@@ -234,7 +325,27 @@ h1 {
    Timeline strip
    ============================================ */
 
-.strip-wrap { margin-top: 4.5rem; }
+.glance { margin-top: 4rem; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+}
+.stat dt {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+.stat dd {
+    margin-top: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: var(--muted);
+}
 
 .strip {
     display: flex;
@@ -385,14 +496,53 @@ h3 {
     align-items: center;
     gap: 0.6rem;
 }
+.proj-top { flex-wrap: wrap; }
 .proj h3 { font-family: var(--mono); font-size: 0.9375rem; }
 .proj p {
-    margin-top: 0.35rem;
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    color: var(--fg-soft);
+    text-wrap: pretty;
+}
+
+.proj .bullets {
+    margin-top: 0.55rem;
+    font-size: 0.8125rem;
+}
+
+.sub-head {
+    margin: 2.25rem 0 0.5rem;
     font-family: var(--mono);
     font-size: 0.75rem;
-    line-height: 1.6;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.more { margin: 0 -0.75rem; }
+.more-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.1rem 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s;
+}
+a.more-row:hover { background: var(--surface); }
+.more-name { font-size: 0.9375rem; font-weight: 500; }
+.more-desc {
+    grid-column: 1;
+    font-size: 0.8125rem;
     color: var(--muted);
     text-wrap: pretty;
+}
+.more-row .arrow { grid-row: 1; grid-column: 2; margin-top: 0.3rem; }
+a.more-row:hover .arrow { color: var(--fg); transform: translate(2px, -2px); }
+
+.progression {
+    margin-top: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
 }
 
 .arrow {
@@ -402,7 +552,47 @@ h3 {
     color: var(--faint);
     transition: transform 0.2s var(--ease), color 0.15s;
 }
-.proj:hover .arrow { color: var(--fg); transform: translate(2px, -2px); }
+.proj:hover .proj .bullets {
+    margin-top: 0.55rem;
+    font-size: 0.8125rem;
+}
+
+.sub-head {
+    margin: 2.25rem 0 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.more { margin: 0 -0.75rem; }
+.more-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.1rem 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s;
+}
+a.more-row:hover { background: var(--surface); }
+.more-name { font-size: 0.9375rem; font-weight: 500; }
+.more-desc {
+    grid-column: 1;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    text-wrap: pretty;
+}
+.more-row .arrow { grid-row: 1; grid-column: 2; margin-top: 0.3rem; }
+a.more-row:hover .arrow { color: var(--fg); transform: translate(2px, -2px); }
+
+.progression {
+    margin-top: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.arrow { color: var(--fg); transform: translate(2px, -2px); }
 
 .badge {
     padding: 0.05rem 0.4rem;
@@ -411,6 +601,15 @@ h3 {
     color: var(--featured);
     font-family: var(--mono);
     font-size: 0.6875rem;
+}
+
+.badge-quiet {
+    margin-left: 0.3rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 400;
+    vertical-align: 0.1em;
 }
 
 .chips {
@@ -516,12 +715,21 @@ h3 {
     color: var(--faint);
 }
 
+.foot-agents {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--faint);
+}
+.foot-agents a:hover { color: var(--fg); }
+
 .foot-row {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--border);
     font-family: var(--mono);
@@ -537,7 +745,10 @@ h3 {
     .container { padding-top: 4.5rem; }
     .hero-top { flex-direction: column; gap: 1.25rem; }
     .socials { flex-direction: row; flex-wrap: wrap; margin-left: -0.6rem; padding-top: 0; }
-    .intro { margin-top: 1.5rem; }
+    .status { margin-top: 1.5rem; border-radius: 0.75rem; align-items: flex-start; }
+    .status i { margin-top: 0.4rem; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .handle .say { display: block; margin-left: 0; }
     .row-top { flex-direction: column; gap: 0.15rem; }
     .skill { grid-template-columns: 1fr; gap: 0.4rem; }
     .tick { width: 2px; }

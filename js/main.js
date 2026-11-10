@@ -16,7 +16,8 @@ document.querySelectorAll('[data-copy]').forEach(function (btn) {
     var original = label.textContent;
     var timer;
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (ev) {
+        ev.preventDefault();
         var text = btn.getAttribute('data-copy');
         var done = function () {
             label.textContent = 'Copied!';
@@ -28,6 +29,26 @@ document.querySelectorAll('[data-copy]').forEach(function (btn) {
         } else {
             location.href = 'mailto:' + text;
         }
+    });
+});
+
+/* ============================================
+   Agent menu — copy the Markdown profile
+   (data-copy-url="file" fetches it first)
+   ============================================ */
+
+document.querySelectorAll('[data-copy-url]').forEach(function (btn) {
+    var label = btn.querySelector('[data-copy-label]');
+    var original = label.textContent;
+    var url = btn.getAttribute('data-copy-url');
+
+    btn.addEventListener('click', function () {
+        fetch(url)
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+            .then(function (text) { return navigator.clipboard.writeText(text); })
+            .then(function () { label.textContent = 'Copied!'; })
+            .catch(function () { window.open(url, '_blank'); })
+            .then(function () { setTimeout(function () { label.textContent = original; }, 1600); });
     });
 });
 
@@ -45,9 +66,8 @@ document.querySelectorAll('[data-copy]').forEach(function (btn) {
     var PERIODS = [
         ['2020-05', '2020-06', 'intern', 'Research Intern · Bennett University'],
         ['2020-07', '2020-10', 'intern', 'Web Dev Intern · Felis Leo Ventures'],
-        ['2021-07', '2021-11', 'intern', 'Framework Engineer Intern · Quantiphi'],
-        ['2021-11', '2023-12', 'work', 'Platform Engineer · Quantiphi'],
-        ['2024-01', '2025-07', 'work', 'Senior Platform Engineer · Quantiphi'],
+        ['2021-07', '2021-12', 'intern', 'Framework Engineer Intern · Quantiphi'],
+        ['2022-01', '2025-07', 'work', 'Platform Engineering · Quantiphi'],
         ['2025-08', '2027-05', 'school', 'MS Computer Science · SJSU']
     ];
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
