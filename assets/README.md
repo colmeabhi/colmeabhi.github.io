@@ -1,2 +1,1 @@
-Put your profile photo here as `abhishek.jpg` (square, at least 320×320), then run `./build.sh`.
-Until the file exists, the site shows the "aa" monogram instead.
+Profile photo. `./build.sh` uses the file named in `resume.json` (`basics.image`), or the first image it finds in this folder.

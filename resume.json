@@ -21,7 +21,7 @@
     "status": "Open to full-time platform, infrastructure and backend roles · MS CS, 2027",
     "summary": "Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.",
     "intro": [
-      "I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet — systems that just work and let people focus on what actually matters.",
+      "I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet: systems that just work and let people focus on what actually matters.",
       "At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I'm in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down."
     ],
     "now": "MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming",
@@ -49,26 +49,8 @@
         "url": "https://instagram.com/colmeabhi"
       }
     ],
-    "image": "assets/abhishek.jpg"
+    "image": "assets/profilepic.jpeg"
   },
-  "highlights": [
-    {
-      "value": "3.5 yrs",
-      "label": "platform engineering at Quantiphi"
-    },
-    {
-      "value": "3 h → 10 min",
-      "label": "MTTR across 6 on-call production services"
-    },
-    {
-      "value": "~85%",
-      "label": "fewer platform-team requests after self-service tooling"
-    },
-    {
-      "value": "600 GB/day",
-      "label": "ingested under a T+1 freshness SLA"
-    }
-  ],
   "work": [
     {
       "name": "Quantiphi",
@@ -140,7 +122,7 @@
       "featured": true,
       "badge": "M.S. project · in progress",
       "url": "https://github.com/colmeabhi/cache-aware-scale-in",
-      "description": "A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.",
+      "description": "A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.",
       "highlights": [
         "Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.",
         "Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push."

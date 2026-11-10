@@ -10,6 +10,7 @@ Outputs (all committed, so GitHub Pages can serve them as-is):
 Only the standard library is used. Run with ./build.sh or python3 build.py.
 """
 
+import hashlib
 import json
 import urllib.request
 from datetime import date
@@ -63,6 +64,26 @@ def fetch_contributions():
         print(f"Kept existing contributions snapshot ({err})")
 
 
+def find_photo():
+    """basics.image if that file exists, otherwise the first image found in assets/."""
+    named = B.get("image")
+    if named and (ROOT / named).is_file():
+        return named
+    for path in sorted((ROOT / "assets").glob("*")):
+        if path.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}:
+            return path.relative_to(ROOT).as_posix()
+    return None
+
+
+PHOTO = find_photo()
+
+
+def asset_version():
+    """Short hash of the CSS and JS, appended as ?v= so browsers never show a stale copy."""
+    blob = (ROOT / "css/style.css").read_bytes() + (ROOT / "js/main.js").read_bytes()
+    return hashlib.sha256(blob).hexdigest()[:8]
+
+
 def icon(paths, cls=""):
     attr = f' class="{cls}"' if cls else ""
     return (f'<svg{attr} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" '
@@ -78,6 +99,7 @@ ICONS = {
     "copy": '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
     "download": '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
     "arrow": '<path d="M7 17 17 7M8 7h9v9"/>',
+    "agent": '<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/>',
     "work": '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
     "projects": '<path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
     "education": '<path d="M12 4 2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9v6"/>',
@@ -120,8 +142,7 @@ def render_hero():
     socials += f'<a href="{e(B["resumeView"])}" target="_blank" rel="noopener">{icon(ICONS["resume"])}resume</a>'
     intro = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
     # The photo covers the monogram. It is only used once the file exists.
-    photo = (f'<img src="{e(B["image"])}" alt="" width="160" height="160">'
-             if B.get("image") and (ROOT / B["image"]).is_file() else "")
+    photo = f'<img src="{e(PHOTO)}" alt="" width="160" height="160">' if PHOTO else ""
     return f'''
 <header class="hero" id="home">
     <div class="hero-top">
@@ -141,7 +162,7 @@ def render_hero():
     </div>
 
     <div class="actions">
-        <a class="btn btn-primary" href="mailto:{e(B["email"])}">Say hello</a>
+        <a class="btn btn-primary" href="mailto:{e(B["email"])}" data-hello="{e(B["email"])}"><span data-hello-label>Say hello</span></a>
         <button class="btn" type="button" data-copy="{e(B["email"])}">{icon(ICONS["copy"])}<span data-copy-label>Copy email</span></button>
         <a class="btn" href="{e(B["resumeDownload"])}" target="_blank" rel="noopener">{icon(ICONS["download"])}Resume.pdf</a>
     </div>
@@ -149,14 +170,9 @@ def render_hero():
 
 
 def render_glance():
-    stats = "".join(
-        f'<div class="stat"><dt>{e(h["value"])}</dt><dd>{e(h["label"])}</dd></div>'
-        for h in DATA["highlights"]
-    )
     github = next(p["url"] for p in B["profiles"] if p["network"] == "GitHub")
     return f'''
-<section class="glance" aria-label="At a glance">
-    <dl class="stats">{stats}</dl>
+<section class="glance" aria-label="GitHub activity">
     <div class="strip" id="strip" data-user="{e(B["handle"])}" role="img" aria-label="GitHub contributions per week over the last year"></div>
     <p class="strip-caption"><span id="strip-count">–</span> contributions on <a class="link" href="{e(github)}" target="_blank" rel="noopener">GitHub</a> in the last year</p>
 </section>'''
@@ -259,7 +275,7 @@ def render_contact():
     linkedin = next(p["url"] for p in B["profiles"] if p["network"] == "LinkedIn")
     return f'''
 <section class="section chat" id="contact" aria-label="Contact">
-    <p class="bubble them">nice work — what's the best way to reach you?</p>
+    <p class="bubble them">nice work! what's the best way to reach you?</p>
     <p class="bubble me">thanks! email is the fastest</p>
     <p class="bubble me">
         write to <button type="button" class="link" data-copy="{e(B["email"])}"><span data-copy-label>{e(B["email"])}</span></button>
@@ -271,7 +287,12 @@ def render_contact():
 
 <footer class="foot">
     <blockquote>"{e(DATA["quote"])}"</blockquote>
-    <p class="foot-agents">agents: <a href="llms.txt">/llms.txt</a> · <a href="profile.md">/profile.md</a> · <a href="resume.json">/resume.json</a></p>
+    <nav class="foot-agents" aria-label="Machine-readable versions">
+        <span class="foot-agents-label">{icon(ICONS["agent"])}for agents</span>
+        <a href="llms.txt">/llms.txt</a>
+        <a href="profile.md">/profile.md</a>
+        <a href="resume.json">/resume.json</a>
+    </nav>
     <div class="foot-row">
         <span>© {TODAY.year} {e(B["name"].lower())}</span>
         <span>last updated: {TODAY.strftime("%B %Y").lower()}</span>
@@ -291,7 +312,7 @@ def json_ld():
         "url": SITE + "/",
         "address": {"@type": "PostalAddress", "addressRegion": B["location"]["region"], "addressCountry": "US"},
         "sameAs": [p["url"] for p in B["profiles"]],
-        **({"image": f"{SITE}/{B['image']}"} if (ROOT / B.get("image", "-")).is_file() else {}),
+        **({"image": f"{SITE}/{PHOTO}"} if PHOTO else {}),
         "alumniOf": [{"@type": "CollegeOrUniversity", "name": ed["institution"]} for ed in DATA["education"]],
         "hasCredential": [
             {"@type": "EducationalOccupationalCredential", "name": c["name"]} for c in DATA["certificates"]
@@ -312,7 +333,7 @@ def build_html():
     for key, value in {
         "{{NAME}}": e(B["name"]), "{{LABEL}}": e(B["label"]), "{{SUMMARY}}": e(B["summary"]),
         "{{EMAIL}}": e(B["email"]), "{{SITE}}": SITE, "{{ASK}}": ask,
-        "{{JSONLD}}": json_ld(), "{{CONTENT}}": content,
+        "{{JSONLD}}": json_ld(), "{{CONTENT}}": content, "{{V}}": asset_version(),
     }.items():
         page = page.replace(key, value)
     return page
@@ -337,12 +358,9 @@ def build_markdown():
     L += ["", f"_Goes by {B['nickname']} (/{B['pronunciation']}/). Last updated {TODAY.isoformat()}. "
               f"Structured version: {SITE}/resume.json_", ""]
 
-    L += ["## At a glance", ""]
-    L += [f"- **{h['value']}** — {h['label']}" for h in DATA["highlights"]]
-
-    L += ["", "## Experience", ""]
+    L += ["## Experience", ""]
     for w in DATA["work"]:
-        L += [f"### {w['position']} — {w['name']}", f"_{date_range(w)} · {w['location']}_", ""]
+        L += [f"### {w['position']}, {w['name']}", f"_{date_range(w)} · {w['location']}_", ""]
         if w.get("progression"):
             L += [f"Progression: {w['progression']}", ""]
         L += [f"- {h}" for h in w["highlights"]] + [""]
@@ -360,7 +378,7 @@ def build_markdown():
 
     L += ["## Education", ""]
     for ed in DATA["education"]:
-        L += [f"### {ed['studyType']}, {ed['area']} — {ed['institution']}", f"_{year_range(ed)}_", ""]
+        L += [f"### {ed['studyType']} {ed['area']}, {ed['institution']}", f"_{year_range(ed)}_", ""]
         L += [f"- {h}" for h in ed["highlights"]] + [""]
 
     L += ["## Skills", ""]
@@ -373,7 +391,7 @@ def build_markdown():
     L += [f"- {a['title']}" + (f" ({a['awarder']})" if a.get("awarder") else "") for a in DATA["awards"]]
 
     L += ["", "## Contact", "",
-          f"Email {B['email']} — the fastest way to reach him. LinkedIn also works.", ""]
+          f"Email {B['email']}. It is the fastest way to reach him. LinkedIn also works.", ""]
     return "\n".join(L)
 
 

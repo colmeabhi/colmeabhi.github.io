@@ -33,7 +33,29 @@ document.querySelectorAll('[data-copy]').forEach(function (btn) {
 });
 
 /* ============================================
-   Agent menu — copy the Markdown profile
+   "Say hello": opens the visitor's mail app and
+   also copies the address, so the button still
+   does something when no mail app is set up.
+   ============================================ */
+
+document.querySelectorAll('[data-hello]').forEach(function (link) {
+    var label = link.querySelector('[data-hello-label]');
+    var original = label.textContent;
+    var timer;
+
+    link.addEventListener('click', function () {
+        var email = link.getAttribute('data-hello');
+        if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+        navigator.clipboard.writeText(email).then(function () {
+            label.textContent = 'Email copied, opening mail…';
+            clearTimeout(timer);
+            timer = setTimeout(function () { label.textContent = original; }, 2600);
+        }, function () {});
+    });
+});
+
+/* ============================================
+   Agent menu: copy the Markdown profile
    (data-copy-url="file" fetches it first)
    ============================================ */
 

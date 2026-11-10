@@ -16,4 +16,4 @@ My portfolio. The whole site is generated from one file, `resume.json`.
 | `profile.md`, `llms.txt`, `resume.json` | AI agents |
 | `sitemap.xml` | search engines |
 
-Photo: add `assets/abhishek.jpg` and rebuild.
+Photo: put a square image in `assets/` and rebuild.
