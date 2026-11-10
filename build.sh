@@ -1,27 +1,14 @@
 #!/bin/bash
 # ============================================
-# Assembles index.html from:
-#   - index-head.html  (everything before page content)
-#   - pages/*.html      (each section, in order)
-#   - index-foot.html  (everything after page content)
+# Regenerates the site from resume.json:
+#   index.html   — the page people see
+#   profile.md   — the same content as Markdown, for agents
+#   llms.txt     — short index for LLMs (llmstxt.org)
+#   sitemap.xml
 #
 # Usage: ./build.sh
 # ============================================
 
 set -e
 cd "$(dirname "$0")"
-
-PAGE_ORDER="home work projects education skills certs contact"
-
-{
-    cat index-head.html
-
-    for page in $PAGE_ORDER; do
-        echo ""
-        cat "pages/${page}.html"
-    done
-
-    cat index-foot.html
-} > index.html
-
-echo "Built index.html"
+python3 build.py

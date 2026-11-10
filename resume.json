@@ -1,0 +1,381 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "meta": {
+    "canonical": "https://colmeabhi.github.io/resume.json",
+    "site": "https://colmeabhi.github.io",
+    "note": "Single source of truth for colmeabhi.github.io. Edit this file, then run ./build.sh to regenerate index.html, profile.md, llms.txt and sitemap.xml."
+  },
+  "basics": {
+    "name": "Abhishek Ahirrao",
+    "nickname": "abhi",
+    "pronunciation": "uh-bhee",
+    "handle": "colmeabhi",
+    "label": "Platform & Software Engineer",
+    "email": "abhishekahirrao09@gmail.com",
+    "url": "https://colmeabhi.github.io",
+    "location": {
+      "city": "San Jose",
+      "region": "San Jose, CA",
+      "countryCode": "US"
+    },
+    "status": "Open to full-time platform, infrastructure and backend roles · MS CS, 2027",
+    "summary": "Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.",
+    "intro": [
+      "I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet — systems that just work and let people focus on what actually matters.",
+      "At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I'm in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down."
+    ],
+    "now": "MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming",
+    "resumeView": "https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view",
+    "resumeDownload": "https://drive.google.com/uc?export=download&id=1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ",
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "colmeabhi",
+        "url": "https://github.com/colmeabhi"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "abhishekahirrao",
+        "url": "https://www.linkedin.com/in/abhishekahirrao/"
+      },
+      {
+        "network": "Devpost",
+        "username": "colmeabhi",
+        "url": "https://devpost.com/colmeabhi"
+      },
+      {
+        "network": "Instagram",
+        "username": "colmeabhi",
+        "url": "https://instagram.com/colmeabhi"
+      }
+    ],
+    "image": "assets/abhishek.jpg"
+  },
+  "highlights": [
+    {
+      "value": "3.5 yrs",
+      "label": "platform engineering at Quantiphi"
+    },
+    {
+      "value": "3 h → 10 min",
+      "label": "MTTR across 6 on-call production services"
+    },
+    {
+      "value": "~85%",
+      "label": "fewer platform-team requests after self-service tooling"
+    },
+    {
+      "value": "600 GB/day",
+      "label": "ingested under a T+1 freshness SLA"
+    }
+  ],
+  "work": [
+    {
+      "name": "Quantiphi",
+      "position": "SDE-Platform II",
+      "location": "Mumbai",
+      "startDate": "2024-01",
+      "endDate": "2025-06",
+      "highlights": [
+        "Built a self-service infrastructure platform adopted by 50 data engineers across 5 data platforms: a Python CLI and a Claude-on-Bedrock interface that turned plain-English requests into pre-approved Terraform and CloudFormation stacks, with approval gates and TTL teardown. Cut platform-team requests ~85% and dev spend ~18%.",
+        "Architected the migration of an Informatica-on-EC2 ETL platform to Lambda and ECS Fargate services orchestrated by Step Functions, ingesting change data from 8+ sources across 5 countries into Redshift. Authored the design and cost model (projected 70% lower compute) and mentored 2 juniors.",
+        "Split day-long full loads into restartable 2-hour batches, holding a T+1 freshness SLA on 95%+ of runs as volume doubled from 300 GB to 600 GB/day.",
+        "Enforced policy-as-code guardrails on 120 CloudFormation and Terraform stacks across 3 accounts with Control Tower, SCPs and Lambda checks; non-compliant stacks rolled back automatically.",
+        "On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.",
+        "Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image."
+      ]
+    },
+    {
+      "name": "Quantiphi",
+      "position": "SDE-Platform I",
+      "location": "Mumbai",
+      "startDate": "2022-01",
+      "endDate": "2023-12",
+      "highlights": [
+        "Authored CloudFormation and Terraform for 40 interdependent stacks per environment and built the platform network: segmented VPC subnets, NACLs, security groups and IAM isolation between team workloads.",
+        "Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.",
+        "Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour."
+      ]
+    },
+    {
+      "name": "Quantiphi",
+      "position": "Framework Engineer Intern",
+      "location": "Remote",
+      "startDate": "2021-07",
+      "endDate": "2021-12",
+      "highlights": [
+        "Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "phantom",
+      "title": "Phantom: IaC Drift Reconciliation SaaS",
+      "featured": true,
+      "badge": "hackathon winner · led team of 3",
+      "url": "https://github.com/Kunal23002/iac-drift-saas",
+      "description": "Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.",
+      "highlights": [
+        "Reads each customer's CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.",
+        "Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck."
+      ],
+      "keywords": [
+        "python",
+        "aws lambda",
+        "bedrock",
+        "dynamodb",
+        "terraform"
+      ],
+      "links": [
+        {
+          "label": "hackathon prototype",
+          "url": "https://github.com/krishmula/phantom"
+        }
+      ]
+    },
+    {
+      "name": "cache-aware-scale-in",
+      "title": "Cache-aware scale-in for vLLM on Kubernetes",
+      "featured": true,
+      "badge": "M.S. project · in progress",
+      "url": "https://github.com/colmeabhi/cache-aware-scale-in",
+      "description": "A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one — fewer warm caches thrown away, lower time to first token.",
+      "highlights": [
+        "Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.",
+        "Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push."
+      ],
+      "keywords": [
+        "python",
+        "kubernetes",
+        "vllm",
+        "llm-d",
+        "prometheus"
+      ]
+    },
+    {
+      "name": "idempotent-order-cloud-api",
+      "title": "Duplicate-Safe Order Ledger Service",
+      "featured": true,
+      "url": "https://github.com/colmeabhi/idempotent-order-cloud-api",
+      "description": "An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.",
+      "highlights": [
+        "Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.",
+        "k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.",
+        "Found and fixed a select-then-insert race that returned 500s under parallel retries."
+      ],
+      "keywords": [
+        "python",
+        "fastapi",
+        "postgresql",
+        "ecs fargate",
+        "rds",
+        "k6"
+      ]
+    },
+    {
+      "name": "parallelized-nbody-simulation-cuda-cpp",
+      "title": "Parallel N-body simulation",
+      "featured": true,
+      "url": "https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp",
+      "description": "A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.",
+      "highlights": [
+        "Removed a cross-block data race by splitting force and position updates across kernel launches.",
+        "Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP."
+      ],
+      "keywords": [
+        "c++",
+        "cuda",
+        "openmp",
+        "barnes–hut",
+        "nsight"
+      ]
+    },
+    {
+      "name": "ai-sprint-planning-assistant",
+      "title": "AI Sprint Planning Assistant",
+      "featured": true,
+      "badge": "1st of ~50 teams",
+      "url": "https://devpost.com/colmeabhi",
+      "description": "Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.",
+      "highlights": [],
+      "keywords": [
+        "python",
+        "langchain",
+        "openai",
+        "redis",
+        "composio"
+      ]
+    },
+    {
+      "name": "sdn-load-balance",
+      "title": "SDN load balancer",
+      "featured": false,
+      "url": "https://github.com/colmeabhi/sdn-load-balance",
+      "description": "RYU (OpenFlow 1.3) controller that balances HTTP to a virtual IP with five swappable algorithms, benchmarked with an automated Locust sweep.",
+      "highlights": [
+        "Automated Locust sweep across 5 algorithms × 5 load levels, with throughput and p95/p99 latency plots."
+      ],
+      "keywords": [
+        "python",
+        "ryu",
+        "openflow",
+        "mininet",
+        "locust"
+      ]
+    },
+    {
+      "name": "cuda-gpu-matrix-multiplication",
+      "title": "GPU matrix multiplication",
+      "badge": "team project",
+      "url": "https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication",
+      "description": "CUDA kernels reaching a 60× speedup over sequential CPU execution.",
+      "keywords": [
+        "c++",
+        "cuda"
+      ]
+    },
+    {
+      "name": "regulated-fish-classification",
+      "title": "California fishing compliance",
+      "url": "https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining",
+      "description": "Dataset builder, training and evaluation for classifying regulated fish species; 91% accuracy.",
+      "keywords": [
+        "python",
+        "pytorch",
+        "opencv"
+      ]
+    },
+    {
+      "name": "resumatch",
+      "title": "ResuMatch",
+      "badge": "hackathon · team",
+      "url": "https://github.com/7shantanu7/Weave-Hackathon",
+      "description": "Agent that refines a resume against feedback from a judge LLM and finds matching jobs. Built at WeaveHacks 2.0.",
+      "keywords": [
+        "python",
+        "agents",
+        "llm"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "San José State University",
+      "studyType": "MS",
+      "area": "Computer Science",
+      "startDate": "2025-08",
+      "endDate": "2027-05",
+      "score": "3.71/4.0",
+      "courses": [
+        "Design & Analysis of Algorithms",
+        "Computer Communication",
+        "Cloud Computing",
+        "Parallel Programming",
+        "Machine Learning"
+      ],
+      "highlights": [
+        "GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.",
+        "Coursework: Design & Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning."
+      ]
+    },
+    {
+      "institution": "University of Mumbai",
+      "studyType": "BE",
+      "area": "Computer Engineering",
+      "startDate": "2017-08",
+      "endDate": "2021-07",
+      "score": "8.4/10",
+      "highlights": [
+        "GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "cloud",
+      "keywords": [
+        "AWS (Lambda, ECS Fargate, EC2, Step Functions, S3, VPC, IAM, RDS, Redshift, DMS, DynamoDB, Bedrock)",
+        "GCP"
+      ]
+    },
+    {
+      "name": "infra & delivery",
+      "keywords": [
+        "Terraform",
+        "CloudFormation",
+        "Docker",
+        "Kubernetes",
+        "Jenkins",
+        "GitHub Actions",
+        "Vault",
+        "Trivy"
+      ]
+    },
+    {
+      "name": "observability",
+      "keywords": [
+        "CloudWatch",
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "SLOs",
+        "Incident response",
+        "Disaster recovery"
+      ]
+    },
+    {
+      "name": "languages",
+      "keywords": [
+        "Python",
+        "SQL",
+        "Bash",
+        "C++ / CUDA"
+      ]
+    },
+    {
+      "name": "data",
+      "keywords": [
+        "PostgreSQL",
+        "Redshift",
+        "Snowflake",
+        "DynamoDB"
+      ]
+    },
+    {
+      "name": "ai infra",
+      "keywords": [
+        "vLLM",
+        "llm-d",
+        "Amazon Bedrock",
+        "LangChain",
+        "MCP"
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "name": "AWS Solutions Architect Associate",
+      "issuer": "AWS"
+    },
+    {
+      "name": "AWS Developer Associate",
+      "issuer": "AWS"
+    },
+    {
+      "name": "HashiCorp Terraform Associate",
+      "issuer": "HashiCorp"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Winner, AWS × Datadog GenAI Hackathon",
+      "awarder": "2025"
+    },
+    {
+      "title": "1st place of ~50 teams, Composio × Redis Hackathon",
+      "awarder": "2025"
+    }
+  ],
+  "quote": "how you do anything is how you do everything"
+}

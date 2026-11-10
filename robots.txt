@@ -1,0 +1,7 @@
+# Humans, crawlers and AI agents are all welcome.
+# Agents: start at /llms.txt, or read /profile.md (Markdown) or /resume.json (JSON Resume).
+
+User-agent: *
+Allow: /
+
+Sitemap: https://colmeabhi.github.io/sitemap.xml
