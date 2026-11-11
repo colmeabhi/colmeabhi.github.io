@@ -7,13 +7,13 @@
 - **Location:** San Jose, CA
 - **Email:** abhishekahirrao09@gmail.com
 - **Website:** https://colmeabhi.github.io
-- **Resume (PDF):** https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view
+- **Resume (PDF):** https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf
 - **GitHub:** https://github.com/colmeabhi
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
 - **Devpost:** https://devpost.com/colmeabhi
 - **Instagram:** https://instagram.com/colmeabhi
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-10. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-11. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 

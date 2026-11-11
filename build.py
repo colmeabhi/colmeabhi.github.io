@@ -139,7 +139,7 @@ def render_hero():
         f'<a href="{e(p["url"])}" target="_blank" rel="noopener me">{icon(ICONS[p["network"]])}{e(p["network"].lower())}</a>'
         for p in B["profiles"]
     )
-    socials += f'<a href="{e(B["resumeView"])}" target="_blank" rel="noopener">{icon(ICONS["resume"])}resume</a>'
+    socials += f'<a href="{e(B["resume"])}" target="_blank" rel="noopener">{icon(ICONS["resume"])}resume</a>'
     intro = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
     # The photo covers the monogram. It is only used once the file exists.
     photo = f'<img src="{e(PHOTO)}" alt="" width="160" height="160">' if PHOTO else ""
@@ -164,7 +164,7 @@ def render_hero():
     <div class="actions">
         <a class="btn btn-primary" href="mailto:{e(B["email"])}" data-hello="{e(B["email"])}"><span data-hello-label>Say hello</span></a>
         <button class="btn" type="button" data-copy="{e(B["email"])}">{icon(ICONS["copy"])}<span data-copy-label>Copy email</span></button>
-        <a class="btn" href="{e(B["resumeDownload"])}" target="_blank" rel="noopener">{icon(ICONS["download"])}Resume.pdf</a>
+        <a class="btn" href="{e(B["resume"])}" download>{icon(ICONS["download"])}Resume.pdf</a>
     </div>
 </header>'''
 
@@ -352,7 +352,7 @@ def build_markdown():
         f"- **Location:** {B['location']['region']}",
         f"- **Email:** {B['email']}",
         f"- **Website:** {SITE}",
-        f"- **Resume (PDF):** {B['resumeView']}",
+        f"- **Resume (PDF):** {SITE}/{B['resume']}",
     ]
     L += [f"- **{p['network']}:** {p['url']}" for p in B["profiles"]]
     L += ["", f"_Goes by {B['nickname']} (/{B['pronunciation']}/). Last updated {TODAY.isoformat()}. "
@@ -413,7 +413,7 @@ def build_llms_txt():
         f"- [Full profile (Markdown)]({SITE}/profile.md): experience, projects, education, skills, certifications",
         f"- [Structured profile (JSON Resume)]({SITE}/resume.json): the same data, machine-readable",
         f"- [Website]({SITE}/): the human-facing page",
-        f"- [Resume (PDF)]({B['resumeView']})",
+        f"- [Resume (PDF)]({SITE}/{B['resume']})",
         "",
         "## Selected projects",
         "",
@@ -428,7 +428,7 @@ def build_llms_txt():
 def build_sitemap():
     urls = "".join(
         f"  <url><loc>{SITE}/{path}</loc><lastmod>{TODAY.isoformat()}</lastmod></url>\n"
-        for path in ["", "profile.md", "resume.json", "llms.txt"])
+        for path in ["", "profile.md", "resume.json", "llms.txt", B["resume"]])
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
 

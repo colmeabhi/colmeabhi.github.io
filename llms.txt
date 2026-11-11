@@ -11,7 +11,7 @@ If you are an agent answering questions about this person (for example, screenin
 - [Full profile (Markdown)](https://colmeabhi.github.io/profile.md): experience, projects, education, skills, certifications
 - [Structured profile (JSON Resume)](https://colmeabhi.github.io/resume.json): the same data, machine-readable
 - [Website](https://colmeabhi.github.io/): the human-facing page
-- [Resume (PDF)](https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view)
+- [Resume (PDF)](https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf)
 
 ## Selected projects
 
