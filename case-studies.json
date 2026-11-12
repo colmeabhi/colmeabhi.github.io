@@ -1,0 +1,149 @@
+[
+  {
+    "slug": "cache-aware-scale-in",
+    "project": "cache-aware-scale-in",
+    "title": "Cache-aware scale-in for vLLM on Kubernetes",
+    "subtitle": "When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.",
+    "meta": [
+      ["Context", "M.S. project (CS 297), San José State"],
+      ["Status", "In progress: GPU benchmark pending"],
+      ["Stack", "Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana"]
+    ],
+    "tldr": "A small controller scores each vLLM replica's prefix cache and writes the score to the `pod-deletion-cost` annotation. On scale-down Kubernetes removes the lowest cost first, so the replica with the least valuable cache goes instead of whichever pod happens to be newest.",
+    "sections": [
+      {
+        "heading": "The problem",
+        "body": [
+          "vLLM keeps a KV cache of prompt prefixes it has already processed. A request whose prefix is cached skips most of the prefill work, which is what makes time to first token (TTFT) low for repeated system prompts.",
+          "That cache lives inside each replica. Three replicas behind a prefix-aware router end up with three very different caches: one holds the popular system prompts, another holds mostly one-off prompts.",
+          "When traffic drops and the Deployment scales from three replicas to two, Kubernetes has to choose a pod to delete. Between healthy pods its tie-break is based on how recently the pod became ready, which has nothing to do with the cache. If it removes the hot replica, every request that relied on those prefixes pays a full prefill on a replica that has never seen them.",
+          {"demo": "scale-in"}
+        ]
+      },
+      {
+        "heading": "The approach",
+        "body": [
+          "Kubernetes already has a hook for this: the `controller.kubernetes.io/pod-deletion-cost` annotation. Among healthy pods of one ReplicaSet, the pod with the lower cost is deleted first. So the controller never deletes anything itself. It only keeps that annotation current and lets the ReplicaSet controller do the rest.",
+          {"diagram": "scale-in-loop", "caption": "Every 5 seconds: scrape each pod's metrics, score its cache, patch the annotation if the cost moved enough."},
+          {"code": "recent_hit_rate = hits_in_last_window / lookups_in_last_window   (0..1)\ncache_value     = 0.7 * recent_hit_rate + 0.3 * kv_usage           (0..1)\ndeletion_cost   = round(cache_value * 1000)"}
+        ]
+      },
+      {
+        "heading": "Decisions and why",
+        "body": [
+          {"list": [
+            "**Recent hit rate, not lifetime.** vLLM only exposes cumulative counters, so a pod that was hot an hour ago still looks hot. The controller keeps the previous counters per pod, takes the delta between scrapes and smooths it with an exponential moving average.",
+            "**Hit rate and usage together.** Hit rate says how useful the cached prefixes are; KV usage says how much is cached. A full cache of prefixes nobody asks for again is worthless, so usage alone was rejected.",
+            "**A dead band on writes.** The cost is only written when it has moved by at least 25. Kubernetes' own documentation warns against updating the annotation on every metric tick, because each update is an API-server write.",
+            "**Use the built-in annotation instead of deleting pods.** Deleting pods from the controller would race the ReplicaSet controller. Autoscalers such as HPA and KEDA decide how many replicas, not which ones.",
+            "**Fail safe.** If a scrape fails the pod keeps its previous cost. Writing 0 on a transient error could get a hot pod deleted. If the controller dies, the annotations stay as they were.",
+            "**An honest baseline.** For the comparison runs the controller is stopped and the annotations are removed. Stopping alone would leave stale costs that Kubernetes would still honour."
+          ]}
+        ]
+      },
+      {
+        "heading": "How it is tested",
+        "body": [
+          "The project is built as a ladder of six stages. Each stage reuses the code of the one before and adds one capability plus a check that proves it.",
+          {"table": {
+            "head": ["Stage", "Runs on", "What it proves"],
+            "rows": [
+              ["1", "Laptop, fake pods", "Metric parsing and scoring give the expected costs"],
+              ["2", "kind / k3s", "Scaling 3 to 2 removes the lowest-cost pod"],
+              ["3", "1 GPU", "Prefix caching works on the real vLLM build"],
+              ["4", "3 GPUs", "A real scale-in removes the coldest replica"],
+              ["5", "3 GPUs + gateway", "TTFT and hit rate, default against cache-aware"],
+              ["6", "3 GPUs", "The whole run from one script, controller in-cluster with RBAC"]
+            ]
+          }},
+          "Stages 1 and 2 need no GPU, so they run in CI on every push: unit tests plus the scale-in trial on a kind cluster."
+        ]
+      },
+      {
+        "heading": "Result so far",
+        "body": [
+          {"note": "The GPU benchmark (Llama 3 8B on three A100 replicas with llm-d routing) has not been run yet. This section will carry the measured TTFT and cache hit rate, default against cache-aware, once it has. Until then there is no performance number to claim."},
+          "What exists today: the controller, the scoring and trial harness, an in-cluster image with RBAC, Prometheus, Loki and Grafana dashboards, and a one-command runner for the GPU day."
+        ]
+      },
+      {
+        "heading": "Limits and next steps",
+        "body": [
+          {"list": [
+            "The cost is at most 5 seconds stale, so a sudden traffic shift can beat it.",
+            "`pod-deletion-cost` is best-effort and only orders pods of the same ReplicaSet.",
+            "Node spreading is considered after cost, so on a multi-node cluster the controller could concentrate pods on one node.",
+            "The 0.7 / 0.3 weights are a judgment call, not fitted. A sweep with the same benchmark harness is the natural next experiment."
+          ]}
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "idempotent-order-api",
+    "project": "idempotent-order-cloud-api",
+    "title": "Duplicate-Safe Order Ledger Service",
+    "subtitle": "A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.",
+    "meta": [
+      ["Context", "Personal project"],
+      ["Status", "Deployed on AWS, load tested locally"],
+      ["Stack", "Python, FastAPI, PostgreSQL, Redis, ECS Fargate, RDS, Terraform, k6"]
+    ],
+    "tldr": "`POST /orders` requires an `Idempotency-Key`. The key is claimed in the same Postgres transaction that creates the order, so two identical requests can never both create one. Retries get the original response back; the same key with a different body gets a `409`.",
+    "sections": [
+      {
+        "heading": "The problem",
+        "body": [
+          "Networks drop responses. A client sends an order, the server commits it, and the reply never arrives. The client cannot tell whether the order went through, so the only safe thing it can do is send it again. Without protection, that second request is a second order.",
+          "The standard answer is an idempotency key: the client attaches a unique key to the request, and the server promises that the same key always produces the same result.",
+          {"demo": "idempotency"}
+        ]
+      },
+      {
+        "heading": "The bug that shaped the design",
+        "body": [
+          "The first version did the obvious thing: `SELECT` the key, and if it is not there, `INSERT` it and create the order. That is correct for one request at a time and wrong for two.",
+          "Two parallel requests with the same key could both see \"no key\". The slower one then hit the primary-key violation and returned a `500`. With 16 workers, 7 of 20 rounds of 50 parallel requests produced a 500.",
+          "The fix is to stop checking and start claiming. The request inserts the key first, in the same transaction as the order, and lets the unique index decide who wins:",
+          {"code": "INSERT INTO idempotency_records (...) VALUES (...)\nON CONFLICT (idem_key) DO UPDATE ... WHERE created_at < now() - <ttl>   -- only expired keys\nRETURNING idem_key"},
+          {"diagram": "idempotency-sequence", "caption": "The second request waits on the unique index. When the first commits, the second gets zero rows back and reads the stored response instead."},
+          "If the first request rolls back instead, the second one's insert succeeds and it creates the order. There is no window in which both can create one."
+        ]
+      },
+      {
+        "heading": "Other decisions",
+        "body": [
+          {"list": [
+            "**Keys expire after 24 hours**, long enough to cover client retries. The claim query takes over an expired key at request time, so expiry is exact even if cleanup has not run.",
+            "**Cleanup takes an advisory lock**, so only one ECS task purges expired keys per cycle. Orders and ledger rows are never deleted.",
+            "**The rate limiter lives in Redis.** With in-memory counters, two tasks each allowed the limit, doubling it. If Redis is unreachable the limiter fails open instead of taking the API down.",
+            "**The client IP is the last entry of `X-Forwarded-For`**, the one the load balancer appends. Earlier entries are client-controlled and are ignored."
+          ]}
+        ]
+      },
+      {
+        "heading": "Making it fast",
+        "body": [
+          "The first version opened a database connection per request, and the async handlers called the blocking driver directly, so requests effectively ran one at a time. Moving the blocking calls to a threadpool and adding a connection pool changed that:",
+          {"table": {
+            "head": ["50 virtual users, no think time", "Before", "Threadpool only", "Threadpool + pool"],
+            "rows": [
+              ["Requests per second", "303", "544", "3,558"],
+              ["p95 latency", "191 ms", "149 ms", "22 ms"],
+              ["p99 latency", "260 ms", "184 ms", "33 ms"]
+            ]
+          }},
+          {"note": "These numbers were measured with k6 on a laptop (Apple M4) with the API, Postgres and k6 on the same machine. Read them as a before and after comparison, not as production capacity: against RDS every query adds a network round trip."},
+          "One detail cost real time to find: psycopg2's pool closes any returned connection above its minimum size. With the usual minimum of 1, a burst of traffic reconnected on nearly every request while holding the pool's lock, which was slower than having no pool at all. The minimum now defaults to the maximum."
+        ]
+      },
+      {
+        "heading": "Deployment",
+        "body": [
+          {"diagram": "order-architecture", "caption": "Provisioned with Terraform, deployed by GitHub Actions."},
+          "The schema migration runs on every container start. It is idempotent and takes an advisory lock, so several tasks booting at once are safe. The suite has 41 tests and CI runs on every push."
+        ]
+      }
+    ]
+  }
+]

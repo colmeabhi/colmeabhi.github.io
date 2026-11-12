@@ -12,6 +12,7 @@ Only the standard library is used. Run with ./build.sh or python3 build.py.
 
 import hashlib
 import json
+import re
 import urllib.request
 from datetime import date
 from html import escape as e
@@ -21,6 +22,7 @@ from urllib.parse import quote
 ROOT = Path(__file__).parent
 DATA = json.loads((ROOT / "resume.json").read_text(encoding="utf-8"))
 B = DATA["basics"]
+CASES = json.loads((ROOT / "case-studies.json").read_text(encoding="utf-8"))
 SITE = DATA["meta"]["site"].rstrip("/")
 TODAY = date.today()
 MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
@@ -80,7 +82,8 @@ PHOTO = find_photo()
 
 def asset_version():
     """Short hash of the CSS and JS, appended as ?v= so browsers never show a stale copy."""
-    blob = (ROOT / "css/style.css").read_bytes() + (ROOT / "js/main.js").read_bytes()
+    blob = b"".join((ROOT / f).read_bytes() for f in
+                    ["css/style.css", "js/main.js", "js/demos.js", "js/galaxy.js"])
     return hashlib.sha256(blob).hexdigest()[:8]
 
 
@@ -99,6 +102,8 @@ ICONS = {
     "copy": '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
     "download": '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
     "arrow": '<path d="M7 17 17 7M8 7h9v9"/>',
+    "right": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    "left": '<path d="M19 12H5M11 6l-6 6 6 6"/>',
     "agent": '<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/>',
     "work": '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
     "projects": '<path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
@@ -200,16 +205,22 @@ def render_projects():
     cards = []
     for p in featured:
         badge = f'<span class="badge">{e(p["badge"])}</span>' if p.get("badge") else ""
+        demo = f'<div class="demo" data-demo="{e(p["demo"])}"></div>' if p.get("demo") else ""
+        links = f'<a class="proj-link" href="{e(p["url"])}" target="_blank" rel="noopener">{e(link_label(p["url"]))}{icon(ICONS["arrow"], "arrow")}</a>'
+        if p.get("caseStudy"):
+            links = (f'<a class="proj-link proj-link-primary" href="case-studies/{e(p["caseStudy"])}.html">Read the case study'
+                     f'{icon(ICONS["right"], "arrow")}</a>' + links)
         cards.append(f'''
-        <a class="proj" href="{e(p["url"])}" target="_blank" rel="noopener">
+        <article class="proj">
             <div class="proj-top">
                 <h3>{e(p["title"])}</h3>{badge}
-                {icon(ICONS["arrow"], "arrow")}
             </div>
             <p>{e(p["description"])}</p>
             {bullets(p.get("highlights"))}
+            {demo}
             {chips(p["keywords"])}
-        </a>''')
+            <div class="proj-links">{links}</div>
+        </article>''')
 
     more = []
     for p in rest:
@@ -235,6 +246,105 @@ def render_projects():
     <div class="more">{"".join(more)}
     </div>'''
     return section("projects", "Projects", body)
+
+
+def link_label(url):
+    return "Devpost" if "devpost.com" in url else "Code on GitHub"
+
+
+def inline(text):
+    """Tiny inline formatter for case-study text: `code` and **bold**."""
+    text = e(text)
+    text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+    return re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
+
+
+def plain(text):
+    return text.replace("**", "")
+
+
+def render_block(block):
+    if isinstance(block, str):
+        return f"<p>{inline(block)}</p>"
+    if "list" in block:
+        return '<ul class="bullets">' + "".join(f"<li>{inline(i)}</li>" for i in block["list"]) + "</ul>"
+    if "code" in block:
+        return f'<pre class="code"><code>{e(block["code"])}</code></pre>'
+    if "note" in block:
+        return f'<p class="note">{inline(block["note"])}</p>'
+    if "demo" in block:
+        return f'<div class="demo demo-boxed" data-demo="{e(block["demo"])}"></div>'
+    if "diagram" in block:
+        svg = (ROOT / "case-studies" / "diagrams" / f'{block["diagram"]}.svg').read_text(encoding="utf-8")
+        return f'<figure class="diagram">{svg}<figcaption>{inline(block.get("caption", ""))}</figcaption></figure>'
+    if "table" in block:
+        head = "".join(f"<th>{inline(h)}</th>" for h in block["table"]["head"])
+        rows = "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in block["table"]["rows"])
+        return f'<div class="table-wrap"><table><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+    raise ValueError(f"unknown case-study block: {block}")
+
+
+def render_case(case):
+    project = next(p for p in DATA["projects"] if p["name"] == case["project"])
+    meta = "".join(f"<div><dt>{e(k)}</dt><dd>{e(v)}</dd></div>" for k, v in case["meta"])
+    sections = "".join(
+        f'<section class="case-section"><h2>{e(sec["heading"])}</h2>' + "".join(render_block(b) for b in sec["body"]) + "</section>"
+        for sec in case["sections"])
+    others = "".join(
+        f'<a class="more-row" href="{e(c["slug"])}.html"><span class="more-name">{e(c["title"])}</span>'
+        f'<span class="more-desc">{e(c["subtitle"])}</span>{icon(ICONS["right"], "arrow")}</a>'
+        for c in CASES if c["slug"] != case["slug"])
+    return f'''
+<article class="case">
+    <a class="back" href="../#projects">{icon(ICONS["left"])}{e(B["name"])}</a>
+    <p class="eyebrow">Case study</p>
+    <h1>{e(case["title"])}</h1>
+    <p class="case-sub">{e(case["subtitle"])}</p>
+    <dl class="case-meta">{meta}</dl>
+    <div class="actions">
+        <a class="btn btn-primary" href="{e(project["url"])}" target="_blank" rel="noopener">Code on GitHub</a>
+        <a class="btn" href="{e(case["slug"])}.md">Read as Markdown</a>
+    </div>
+    <div class="tldr"><span>In short</span><p>{inline(case["tldr"])}</p></div>
+    {sections}
+</article>
+
+<section class="section case-next">
+    <h3 class="sub-head">Another case study</h3>
+    <div class="more">{others}</div>
+</section>
+
+<footer class="foot">
+    <div class="foot-row">
+        <a href="../">© {TODAY.year} {e(B["name"].lower())}</a>
+        <a href="mailto:{e(B["email"])}">{e(B["email"])}</a>
+    </div>
+</footer>'''
+
+
+def case_markdown(case):
+    project = next(p for p in DATA["projects"] if p["name"] == case["project"])
+    L = [f"# {case['title']}", "", f"> {case['subtitle']}", "",
+         f"Case study by {B['name']} ({SITE}). Code: {project['url']}", ""]
+    L += [f"- **{k}:** {v}" for k, v in case["meta"]]
+    L += ["", f"**In short:** {case['tldr']}", ""]
+    for sec in case["sections"]:
+        L += [f"## {sec['heading']}", ""]
+        for b in sec["body"]:
+            if isinstance(b, str):
+                L += [b, ""]
+            elif "list" in b:
+                L += [f"- {i}" for i in b["list"]] + [""]
+            elif "code" in b:
+                L += ["```", b["code"], "```", ""]
+            elif "note" in b:
+                L += [f"> Note: {b['note']}", ""]
+            elif "diagram" in b and b.get("caption"):
+                L += [f"_Diagram: {b['caption']}_", ""]
+            elif "table" in b:
+                L += ["| " + " | ".join(b["table"]["head"]) + " |", "|" + "---|" * len(b["table"]["head"])]
+                L += ["| " + " | ".join(r) + " |" for r in b["table"]["rows"]] + [""]
+    return "\n".join(L)
 
 
 def render_education():
@@ -322,21 +432,44 @@ def json_ld():
     return json.dumps(ld, indent=4, ensure_ascii=False)
 
 
+def page(content, *, title, description, canonical, root="", og_type="website",
+         json_ld_text="{}", alternate="", extra_js="", body_class=""):
+    ask = quote(f"Read {SITE}/llms.txt and {SITE}/profile.md, then tell me about "
+                f"{B['name']}: what he has built, what he is good at, and which roles he would fit.")
+    html = (ROOT / "template.html").read_text(encoding="utf-8")
+    for key, value in {
+        "{{TITLE}}": e(title), "{{DESCRIPTION}}": e(description), "{{CANONICAL}}": canonical,
+        "{{OGTYPE}}": og_type, "{{ALTERNATE}}": alternate, "{{EXTRA_JS}}": extra_js,
+        "{{BODYCLASS}}": body_class, "{{ROOT}}": root,
+        "{{EMAIL}}": e(B["email"]), "{{SITE}}": SITE, "{{ASK}}": ask,
+        "{{JSONLD}}": json_ld_text, "{{CONTENT}}": content, "{{V}}": asset_version(),
+    }.items():
+        html = html.replace(key, value)
+    return html
+
+
 def build_html():
     content = "".join([
         render_hero(), render_glance(), render_work(), render_projects(),
         render_education(), render_skills(), render_certs(), render_contact(),
     ])
-    ask = quote(f"Read {SITE}/llms.txt and {SITE}/profile.md, then tell me about "
-                f"{B['name']}: what he has built, what he is good at, and which roles he would fit.")
-    page = (ROOT / "template.html").read_text(encoding="utf-8")
-    for key, value in {
-        "{{NAME}}": e(B["name"]), "{{LABEL}}": e(B["label"]), "{{SUMMARY}}": e(B["summary"]),
-        "{{EMAIL}}": e(B["email"]), "{{SITE}}": SITE, "{{ASK}}": ask,
-        "{{JSONLD}}": json_ld(), "{{CONTENT}}": content, "{{V}}": asset_version(),
-    }.items():
-        page = page.replace(key, value)
-    return page
+    canvas = '<canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>'
+    return page(canvas + content, title=f"{B['name']} | {B['label']}", description=B["summary"],
+                canonical=f"{SITE}/", og_type="profile", json_ld_text=json_ld(),
+                extra_js=f'\n    <script src="js/galaxy.js?v={asset_version()}"></script>')
+
+
+def build_case(case):
+    url = f"{SITE}/case-studies/{case['slug']}.html"
+    ld = json.dumps({
+        "@context": "https://schema.org", "@type": "TechArticle", "headline": case["title"],
+        "description": case["subtitle"], "url": url,
+        "author": {"@type": "Person", "name": B["name"], "url": SITE + "/"},
+    }, indent=4, ensure_ascii=False)
+    alt = (f'\n    <link rel="alternate" type="text/markdown" href="{SITE}/case-studies/{case["slug"]}.md" '
+           f'title="This case study (Markdown)">')
+    return page(render_case(case), title=f"{case['title']} | {B['name']}", description=plain(case["subtitle"]),
+                canonical=url, root="../", og_type="article", json_ld_text=ld, alternate=alt, body_class="case-page")
 
 
 # ───────────────────────── Markdown for agents ─────────────────────────
@@ -373,6 +506,8 @@ def build_markdown():
             L += [f"<{p['url']}>", ""]
         L += [p["description"], ""]
         L += [f"- {h}" for h in p.get("highlights", [])]
+        if p.get("caseStudy"):
+            L += [f"- Case study: {SITE}/case-studies/{p['caseStudy']}.md"]
         L += [f"- See also: [{l['label']}]({l['url']})" for l in p.get("links", [])]
         L += [f"- Stack: {', '.join(p['keywords'])}", ""]
 
@@ -419,6 +554,8 @@ def build_llms_txt():
         "",
     ]
     L += [f"- [{p['title']}]({p['url']}): {p['description']}" for p in featured]
+    L += ["", "## Case studies", ""]
+    L += [f"- [{c['title']}]({SITE}/case-studies/{c['slug']}.md): {c['subtitle']}" for c in CASES]
     L += ["", "## Elsewhere", ""]
     L += [f"- [{p['network']}]({p['url']})" for p in B["profiles"]]
     L += [""]
@@ -428,7 +565,8 @@ def build_llms_txt():
 def build_sitemap():
     urls = "".join(
         f"  <url><loc>{SITE}/{path}</loc><lastmod>{TODAY.isoformat()}</lastmod></url>\n"
-        for path in ["", "profile.md", "resume.json", "llms.txt", B["resume"]])
+        for path in ["", "profile.md", "resume.json", "llms.txt", B["resume"]]
+        + [f"case-studies/{c['slug']}.html" for c in CASES])
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
 
@@ -441,6 +579,9 @@ if __name__ == "__main__":
         "llms.txt": build_llms_txt(),
         "sitemap.xml": build_sitemap(),
     }
+    for case in CASES:
+        outputs[f"case-studies/{case['slug']}.html"] = build_case(case)
+        outputs[f"case-studies/{case['slug']}.md"] = case_markdown(case)
     for name, text in outputs.items():
         (ROOT / name).write_text(text, encoding="utf-8")
         print(f"Built {name}")

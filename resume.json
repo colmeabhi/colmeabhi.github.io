@@ -132,7 +132,9 @@
         "vllm",
         "llm-d",
         "prometheus"
-      ]
+      ],
+      "demo": "scale-in",
+      "caseStudy": "cache-aware-scale-in"
     },
     {
       "name": "idempotent-order-cloud-api",
@@ -152,7 +154,9 @@
         "ecs fargate",
         "rds",
         "k6"
-      ]
+      ],
+      "demo": "idempotency",
+      "caseStudy": "idempotent-order-api"
     },
     {
       "name": "parallelized-nbody-simulation-cuda-cpp",
@@ -162,7 +166,8 @@
       "description": "A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.",
       "highlights": [
         "Removed a cross-block data race by splitting force and position updates across kernel launches.",
-        "Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP."
+        "Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.",
+        "The particles drifting at the top of this page run the same kick-drift-kick integrator, in your browser."
       ],
       "keywords": [
         "c++",
@@ -191,11 +196,11 @@
     {
       "name": "sdn-load-balance",
       "title": "SDN load balancer",
-      "featured": false,
+      "featured": true,
       "url": "https://github.com/colmeabhi/sdn-load-balance",
-      "description": "RYU (OpenFlow 1.3) controller that balances HTTP to a virtual IP with five swappable algorithms, benchmarked with an automated Locust sweep.",
+      "description": "A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.",
       "highlights": [
-        "Automated Locust sweep across 5 algorithms × 5 load levels, with throughput and p95/p99 latency plots."
+        "Automated Locust sweep across 5 algorithms and 5 load levels, with throughput and p95/p99 latency plots."
       ],
       "keywords": [
         "python",
@@ -203,7 +208,8 @@
         "openflow",
         "mininet",
         "locust"
-      ]
+      ],
+      "demo": "load-balancer"
     },
     {
       "name": "cuda-gpu-matrix-multiplication",

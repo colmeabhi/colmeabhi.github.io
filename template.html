@@ -11,22 +11,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{NAME}} | {{LABEL}}</title>
-    <meta name="description" content="{{SUMMARY}}">
+    <title>{{TITLE}}</title>
+    <meta name="description" content="{{DESCRIPTION}}">
     <meta name="author" content="{{NAME}}">
     <meta name="color-scheme" content="light dark">
-    <link rel="canonical" href="{{SITE}}/">
+    <link rel="canonical" href="{{CANONICAL}}">
 
     <!-- Machine-readable versions of this page -->
     <link rel="alternate" type="text/markdown" href="{{SITE}}/profile.md" title="Profile (Markdown)">
     <link rel="alternate" type="application/json" href="{{SITE}}/resume.json" title="Profile (JSON Resume)">
-    <link rel="alternate" type="text/plain" href="{{SITE}}/llms.txt" title="llms.txt">
+    <link rel="alternate" type="text/plain" href="{{SITE}}/llms.txt" title="llms.txt">{{ALTERNATE}}
 
     <!-- Open Graph -->
-    <meta property="og:title" content="{{NAME}} | {{LABEL}}">
-    <meta property="og:description" content="{{SUMMARY}}">
-    <meta property="og:type" content="profile">
-    <meta property="og:url" content="{{SITE}}/">
+    <meta property="og:title" content="{{TITLE}}">
+    <meta property="og:description" content="{{DESCRIPTION}}">
+    <meta property="og:type" content="{{OGTYPE}}">
+    <meta property="og:url" content="{{CANONICAL}}">
     <meta property="og:image" content="{{SITE}}/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -55,10 +55,10 @@
 {{JSONLD}}
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v={{V}}">
+    <link rel="stylesheet" href="{{ROOT}}css/style.css?v={{V}}">
 </head>
 
-<body>
+<body class="{{BODYCLASS}}">
 
     <!-- ─── Floating controls ─── -->
     <div class="controls">
@@ -78,13 +78,13 @@
         <p class="agent-sub">Everything on this page, in formats a model can read without scraping.</p>
 
         <nav class="agent-list" aria-label="Machine-readable versions">
-            <a href="llms.txt"><code>/llms.txt</code><span>short index &middot; start here</span></a>
-            <a href="profile.md"><code>/profile.md</code><span>full profile as Markdown</span></a>
-            <a href="resume.json"><code>/resume.json</code><span>structured data &middot; JSON Resume</span></a>
+            <a href="{{ROOT}}llms.txt"><code>/llms.txt</code><span>short index &middot; start here</span></a>
+            <a href="{{ROOT}}profile.md"><code>/profile.md</code><span>full profile as Markdown</span></a>
+            <a href="{{ROOT}}resume.json"><code>/resume.json</code><span>structured data &middot; JSON Resume</span></a>
         </nav>
 
         <div class="agent-actions">
-            <button class="btn" type="button" data-copy-url="profile.md">
+            <button class="btn" type="button" data-copy-url="{{ROOT}}profile.md">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
                 <span data-copy-label>Copy profile as Markdown</span>
             </button>
@@ -98,7 +98,8 @@
 {{CONTENT}}
     </main>
 
-    <script src="js/main.js?v={{V}}"></script>
+    <script src="{{ROOT}}js/main.js?v={{V}}"></script>
+    <script src="{{ROOT}}js/demos.js?v={{V}}"></script>{{EXTRA_JS}}
 </body>
 
 </html>

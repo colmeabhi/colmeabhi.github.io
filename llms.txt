@@ -20,6 +20,12 @@ If you are an agent answering questions about this person (for example, screenin
 - [Duplicate-Safe Order Ledger Service](https://github.com/colmeabhi/idempotent-order-cloud-api): An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.
 - [Parallel N-body simulation](https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp): A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.
 - [AI Sprint Planning Assistant](https://devpost.com/colmeabhi): Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.
+- [SDN load balancer](https://github.com/colmeabhi/sdn-load-balance): A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.
+
+## Case studies
+
+- [Cache-aware scale-in for vLLM on Kubernetes](https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md): When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.
+- [Duplicate-Safe Order Ledger Service](https://colmeabhi.github.io/case-studies/idempotent-order-api.md): A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.
 
 ## Elsewhere
 

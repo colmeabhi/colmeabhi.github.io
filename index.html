@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abhishek Ahirrao | Platform &amp; Software Engineer</title>
     <meta name="description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
-    <meta name="author" content="Abhishek Ahirrao">
+    <meta name="author" content="{{NAME}}">
     <meta name="color-scheme" content="light dark">
     <link rel="canonical" href="https://colmeabhi.github.io/">
 
@@ -132,10 +132,10 @@
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v=36e80ffb">
+    <link rel="stylesheet" href="css/style.css?v=1e855a30">
 </head>
 
-<body>
+<body class="">
 
     <!-- ─── Floating controls ─── -->
     <div class="controls">
@@ -172,7 +172,7 @@
 
     <!-- ─── Main container ─── -->
     <main class="container">
-
+<canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>
 <header class="hero" id="home">
     <div class="hero-top">
         <div class="identity">
@@ -235,60 +235,70 @@
         <h2>Projects</h2>
     </div>
     <div class="projects">
-        <a class="proj" href="https://github.com/Kunal23002/iac-drift-saas" target="_blank" rel="noopener">
+        <article class="proj">
             <div class="proj-top">
                 <h3>Phantom: IaC Drift Reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <p>Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.</p>
             <ul class="bullets"><li>Reads each customer&#x27;s CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
+            
             <div class="chips"><span>python</span><span>aws lambda</span><span>bedrock</span><span>dynamodb</span><span>terraform</span></div>
-        </a>
-        <a class="proj" href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">
+            <div class="proj-links"><a class="proj-link" href="https://github.com/Kunal23002/iac-drift-saas" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="proj">
             <div class="proj-top">
                 <h3>Cache-aware scale-in for vLLM on Kubernetes</h3><span class="badge">M.S. project · in progress</span>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <p>A Kubernetes controller that scores each vLLM replica&#x27;s KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.</p>
             <ul class="bullets"><li>Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.</li><li>Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.</li></ul>
+            <div class="demo" data-demo="scale-in"></div>
             <div class="chips"><span>python</span><span>kubernetes</span><span>vllm</span><span>llm-d</span><span>prometheus</span></div>
-        </a>
-        <a class="proj" href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">
+            <div class="proj-links"><a class="proj-link proj-link-primary" href="case-studies/cache-aware-scale-in.html">Read the case study<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="proj-link" href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="proj">
             <div class="proj-top">
                 <h3>Duplicate-Safe Order Ledger Service</h3>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <p>An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.</p>
             <ul class="bullets"><li>Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.</li><li>k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.</li><li>Found and fixed a select-then-insert race that returned 500s under parallel retries.</li></ul>
+            <div class="demo" data-demo="idempotency"></div>
             <div class="chips"><span>python</span><span>fastapi</span><span>postgresql</span><span>ecs fargate</span><span>rds</span><span>k6</span></div>
-        </a>
-        <a class="proj" href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">
+            <div class="proj-links"><a class="proj-link proj-link-primary" href="case-studies/idempotent-order-api.html">Read the case study<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="proj-link" href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="proj">
             <div class="proj-top">
                 <h3>Parallel N-body simulation</h3>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <p>A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.</p>
-            <ul class="bullets"><li>Removed a cross-block data race by splitting force and position updates across kernel launches.</li><li>Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.</li></ul>
+            <ul class="bullets"><li>Removed a cross-block data race by splitting force and position updates across kernel launches.</li><li>Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.</li><li>The particles drifting at the top of this page run the same kick-drift-kick integrator, in your browser.</li></ul>
+            
             <div class="chips"><span>c++</span><span>cuda</span><span>openmp</span><span>barnes–hut</span><span>nsight</span></div>
-        </a>
-        <a class="proj" href="https://devpost.com/colmeabhi" target="_blank" rel="noopener">
+            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="proj">
             <div class="proj-top">
                 <h3>AI Sprint Planning Assistant</h3><span class="badge">1st of ~50 teams</span>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <p>Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.</p>
             
+            
             <div class="chips"><span>python</span><span>langchain</span><span>openai</span><span>redis</span><span>composio</span></div>
-        </a>
+            <div class="proj-links"><a class="proj-link" href="https://devpost.com/colmeabhi" target="_blank" rel="noopener">Devpost<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="proj">
+            <div class="proj-top">
+                <h3>SDN load balancer</h3>
+            </div>
+            <p>A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.</p>
+            <ul class="bullets"><li>Automated Locust sweep across 5 algorithms and 5 load levels, with throughput and p95/p99 latency plots.</li></ul>
+            <div class="demo" data-demo="load-balancer"></div>
+            <div class="chips"><span>python</span><span>ryu</span><span>openflow</span><span>mininet</span><span>locust</span></div>
+            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
     </div>
 
     <h3 class="sub-head">More things I've built</h3>
     <div class="more">
-        <a class="more-row" href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">
-            <span class="more-name">SDN load balancer</span>
-            <span class="more-desc">RYU (OpenFlow 1.3) controller that balances HTTP to a virtual IP with five swappable algorithms, benchmarked with an automated Locust sweep.</span>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
         <a class="more-row" href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">
             <span class="more-name">GPU matrix multiplication <span class="badge badge-quiet">team project</span></span>
             <span class="more-desc">CUDA kernels reaching a 60× speedup over sequential CPU execution.</span>
@@ -393,7 +403,9 @@
 </footer>
     </main>
 
-    <script src="js/main.js?v=36e80ffb"></script>
+    <script src="js/main.js?v=1e855a30"></script>
+    <script src="js/demos.js?v=1e855a30"></script>
+    <script src="js/galaxy.js?v=1e855a30"></script>
 </body>
 
 </html>
