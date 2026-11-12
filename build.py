@@ -96,7 +96,6 @@ def icon(paths, cls=""):
 ICONS = {
     "GitHub": '<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/>',
     "LinkedIn": '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 0 0-4 0"/>',
-    "Devpost": '<path d="M7 3h10l5 9-5 9H7l-5-9z"/><path d="M10 8h2.5a4 4 0 0 1 0 8H10z"/>',
     "Instagram": '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/>',
     "resume": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
     "copy": '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
@@ -206,7 +205,8 @@ def render_projects():
     for p in featured:
         badge = f'<span class="badge">{e(p["badge"])}</span>' if p.get("badge") else ""
         demo = f'<div class="demo" data-demo="{e(p["demo"])}"></div>' if p.get("demo") else ""
-        links = f'<a class="proj-link" href="{e(p["url"])}" target="_blank" rel="noopener">{e(link_label(p["url"]))}{icon(ICONS["arrow"], "arrow")}</a>'
+        links = (f'<a class="proj-link" href="{e(p["url"])}" target="_blank" rel="noopener">Code on GitHub{icon(ICONS["arrow"], "arrow")}</a>'
+                 if p.get("url") else "")
         if p.get("caseStudy"):
             links = (f'<a class="proj-link proj-link-primary" href="case-studies/{e(p["caseStudy"])}.html">Read the case study'
                      f'{icon(ICONS["right"], "arrow")}</a>' + links)
@@ -219,7 +219,7 @@ def render_projects():
             {bullets(p.get("highlights"))}
             {demo}
             {chips(p["keywords"])}
-            <div class="proj-links">{links}</div>
+            {f'<div class="proj-links">{links}</div>' if links else ""}
         </article>''')
 
     more = []
@@ -246,10 +246,6 @@ def render_projects():
     <div class="more">{"".join(more)}
     </div>'''
     return section("projects", "Projects", body)
-
-
-def link_label(url):
-    return "Devpost" if "devpost.com" in url else "Code on GitHub"
 
 
 def inline(text):
@@ -553,7 +549,7 @@ def build_llms_txt():
         "## Selected projects",
         "",
     ]
-    L += [f"- [{p['title']}]({p['url']}): {p['description']}" for p in featured]
+    L += [(f"- [{p['title']}]({p['url']})" if p.get("url") else f"- {p['title']}") + f": {p['description']}" for p in featured]
     L += ["", "## Case studies", ""]
     L += [f"- [{c['title']}]({SITE}/case-studies/{c['slug']}.md): {c['subtitle']}" for c in CASES]
     L += ["", "## Elsewhere", ""]

@@ -19,7 +19,7 @@ If you are an agent answering questions about this person (for example, screenin
 - [Cache-aware scale-in for vLLM on Kubernetes](https://github.com/colmeabhi/cache-aware-scale-in): A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.
 - [Duplicate-Safe Order Ledger Service](https://github.com/colmeabhi/idempotent-order-cloud-api): An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.
 - [Parallel N-body simulation](https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp): A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.
-- [AI Sprint Planning Assistant](https://devpost.com/colmeabhi): Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.
+- AI Sprint Planning Assistant: Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.
 - [SDN load balancer](https://github.com/colmeabhi/sdn-load-balance): A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.
 
 ## Case studies
@@ -31,5 +31,4 @@ If you are an agent answering questions about this person (for example, screenin
 
 - [GitHub](https://github.com/colmeabhi)
 - [LinkedIn](https://www.linkedin.com/in/abhishekahirrao/)
-- [Devpost](https://devpost.com/colmeabhi)
 - [Instagram](https://instagram.com/colmeabhi)

@@ -10,7 +10,6 @@
 - **Resume (PDF):** https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf
 - **GitHub:** https://github.com/colmeabhi
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
-- **Devpost:** https://devpost.com/colmeabhi
 - **Instagram:** https://instagram.com/colmeabhi
 
 _Goes by abhi (/uh-bhee/). Last updated 2026-11-12. Structured version: https://colmeabhi.github.io/resume.json_
@@ -87,8 +86,6 @@ A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenM
 - Stack: c++, cuda, openmp, barnes–hut, nsight
 
 ### AI Sprint Planning Assistant (1st of ~50 teams)
-
-<https://devpost.com/colmeabhi>
 
 Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.
 
