@@ -25,8 +25,7 @@
       "At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I'm in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down."
     ],
     "now": "MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming",
-    "resumeView": "https://drive.google.com/file/d/1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ/view",
-    "resumeDownload": "https://drive.google.com/uc?export=download&id=1fVO2sZfs7FwYCimgi0GuCOgj1vS1Y6dJ",
+    "resume": "assets/Abhishek_Ahirrao_Resume.pdf",
     "profiles": [
       {
         "network": "GitHub",
