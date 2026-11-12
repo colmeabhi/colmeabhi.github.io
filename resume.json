@@ -38,11 +38,6 @@
         "url": "https://www.linkedin.com/in/abhishekahirrao/"
       },
       {
-        "network": "Devpost",
-        "username": "colmeabhi",
-        "url": "https://devpost.com/colmeabhi"
-      },
-      {
         "network": "Instagram",
         "username": "colmeabhi",
         "url": "https://instagram.com/colmeabhi"
@@ -182,7 +177,6 @@
       "title": "AI Sprint Planning Assistant",
       "featured": true,
       "badge": "1st of ~50 teams",
-      "url": "https://devpost.com/colmeabhi",
       "description": "Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.",
       "highlights": [],
       "keywords": [
