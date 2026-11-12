@@ -13,7 +13,7 @@
 - **Devpost:** https://devpost.com/colmeabhi
 - **Instagram:** https://instagram.com/colmeabhi
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-11. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-12. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 
@@ -60,6 +60,7 @@ A Kubernetes controller that scores each vLLM replica's KV-cache value and sets 
 
 - Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.
 - Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.
+- Case study: https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md
 - Stack: python, kubernetes, vllm, llm-d, prometheus
 
 ### Duplicate-Safe Order Ledger Service
@@ -71,6 +72,7 @@ An idempotent order API: same-key retries replay the stored response inside one 
 - Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.
 - k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.
 - Found and fixed a select-then-insert race that returned 500s under parallel retries.
+- Case study: https://colmeabhi.github.io/case-studies/idempotent-order-api.md
 - Stack: python, fastapi, postgresql, ecs fargate, rds, k6
 
 ### Parallel N-body simulation
@@ -81,6 +83,7 @@ A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenM
 
 - Removed a cross-block data race by splitting force and position updates across kernel launches.
 - Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.
+- The particles drifting at the top of this page run the same kick-drift-kick integrator, in your browser.
 - Stack: c++, cuda, openmp, barnes–hut, nsight
 
 ### AI Sprint Planning Assistant (1st of ~50 teams)
@@ -95,9 +98,9 @@ Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool o
 
 <https://github.com/colmeabhi/sdn-load-balance>
 
-RYU (OpenFlow 1.3) controller that balances HTTP to a virtual IP with five swappable algorithms, benchmarked with an automated Locust sweep.
+A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.
 
-- Automated Locust sweep across 5 algorithms × 5 load levels, with throughput and p95/p99 latency plots.
+- Automated Locust sweep across 5 algorithms and 5 load levels, with throughput and p95/p99 latency plots.
 - Stack: python, ryu, openflow, mininet, locust
 
 ### GPU matrix multiplication (team project)

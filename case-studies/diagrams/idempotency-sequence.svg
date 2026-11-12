@@ -1,0 +1,26 @@
+<svg viewBox="0 0 680 380" role="img" aria-label="Sequence: two requests with the same idempotency key. Request A claims the key and commits the order. Request B blocks on the unique index, then reads the stored response. Both return the same order id.">
+  <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
+  <g class="d-box"><rect x="40" y="10" width="140" height="36" rx="8"/><rect x="270" y="10" width="140" height="36" rx="8"/><rect x="500" y="10" width="140" height="36" rx="8" class="d-strong"/></g>
+  <g class="d-text" text-anchor="middle"><text x="110" y="33">Request A</text><text x="340" y="33">Request B (same key)</text><text x="570" y="33">Postgres</text></g>
+  <g class="d-life"><path d="M110 46 V370"/><path d="M340 46 V370"/><path d="M570 46 V370"/></g>
+  <g class="d-line" marker-end="url(#ah2)">
+    <path d="M110 84 H570"/><path d="M570 118 H110" class="d-dash"/>
+    <path d="M340 152 H570"/>
+    <path d="M110 232 H570"/>
+    <path d="M570 266 H340" class="d-dash"/>
+    <path d="M340 300 H570"/><path d="M570 334 H340" class="d-dash"/>
+  </g>
+  <g class="d-muted">
+    <text x="122" y="76">BEGIN, INSERT key ON CONFLICT ... RETURNING</text>
+    <text x="122" y="110">1 row: A owns the key</text>
+    <text x="352" y="144">BEGIN, INSERT key ...</text>
+    <text x="122" y="224">INSERT order, INSERT ledger, COMMIT</text>
+    <text x="352" y="258">0 rows: key already committed</text>
+    <text x="352" y="292">SELECT stored response</text>
+    <text x="352" y="326">A's response (same order_id)</text>
+  </g>
+  <rect class="d-wait" x="352" y="164" width="206" height="40" rx="6"/>
+  <text class="d-accent-text" x="455" y="181" text-anchor="middle">blocks on the unique index</text>
+  <text class="d-accent-text" x="455" y="196" text-anchor="middle">until A's transaction ends</text>
+  <text class="d-text" x="225" y="362" text-anchor="middle">both return 201 with the same order_id</text>
+</svg>

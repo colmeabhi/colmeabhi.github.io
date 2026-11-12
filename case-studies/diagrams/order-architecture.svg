@@ -1,0 +1,17 @@
+<svg viewBox="0 0 680 170" role="img" aria-label="Architecture: client to a public load balancer, to two API tasks on ECS Fargate, to RDS Postgres, with ElastiCache Redis for rate limits">
+  <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
+  <g class="d-box">
+    <rect x="10" y="30" width="100" height="56" rx="8"/><rect x="170" y="30" width="110" height="56" rx="8"/>
+    <rect x="340" y="30" width="150" height="56" rx="8" class="d-strong"/><rect x="550" y="30" width="120" height="56" rx="8"/>
+    <rect x="550" y="110" width="120" height="50" rx="8"/>
+  </g>
+  <g class="d-text" text-anchor="middle">
+    <text x="60" y="63">Client</text><text x="225" y="55">ALB</text><text x="415" y="55">ECS Fargate</text><text x="610" y="55">RDS Postgres</text><text x="610" y="132">ElastiCache Redis</text>
+  </g>
+  <g class="d-muted" text-anchor="middle">
+    <text x="225" y="73">public</text><text x="415" y="73">API, 2 tasks</text><text x="610" y="73">orders, ledger, keys</text><text x="610" y="149">rate limits</text>
+  </g>
+  <g class="d-line" marker-end="url(#ah3)">
+    <path d="M110 58 H170"/><path d="M280 58 H340"/><path d="M490 58 H550"/><path d="M415 86 V135 H550"/>
+  </g>
+</svg>
