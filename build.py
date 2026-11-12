@@ -83,7 +83,7 @@ PHOTO = find_photo()
 def asset_version():
     """Short hash of the CSS and JS, appended as ?v= so browsers never show a stale copy."""
     blob = b"".join((ROOT / f).read_bytes() for f in
-                    ["css/style.css", "js/main.js", "js/demos.js", "js/galaxy.js"])
+                    ["css/style.css", "js/main.js", "js/demos.js", "js/galaxy.js", "favicon.svg"])
     return hashlib.sha256(blob).hexdigest()[:8]
 
 
