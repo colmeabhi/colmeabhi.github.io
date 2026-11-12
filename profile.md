@@ -13,7 +13,7 @@
 - **Devpost:** https://devpost.com/colmeabhi
 - **Instagram:** https://instagram.com/colmeabhi
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-11. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-12. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 

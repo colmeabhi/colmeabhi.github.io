@@ -273,16 +273,24 @@ def render_certs():
 
 def render_contact():
     linkedin = next(p["url"] for p in B["profiles"] if p["network"] == "LinkedIn")
+    github = next(p["url"] for p in B["profiles"] if p["network"] == "GitHub")
+    short = lambda url: url.split("://")[1].replace("www.", "").rstrip("/")
     return f'''
-<section class="section chat" id="contact" aria-label="Contact">
-    <p class="bubble them">nice work! what's the best way to reach you?</p>
-    <p class="bubble me">thanks! email is the fastest</p>
-    <p class="bubble me">
-        write to <button type="button" class="link" data-copy="{e(B["email"])}"><span data-copy-label>{e(B["email"])}</span></button>
-        or ping me on <a class="link" href="{e(linkedin)}" target="_blank" rel="noopener">linkedin</a>
-    </p>
-    <p class="bubble them">perfect, talk soon</p>
-    <p class="bubble me">looking forward to it</p>
+<section class="section" id="contact" aria-label="Contact">
+    <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span>{e(B["handle"])}@{e(B["location"]["city"].lower().replace(" ", ""))}: ~</span></div>
+        <div class="term-body">
+            <p class="term-cmd"><b>$</b> contact --{e(B["nickname"])}</p>
+            <dl class="term-out">
+                <div><dt>email</dt><dd><button type="button" class="link" data-copy="{e(B["email"])}"><span data-copy-label>{e(B["email"])}</span></button> <span class="term-hint">click to copy</span></dd></div>
+                <div><dt>linkedin</dt><dd><a class="link" href="{e(linkedin)}" target="_blank" rel="noopener">{e(short(linkedin))}</a></dd></div>
+                <div><dt>github</dt><dd><a class="link" href="{e(github)}" target="_blank" rel="noopener">{e(short(github))}</a></dd></div>
+                <div><dt>location</dt><dd>{e(B["location"]["region"])}</dd></div>
+                <div><dt>status</dt><dd class="term-ok">{e(B["status"].lower())}</dd></div>
+            </dl>
+            <p class="term-cmd"><b>$</b> <span class="term-cursor"></span></p>
+        </div>
+    </div>
 </section>
 
 <footer class="foot">
