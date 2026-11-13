@@ -27,8 +27,12 @@
     <meta property="og:description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://colmeabhi.github.io/">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -46,9 +50,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="favicon.svg?v=5f19277d" type="image/svg+xml">
-    <link rel="icon" href="favicon-32.png?v=5f19277d" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5f19277d">
+    <link rel="icon" href="favicon.svg?v=b91ceba2" type="image/svg+xml">
+    <link rel="icon" href="favicon-32.png?v=b91ceba2" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=b91ceba2">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -131,7 +135,7 @@
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v=5f19277d">
+    <link rel="stylesheet" href="css/style.css?v=b91ceba2">
 </head>
 
 <body class="">
@@ -236,13 +240,13 @@
     <div class="projects">
         <article class="proj">
             <div class="proj-top">
-                <h3>Phantom: IaC Drift Reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
+                <h3>driftfix: IaC drift reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
             </div>
-            <p>Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.</p>
-            <ul class="bullets"><li>Reads each customer&#x27;s CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
+            <p>Finds manual AWS console changes that drifted from CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. It began as Phantom, the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-tenant SaaS.</p>
+            <ul class="bullets"><li>My part: the multi-tenant architecture, the four-stage Lambda pipeline with DynamoDB de-duplication and a dead-letter queue, cross-account IAM (STS AssumeRole with ExternalId), and the Terraform.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
             
             <div class="chips"><span>python</span><span>aws lambda</span><span>bedrock</span><span>dynamodb</span><span>terraform</span></div>
-            <div class="proj-links"><a class="proj-link" href="https://github.com/Kunal23002/iac-drift-saas" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
         </article>
         <article class="proj">
             <div class="proj-top">
@@ -402,9 +406,9 @@
 </footer>
     </main>
 
-    <script src="js/main.js?v=5f19277d"></script>
-    <script src="js/demos.js?v=5f19277d"></script>
-    <script src="js/galaxy.js?v=5f19277d"></script>
+    <script src="js/main.js?v=b91ceba2"></script>
+    <script src="js/demos.js?v=b91ceba2"></script>
+    <script src="js/galaxy.js?v=b91ceba2"></script>
 </body>
 
 </html>
