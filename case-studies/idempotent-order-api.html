@@ -11,8 +11,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duplicate-Safe Order Ledger Service | Abhishek Ahirrao</title>
-    <meta name="description" content="A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.">
+    <title>One click, one order | Abhishek Ahirrao</title>
+    <meta name="description" content="How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.">
     <meta name="author" content="{{NAME}}">
     <meta name="color-scheme" content="light dark">
     <link rel="canonical" href="https://colmeabhi.github.io/case-studies/idempotent-order-api.html">
@@ -24,16 +24,16 @@
     <link rel="alternate" type="text/markdown" href="https://colmeabhi.github.io/case-studies/idempotent-order-api.md" title="This case study (Markdown)">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Duplicate-Safe Order Ledger Service | Abhishek Ahirrao">
-    <meta property="og:description" content="A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.">
+    <meta property="og:title" content="One click, one order | Abhishek Ahirrao">
+    <meta property="og:description" content="How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://colmeabhi.github.io/case-studies/idempotent-order-api.html">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -48,20 +48,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="../favicon.svg?v=b91ceba2" type="image/svg+xml">
-    <link rel="icon" href="../favicon-32.png?v=b91ceba2" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=b91ceba2">
+    <link rel="icon" href="../favicon.svg?v=cfb94c63" type="image/svg+xml">
+    <link rel="icon" href="../favicon-32.png?v=cfb94c63" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=cfb94c63">
 
     <!-- Structured data -->
     <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Duplicate-Safe Order Ledger Service",
-    "description": "A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.",
+    "headline": "One click, one order",
+    "description": "How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.",
     "url": "https://colmeabhi.github.io/case-studies/idempotent-order-api.html",
     "author": {
         "@type": "Person",
@@ -71,60 +71,28 @@
 }
     </script>
 
-    <link rel="stylesheet" href="../css/style.css?v=b91ceba2">
+    <link rel="stylesheet" href="../css/style.css?v=cfb94c63">
 </head>
 
 <body class="case-page">
 
-    <!-- ─── Floating controls ─── -->
-    <div class="controls">
-        <button class="pill-btn" type="button" popovertarget="agent-menu" aria-label="Open the menu for AI agents">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/><circle cx="12" cy="3.5" r="0.75"/></svg>
-            agents
-        </button>
-        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-    </div>
-
-    <!-- ─── Agent menu ─── -->
-    <div class="agent-menu" id="agent-menu" popover>
-        <p class="agent-title">For AI agents <span>&amp; the people using them</span></p>
-        <p class="agent-sub">Everything on this page, in formats a model can read without scraping.</p>
-
-        <nav class="agent-list" aria-label="Machine-readable versions">
-            <a href="../llms.txt"><code>/llms.txt</code><span>short index &middot; start here</span></a>
-            <a href="../profile.md"><code>/profile.md</code><span>full profile as Markdown</span></a>
-            <a href="../resume.json"><code>/resume.json</code><span>structured data &middot; JSON Resume</span></a>
-        </nav>
-
-        <div class="agent-actions">
-            <button class="btn" type="button" data-copy-url="../profile.md">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                <span data-copy-label>Copy profile as Markdown</span>
-            </button>
-            <a class="btn" href="https://claude.ai/new?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask Claude about me</a>
-            <a class="btn" href="https://chatgpt.com/?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask ChatGPT about me</a>
-        </div>
-    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
 
     <!-- ─── Main container ─── -->
     <main class="container">
 
 <article class="case">
-    <a class="back" href="../#projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Abhishek Ahirrao</a>
-    <p class="eyebrow">Case study</p>
-    <h1>Duplicate-Safe Order Ledger Service</h1>
-    <p class="case-sub">A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.</p>
-    <dl class="case-meta"><div><dt>Context</dt><dd>Personal project</dd></div><div><dt>Status</dt><dd>Deployed on AWS, load tested locally</dd></div><div><dt>Stack</dt><dd>Python, FastAPI, PostgreSQL, Redis, ECS Fargate, RDS, Terraform, k6</dd></div></dl>
-    <div class="actions">
-        <a class="btn btn-primary" href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub</a>
-        <a class="btn" href="idempotent-order-api.md">Read as Markdown</a>
-    </div>
-    <div class="tldr"><span>In short</span><p><code>POST /orders</code> requires an <code>Idempotency-Key</code>. The key is claimed in the same Postgres transaction that creates the order, so two identical requests can never both create one. Retries get the original response back; the same key with a different body gets a <code>409</code>.</p></div>
-    <section class="case-section"><h2>The problem</h2><p>Networks drop responses. A client sends an order, the server commits it, and the reply never arrives. The client cannot tell whether the order went through, so the only safe thing it can do is send it again. Without protection, that second request is a second order.</p><p>The standard answer is an idempotency key: the client attaches a unique key to the request, and the server promises that the same key always produces the same result.</p><div class="demo demo-boxed" data-demo="idempotency"></div></section><section class="case-section"><h2>The bug that shaped the design</h2><p>The first version did the obvious thing: <code>SELECT</code> the key, and if it is not there, <code>INSERT</code> it and create the order. That is correct for one request at a time and wrong for two.</p><p>Two parallel requests with the same key could both see &quot;no key&quot;. The slower one then hit the primary-key violation and returned a <code>500</code>. With 16 workers, 7 of 20 rounds of 50 parallel requests produced a 500.</p><p>The fix is to stop checking and start claiming. The request inserts the key first, in the same transaction as the order, and lets the unique index decide who wins:</p><pre class="code"><code>INSERT INTO idempotency_records (...) VALUES (...)
-ON CONFLICT (idem_key) DO UPDATE ... WHERE created_at &lt; now() - &lt;ttl&gt;   -- only expired keys
+    <a class="back" href="../#projects">Back to Abhishek Ahirrao</a>
+    <h1>One click, one order</h1>
+    <p class="case-sub">How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.</p>
+    <dl class="case-meta"><div><dt>What</dt><dd>Personal project</dd></div><div><dt>State</dt><dd>Deployed on AWS. Load tested on my laptop</dd></div><div><dt>Built with</dt><dd>Python, FastAPI, PostgreSQL, Redis, ECS Fargate, RDS, Terraform, k6</dd></div></dl>
+    <nav class="links"><a href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub</a><a href="idempotent-order-api.md">Plain Markdown version</a></nav>
+    <p class="tldr">Every order request carries an <code>Idempotency-Key</code>. The key is claimed in the same database transaction that creates the order, so two identical requests can never both create one. A retry gets the original answer back.</p>
+    <section class="case-section"><h2>The problem everyone has met</h2><p>You press Pay. The spinner spins. Nothing happens. You press Pay again. Did you just buy two?</p><p>From the server&#x27;s side it is the same story. The client sends an order, the server saves it, and the reply gets lost on the way back. The client has no way to tell if the order went through, so the only sensible thing it can do is send it again. Without protection, that second request is a second order.</p><p>The usual answer is an idempotency key. The client sticks a unique key on the request, and the server promises that the same key always gives the same result. Try it:</p><div class="demo demo-boxed" data-demo="idempotency"></div></section><section class="case-section"><h2>My first version was wrong</h2><p>I did the obvious thing. Look the key up. If it is not there, insert it and create the order. That works perfectly when requests arrive one at a time, which is exactly how they arrive when you test by hand.</p><p>Two requests with the same key at the same moment is a different story. Both look, both see nothing, both try to insert. One wins. The other crashes into the primary key and returns a 500. When I ran 50 parallel requests across 16 workers, 7 rounds out of 20 produced one.</p><p>The fix was to stop asking permission. Instead of checking and then inserting, the request just tries to claim the key, inside the same transaction as the order, and lets the database decide who got there first:</p><pre class="code"><code>INSERT INTO idempotency_records (...) VALUES (...)
+ON CONFLICT (idem_key) DO UPDATE ... WHERE created_at &lt; now() - &lt;ttl&gt;
 RETURNING idem_key</code></pre><figure class="diagram"><svg viewBox="0 0 680 380" role="img" aria-label="Sequence: two requests with the same idempotency key. Request A claims the key and commits the order. Request B blocks on the unique index, then reads the stored response. Both return the same order id.">
   <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
   <g class="d-box"><rect x="40" y="10" width="140" height="36" rx="8"/><rect x="270" y="10" width="140" height="36" rx="8"/><rect x="500" y="10" width="140" height="36" rx="8" class="d-strong"/></g>
@@ -151,7 +119,7 @@ RETURNING idem_key</code></pre><figure class="diagram"><svg viewBox="0 0 680 380
   <text class="d-accent-text" x="455" y="196" text-anchor="middle">until A's transaction ends</text>
   <text class="d-text" x="225" y="362" text-anchor="middle">both return 201 with the same order_id</text>
 </svg>
-<figcaption>The second request waits on the unique index. When the first commits, the second gets zero rows back and reads the stored response instead.</figcaption></figure><p>If the first request rolls back instead, the second one&#x27;s insert succeeds and it creates the order. There is no window in which both can create one.</p></section><section class="case-section"><h2>Other decisions</h2><ul class="bullets"><li><strong>Keys expire after 24 hours</strong>, long enough to cover client retries. The claim query takes over an expired key at request time, so expiry is exact even if cleanup has not run.</li><li><strong>Cleanup takes an advisory lock</strong>, so only one ECS task purges expired keys per cycle. Orders and ledger rows are never deleted.</li><li><strong>The rate limiter lives in Redis.</strong> With in-memory counters, two tasks each allowed the limit, doubling it. If Redis is unreachable the limiter fails open instead of taking the API down.</li><li><strong>The client IP is the last entry of <code>X-Forwarded-For</code></strong>, the one the load balancer appends. Earlier entries are client-controlled and are ignored.</li></ul></section><section class="case-section"><h2>Making it fast</h2><p>The first version opened a database connection per request, and the async handlers called the blocking driver directly, so requests effectively ran one at a time. Moving the blocking calls to a threadpool and adding a connection pool changed that:</p><div class="table-wrap"><table><thead><tr><th>50 virtual users, no think time</th><th>Before</th><th>Threadpool only</th><th>Threadpool + pool</th></tr></thead><tbody><tr><td>Requests per second</td><td>303</td><td>544</td><td>3,558</td></tr><tr><td>p95 latency</td><td>191 ms</td><td>149 ms</td><td>22 ms</td></tr><tr><td>p99 latency</td><td>260 ms</td><td>184 ms</td><td>33 ms</td></tr></tbody></table></div><p class="note">These numbers were measured with k6 on a laptop (Apple M4) with the API, Postgres and k6 on the same machine. Read them as a before and after comparison, not as production capacity: against RDS every query adds a network round trip.</p><p>One detail cost real time to find: psycopg2&#x27;s pool closes any returned connection above its minimum size. With the usual minimum of 1, a burst of traffic reconnected on nearly every request while holding the pool&#x27;s lock, which was slower than having no pool at all. The minimum now defaults to the maximum.</p></section><section class="case-section"><h2>Deployment</h2><figure class="diagram"><svg viewBox="0 0 680 170" role="img" aria-label="Architecture: client to a public load balancer, to two API tasks on ECS Fargate, to RDS Postgres, with ElastiCache Redis for rate limits">
+<figcaption>Request B waits on the unique index. When A commits, B gets zero rows back and reads A&#x27;s stored answer instead.</figcaption></figure><p>If you get a row back, the key is yours and you create the order. If you get nothing, someone else owns it and you return their answer. And if the first request rolls back, the second one&#x27;s insert goes through and it creates the order. There is no moment where both can.</p></section><section class="case-section"><h2>Smaller decisions</h2><p>Keys expire after 24 hours, which is plenty for retries. The claim query takes over an expired key on the spot, so expiry is exact even if the cleanup job has not run.</p><p>Cleanup takes a database lock so only one server does it per cycle. It deletes old keys and nothing else. Orders and ledger rows stay forever.</p><p>The rate limiter keeps its counts in Redis. My first one kept them in memory, which meant two servers each allowed the full limit. A limit of 10 that is really 20 is not much of a limit. If Redis goes down, the limiter lets requests through. I would rather be too generous than be down.</p><p>For the client&#x27;s IP, I take the last entry of <code>X-Forwarded-For</code>, the one the load balancer adds. Everything before that is whatever the client felt like typing.</p></section><section class="case-section"><h2>Then I made it fast</h2><p>The first version opened a new database connection for every request, and the async handlers called a blocking driver directly. In practice, requests were queuing up and going one at a time. Moving the database calls to a threadpool and adding a connection pool changed things quite a bit:</p><div class="table-wrap"><table><thead><tr><th>50 users, no pauses</th><th>Before</th><th>Threadpool only</th><th>Threadpool and pool</th></tr></thead><tbody><tr><td>Requests per second</td><td>303</td><td>544</td><td>3,558</td></tr><tr><td>p95 latency</td><td>191 ms</td><td>149 ms</td><td>22 ms</td></tr><tr><td>p99 latency</td><td>260 ms</td><td>184 ms</td><td>33 ms</td></tr></tbody></table></div><p class="note">I measured this with k6 on my laptop (an Apple M4), with the API, Postgres and k6 all on the same machine. It is a fair before and after. It is not what you would get in production, where every query also crosses a network.</p><p>The pool had one surprise in it. psycopg2&#x27;s pool closes any connection handed back above its minimum size. With the default minimum of 1, a burst of traffic ended up reconnecting on almost every request, while holding the pool&#x27;s lock. It was slower than having no pool at all, about 90 requests a second against 180. Setting the minimum equal to the maximum fixed it.</p></section><section class="case-section"><h2>Where it runs</h2><figure class="diagram"><svg viewBox="0 0 680 170" role="img" aria-label="Architecture: client to a public load balancer, to two API tasks on ECS Fargate, to RDS Postgres, with ElastiCache Redis for rate limits">
   <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
   <g class="d-box">
     <rect x="10" y="30" width="100" height="56" rx="8"/><rect x="170" y="30" width="110" height="56" rx="8"/>
@@ -168,24 +136,22 @@ RETURNING idem_key</code></pre><figure class="diagram"><svg viewBox="0 0 680 380
     <path d="M110 58 H170"/><path d="M280 58 H340"/><path d="M490 58 H550"/><path d="M415 86 V135 H550"/>
   </g>
 </svg>
-<figcaption>Provisioned with Terraform, deployed by GitHub Actions.</figcaption></figure><p>The schema migration runs on every container start. It is idempotent and takes an advisory lock, so several tasks booting at once are safe. The suite has 41 tests and CI runs on every push.</p></section>
+<figcaption>All of it is Terraform, deployed by GitHub Actions.</figcaption></figure><p>The database migration runs every time a container starts. It is safe to run twice, and it takes a lock, so several containers booting at once do not trip over each other. There are 41 tests, and CI runs them on every push.</p></section>
 </article>
 
 <section class="section case-next">
-    <h3 class="sub-head">Another case study</h3>
-    <div class="more"><a class="more-row" href="cache-aware-scale-in.html"><span class="more-name">Cache-aware scale-in for vLLM on Kubernetes</span><span class="more-desc">When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.</span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <h2>Keep reading</h2>
+    <ul class="more"><li><span class="more-name"><a href="cache-aware-scale-in.html">Teaching Kubernetes which pod to delete</a></span> When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.</li></ul>
 </section>
 
 <footer class="foot">
-    <div class="foot-row">
-        <a href="../">© 2026 abhishek ahirrao</a>
-        <a href="mailto:abhishekahirrao09@gmail.com">abhishekahirrao09@gmail.com</a>
-    </div>
+    <a href="../">Abhishek Ahirrao</a>
+    <a href="mailto:abhishekahirrao09@gmail.com">abhishekahirrao09@gmail.com</a>
 </footer>
     </main>
 
-    <script src="../js/main.js?v=b91ceba2"></script>
-    <script src="../js/demos.js?v=b91ceba2"></script>
+    <script src="../js/main.js?v=cfb94c63"></script>
+    <script src="../js/demos.js?v=cfb94c63"></script>
 </body>
 
 </html>

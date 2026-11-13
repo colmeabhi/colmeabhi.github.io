@@ -27,12 +27,12 @@
     <meta property="og:description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://colmeabhi.github.io/">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -47,12 +47,12 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="favicon.svg?v=b91ceba2" type="image/svg+xml">
-    <link rel="icon" href="favicon-32.png?v=b91ceba2" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=b91ceba2">
+    <link rel="icon" href="favicon.svg?v=cfb94c63" type="image/svg+xml">
+    <link rel="icon" href="favicon-32.png?v=cfb94c63" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=cfb94c63">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -101,284 +101,190 @@
         }
     ],
     "knowsAbout": [
-        "AWS (Lambda, ECS Fargate, EC2, Step Functions, S3, VPC, IAM, RDS, Redshift, DMS, DynamoDB, Bedrock)",
+        "AWS",
         "Amazon Bedrock",
         "Bash",
-        "C++ / CUDA",
+        "C++ and CUDA",
         "CloudFormation",
-        "CloudWatch",
-        "Disaster recovery",
         "Docker",
         "DynamoDB",
-        "GCP",
         "GitHub Actions",
+        "Go",
         "Grafana",
-        "Incident response",
         "Jenkins",
         "Kubernetes",
-        "LangChain",
         "Loki",
-        "MCP",
         "PostgreSQL",
         "Prometheus",
         "Python",
         "Redshift",
-        "SLOs",
         "SQL",
         "Snowflake",
         "Terraform",
         "Trivy",
         "Vault",
         "llm-d",
-        "vLLM"
+        "vLLM and LLM serving"
     ]
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v=b91ceba2">
+    <link rel="stylesheet" href="css/style.css?v=cfb94c63">
 </head>
 
 <body class="">
 
-    <!-- ─── Floating controls ─── -->
-    <div class="controls">
-        <button class="pill-btn" type="button" popovertarget="agent-menu" aria-label="Open the menu for AI agents">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/><circle cx="12" cy="3.5" r="0.75"/></svg>
-            agents
-        </button>
-        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-    </div>
-
-    <!-- ─── Agent menu ─── -->
-    <div class="agent-menu" id="agent-menu" popover>
-        <p class="agent-title">For AI agents <span>&amp; the people using them</span></p>
-        <p class="agent-sub">Everything on this page, in formats a model can read without scraping.</p>
-
-        <nav class="agent-list" aria-label="Machine-readable versions">
-            <a href="llms.txt"><code>/llms.txt</code><span>short index &middot; start here</span></a>
-            <a href="profile.md"><code>/profile.md</code><span>full profile as Markdown</span></a>
-            <a href="resume.json"><code>/resume.json</code><span>structured data &middot; JSON Resume</span></a>
-        </nav>
-
-        <div class="agent-actions">
-            <button class="btn" type="button" data-copy-url="profile.md">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                <span data-copy-label>Copy profile as Markdown</span>
-            </button>
-            <a class="btn" href="https://claude.ai/new?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask Claude about me</a>
-            <a class="btn" href="https://chatgpt.com/?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask ChatGPT about me</a>
-        </div>
-    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
 
     <!-- ─── Main container ─── -->
     <main class="container">
-<canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>
+
 <header class="hero" id="home">
-    <div class="hero-top">
-        <div class="identity">
-            <div class="avatar" aria-hidden="true">aa<img src="assets/profilepic.jpeg" alt="" width="160" height="160"></div>
+    <div class="who">
+        <img class="photo" src="assets/profilepic.jpeg" alt="Abhishek Ahirrao" width="96" height="96">
+        <div>
             <h1>Abhishek Ahirrao</h1>
-            <p class="handle"><span>[</span>colmeabhi<span>]</span> <span class="say">abhi · /uh-bhee/ · San Jose, CA</span></p>
+            <p class="sub">Platform &amp; Software Engineer in San Jose, CA. Goes by abhi (uh-bhee).</p>
         </div>
-        <nav class="socials" aria-label="Profiles"><a href="https://github.com/colmeabhi" target="_blank" rel="noopener me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>github</a><a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 0 0-4 0"/></svg>linkedin</a><a href="https://instagram.com/colmeabhi" target="_blank" rel="noopener me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>instagram</a><a href="assets/Abhishek_Ahirrao_Resume.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>resume</a></nav>
     </div>
 
-    <p class="status"><i></i>Open to full-time platform, infrastructure and backend roles · MS CS, 2027</p>
-
-    <div class="intro">
-        <p>I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet: systems that just work and let people focus on what actually matters.</p><p>At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I&#x27;m in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down.</p>
-        <p class="now"><span>Currently</span> MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming</p>
+    <div class="bio">
+        <p>I got into tech because it is one of the few fields where things change fast enough that you can actually watch it happen. Amazon changed how we shop almost overnight. Social media put everyone in the same room, in some good ways and some bad ones. Now we have neural nets and LLMs, and it feels like it is happening all over again.</p><p>I wanted to make an impact, and I wanted to be able to see it. I am early in my career, so for now that mostly means building the parts nobody notices: the platforms, pipelines and infrastructure that other people&#x27;s work runs on. I spent three and a half years doing that at Quantiphi, and I am now doing my master&#x27;s at San José State, working on how LLMs get served.</p><p>I am not where I want to be yet. I am working on it.</p>
     </div>
 
-    <div class="actions">
-        <a class="btn btn-primary" href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Say hello</span></a>
-        <button class="btn" type="button" data-copy="abhishekahirrao09@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span data-copy-label>Copy email</span></button>
-        <a class="btn" href="assets/Abhishek_Ahirrao_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Resume.pdf</a>
-    </div>
+    <p class="status">Looking for full-time platform, infrastructure or backend roles, starting 2027.</p>
+    <p class="now">Right now: Finishing my M.S. project on LLM serving and learning Go on the side.</p>
+
+    <nav class="links" aria-label="Contact and profiles"><a href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Email</span></a><a href="https://github.com/colmeabhi" target="_blank" rel="noopener me">GitHub</a><a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener me">LinkedIn</a><a href="https://instagram.com/colmeabhi" target="_blank" rel="noopener me">Instagram</a><a href="assets/Abhishek_Ahirrao_Resume.pdf" target="_blank" rel="noopener">Resume</a></nav>
 </header>
 <section class="glance" aria-label="GitHub activity">
     <div class="strip" id="strip" data-user="colmeabhi" role="img" aria-label="GitHub contributions per week over the last year"></div>
-    <p class="strip-caption"><span id="strip-count">–</span> contributions on <a class="link" href="https://github.com/colmeabhi" target="_blank" rel="noopener">GitHub</a> in the last year</p>
+    <p class="strip-caption"><span id="strip-count">–</span> contributions on <a href="https://github.com/colmeabhi" target="_blank" rel="noopener">GitHub</a> in the last year, one bar per week. Hover for the numbers.</p>
 </section>
 <section class="section" id="work">
-    <div class="section-head">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></span>
-        <h2>Work</h2>
-    </div>
+    <h2>Work</h2>
     <ol class="rows">
         <li class="row">
             <div class="row-top">
-                <h3>SDE-Platform II <span class="at">Quantiphi</span></h3>
-                <span class="date">jan 2024 – jun 2025 · mumbai</span>
+                <h3>SDE-Platform II, <span class="at">Quantiphi</span></h3>
+                <span class="date">Jan 2024 to Jun 2025</span>
             </div>
             <ul class="bullets"><li>Built a self-service infrastructure platform adopted by 50 data engineers across 5 data platforms: a Python CLI and a Claude-on-Bedrock interface that turned plain-English requests into pre-approved Terraform and CloudFormation stacks, with approval gates and TTL teardown. Cut platform-team requests ~85% and dev spend ~18%.</li><li>Architected the migration of an Informatica-on-EC2 ETL platform to Lambda and ECS Fargate services orchestrated by Step Functions, ingesting change data from 8+ sources across 5 countries into Redshift. Authored the design and cost model (projected 70% lower compute) and mentored 2 juniors.</li><li>Split day-long full loads into restartable 2-hour batches, holding a T+1 freshness SLA on 95%+ of runs as volume doubled from 300 GB to 600 GB/day.</li><li>Enforced policy-as-code guardrails on 120 CloudFormation and Terraform stacks across 3 accounts with Control Tower, SCPs and Lambda checks; non-compliant stacks rolled back automatically.</li><li>On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.</li><li>Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image.</li></ul>
         </li>
         <li class="row">
             <div class="row-top">
-                <h3>SDE-Platform I <span class="at">Quantiphi</span></h3>
-                <span class="date">jan 2022 – dec 2023 · mumbai</span>
+                <h3>SDE-Platform I, <span class="at">Quantiphi</span></h3>
+                <span class="date">Jan 2022 to Dec 2023</span>
             </div>
             <ul class="bullets"><li>Authored CloudFormation and Terraform for 40 interdependent stacks per environment and built the platform network: segmented VPC subnets, NACLs, security groups and IAM isolation between team workloads.</li><li>Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.</li><li>Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour.</li></ul>
         </li>
         <li class="row">
             <div class="row-top">
-                <h3>Framework Engineer Intern <span class="at">Quantiphi</span></h3>
-                <span class="date">jul 2021 – dec 2021 · remote</span>
+                <h3>Framework Engineer Intern, <span class="at">Quantiphi</span></h3>
+                <span class="date">Jul 2021 to Dec 2021</span>
             </div>
             <ul class="bullets"><li>Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS.</li></ul>
         </li>
     </ol>
 </section>
 <section class="section" id="projects">
-    <div class="section-head">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/></svg></span>
-        <h2>Projects</h2>
-    </div>
+    <h2>Projects</h2>
     <div class="projects">
         <article class="proj">
             <div class="proj-top">
-                <h3>driftfix: IaC drift reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
+                <h3>driftfix</h3><span class="tag">hackathon winner, then a team of three</span>
             </div>
-            <p>Finds manual AWS console changes that drifted from CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. It began as Phantom, the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-tenant SaaS.</p>
-            <ul class="bullets"><li>My part: the multi-tenant architecture, the four-stage Lambda pipeline with DynamoDB de-duplication and a dead-letter queue, cross-account IAM (STS AssumeRole with ExternalId), and the Terraform.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
+            <p>Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.</p><p>driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.</p><p>It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.</p>
             
-            <div class="chips"><span>python</span><span>aws lambda</span><span>bedrock</span><span>dynamodb</span><span>terraform</span></div>
-            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <p class="proj-meta"><span>python, aws lambda, bedrock, dynamodb, terraform</span><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>
         <article class="proj">
             <div class="proj-top">
-                <h3>Cache-aware scale-in for vLLM on Kubernetes</h3><span class="badge">M.S. project · in progress</span>
+                <h3>Cache-aware scale-in</h3><span class="tag">M.S. project, in progress</span>
             </div>
-            <p>A Kubernetes controller that scores each vLLM replica&#x27;s KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.</p>
-            <ul class="bullets"><li>Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.</li><li>Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push.</li></ul>
+            <p>When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.</p><p>I wrote a small controller that scores each replica&#x27;s cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.</p><p>The controller, the tests and the CI are done. The GPU benchmark is next, so I do not have a performance number yet and I am not going to make one up.</p>
             <div class="demo" data-demo="scale-in"></div>
-            <div class="chips"><span>python</span><span>kubernetes</span><span>vllm</span><span>llm-d</span><span>prometheus</span></div>
-            <div class="proj-links"><a class="proj-link proj-link-primary" href="case-studies/cache-aware-scale-in.html">Read the case study<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="proj-link" href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <p class="proj-meta"><span>python, kubernetes, vllm, llm-d, prometheus</span><a href="case-studies/cache-aware-scale-in.html">Read the full story</a><a href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>
         <article class="proj">
             <div class="proj-top">
-                <h3>Duplicate-Safe Order Ledger Service</h3>
+                <h3>Duplicate-safe order ledger</h3>
             </div>
-            <p>An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.</p>
-            <ul class="bullets"><li>Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.</li><li>k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.</li><li>Found and fixed a select-then-insert race that returned 500s under parallel retries.</li></ul>
+            <p>If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.</p><p>My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.</p><p>It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button.</p>
             <div class="demo" data-demo="idempotency"></div>
-            <div class="chips"><span>python</span><span>fastapi</span><span>postgresql</span><span>ecs fargate</span><span>rds</span><span>k6</span></div>
-            <div class="proj-links"><a class="proj-link proj-link-primary" href="case-studies/idempotent-order-api.html">Read the case study<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="proj-link" href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <p class="proj-meta"><span>python, fastapi, postgresql, ecs fargate, rds, k6</span><a href="case-studies/idempotent-order-api.html">Read the full story</a><a href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>
         <article class="proj">
             <div class="proj-top">
                 <h3>Parallel N-body simulation</h3>
             </div>
-            <p>A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.</p>
-            <ul class="bullets"><li>Removed a cross-block data race by splitting force and position updates across kernel launches.</li><li>Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.</li><li>The particles drifting at the top of this page run the same kick-drift-kick integrator, in your browser.</li></ul>
-            
-            <div class="chips"><span>c++</span><span>cuda</span><span>openmp</span><span>barnes–hut</span><span>nsight</span></div>
-            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <p>A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.</p><p>Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.</p><p>The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.</p>
+            <figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas><figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure>
+            <p class="proj-meta"><span>c++, cuda, openmp, barnes–hut, nsight</span><a href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>
         <article class="proj">
             <div class="proj-top">
-                <h3>AI Sprint Planning Assistant</h3><span class="badge">1st of ~50 teams</span>
+                <h3>AI sprint planning assistant</h3><span class="tag">1st of about 50 teams</span>
             </div>
-            <p>Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.</p>
+            <p>A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.</p><p>It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet.</p>
             
-            
-            <div class="chips"><span>python</span><span>langchain</span><span>openai</span><span>redis</span><span>composio</span></div>
-            
+            <p class="proj-meta"><span>python, langchain, openai, redis, composio</span></p>
         </article>
         <article class="proj">
             <div class="proj-top">
                 <h3>SDN load balancer</h3>
             </div>
-            <p>A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.</p>
-            <ul class="bullets"><li>Automated Locust sweep across 5 algorithms and 5 load levels, with throughput and p95/p99 latency plots.</li></ul>
+            <p>An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.</p><p>It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land.</p>
             <div class="demo" data-demo="load-balancer"></div>
-            <div class="chips"><span>python</span><span>ryu</span><span>openflow</span><span>mininet</span><span>locust</span></div>
-            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <p class="proj-meta"><span>python, ryu, openflow, mininet, locust</span><a href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>
     </div>
 
-    <h3 class="sub-head">More things I've built</h3>
-    <div class="more">
-        <a class="more-row" href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">
-            <span class="more-name">GPU matrix multiplication <span class="badge badge-quiet">team project</span></span>
-            <span class="more-desc">CUDA kernels reaching a 60× speedup over sequential CPU execution.</span>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-        <a class="more-row" href="https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining" target="_blank" rel="noopener">
-            <span class="more-name">California fishing compliance</span>
-            <span class="more-desc">Dataset builder, training and evaluation for classifying regulated fish species; 91% accuracy.</span>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-        <a class="more-row" href="https://github.com/7shantanu7/Weave-Hackathon" target="_blank" rel="noopener">
-            <span class="more-name">ResuMatch <span class="badge badge-quiet">hackathon · team</span></span>
-            <span class="more-desc">Agent that refines a resume against feedback from a judge LLM and finds matching jobs. Built at WeaveHacks 2.0.</span>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-    </div>
+    <h3 class="sub-head">Smaller things</h3>
+    <ul class="more"><li><span class="more-name"><a href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">GPU matrix multiplication</a></span> CUDA kernels that run about 60 times faster than the plain CPU version. Team project.</li><li><span class="more-name"><a href="https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining" target="_blank" rel="noopener">California fishing compliance</a></span> Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.</li><li><span class="more-name"><a href="https://github.com/7shantanu7/Weave-Hackathon" target="_blank" rel="noopener">ResuMatch</a></span> An agent that rewrites a resume against feedback from a judge LLM. Built at WeaveHacks 2.0 with a team.</li></ul>
 </section>
 <section class="section" id="education">
-    <div class="section-head">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9v6"/></svg></span>
-        <h2>Education</h2>
-    </div>
+    <h2>Education</h2>
     <ol class="rows">
         <li class="row">
             <div class="row-top">
-                <h3>MS, Computer Science <span class="at">San José State University</span></h3>
-                <span class="date">2025 – 2027</span>
+                <h3>MS Computer Science, <span class="at">San José State University</span></h3>
+                <span class="date">2025 to 2027</span>
             </div>
             <ul class="bullets"><li>GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.</li><li>Coursework: Design &amp; Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning.</li></ul>
         </li>
         <li class="row">
             <div class="row-top">
-                <h3>BE, Computer Engineering <span class="at">University of Mumbai</span></h3>
-                <span class="date">2017 – 2021</span>
+                <h3>BE Computer Engineering, <span class="at">University of Mumbai</span></h3>
+                <span class="date">2017 to 2021</span>
             </div>
             <ul class="bullets"><li>GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.</li></ul>
         </li>
     </ol>
 </section>
 <section class="section" id="skills">
-    <div class="section-head">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
-        <h2>Skills</h2>
-    </div>
+    <h2>What I work with</h2>
     <dl class="skills">
         <div class="skill">
-            <dt>cloud</dt>
-            <dd><div class="chips chips-plain"><span>AWS (Lambda, ECS Fargate, EC2, Step Functions, S3, VPC, IAM, RDS, Redshift, DMS, DynamoDB, Bedrock)</span><span>GCP</span></div></dd>
+            <dt>Every day</dt>
+            <dd>AWS, Terraform, CloudFormation, Python, SQL, Bash, Docker, Jenkins, Grafana, Prometheus, Loki</dd>
         </div>
         <div class="skill">
-            <dt>infra &amp; delivery</dt>
-            <dd><div class="chips chips-plain"><span>Terraform</span><span>CloudFormation</span><span>Docker</span><span>Kubernetes</span><span>Jenkins</span><span>GitHub Actions</span><span>Vault</span><span>Trivy</span></div></dd>
+            <dt>Comfortable with</dt>
+            <dd>Kubernetes, PostgreSQL, Redshift, Snowflake, DynamoDB, GitHub Actions, Vault, Trivy, C++ and CUDA, Amazon Bedrock</dd>
         </div>
         <div class="skill">
-            <dt>observability</dt>
-            <dd><div class="chips chips-plain"><span>CloudWatch</span><span>Prometheus</span><span>Grafana</span><span>Loki</span><span>SLOs</span><span>Incident response</span><span>Disaster recovery</span></div></dd>
-        </div>
-        <div class="skill">
-            <dt>languages</dt>
-            <dd><div class="chips chips-plain"><span>Python</span><span>SQL</span><span>Bash</span><span>C++ / CUDA</span></div></dd>
-        </div>
-        <div class="skill">
-            <dt>data</dt>
-            <dd><div class="chips chips-plain"><span>PostgreSQL</span><span>Redshift</span><span>Snowflake</span><span>DynamoDB</span></div></dd>
-        </div>
-        <div class="skill">
-            <dt>ai infra</dt>
-            <dd><div class="chips chips-plain"><span>vLLM</span><span>llm-d</span><span>Amazon Bedrock</span><span>LangChain</span><span>MCP</span></div></dd>
+            <dt>Learning now</dt>
+            <dd>Go, vLLM and LLM serving, llm-d</dd>
         </div>
     </dl>
 </section>
 <section class="section" id="certs">
-    <div class="section-head">
-        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></span>
-        <h2>Certifications &amp; awards</h2>
-    </div>
-    <ul class="certs"><li><span class="cert-name">AWS Solutions Architect Associate</span><span class="date">aws</span></li><li><span class="cert-name">AWS Developer Associate</span><span class="date">aws</span></li><li><span class="cert-name">HashiCorp Terraform Associate</span><span class="date">hashicorp</span></li><li><span class="cert-name">Winner, AWS × Datadog GenAI Hackathon</span><span class="date">2025</span></li><li><span class="cert-name">1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">2025</span></li></ul>
+    <h2>Certifications and awards</h2>
+    <ul class="certs"><li><span>AWS Solutions Architect Associate</span><span class="date">AWS</span></li><li><span>AWS Developer Associate</span><span class="date">AWS</span></li><li><span>HashiCorp Terraform Associate</span><span class="date">HashiCorp</span></li><li><span>Winner, AWS × Datadog GenAI Hackathon</span><span class="date">2025</span></li><li><span>1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">2025</span></li></ul>
 </section>
 <section class="section chat" id="contact" aria-label="Contact">
     <p class="bubble them">nice work! what's the best way to reach you?</p>
@@ -392,23 +298,15 @@
 </section>
 
 <footer class="foot">
-    <blockquote>"how you do anything is how you do everything"</blockquote>
-    <nav class="foot-agents" aria-label="Machine-readable versions">
-        <span class="foot-agents-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/></svg>for agents</span>
-        <a href="llms.txt">/llms.txt</a>
-        <a href="profile.md">/profile.md</a>
-        <a href="resume.json">/resume.json</a>
-    </nav>
-    <div class="foot-row">
-        <span>© 2026 abhishek ahirrao</span>
-        <span>last updated: november 2026</span>
-    </div>
+    <span>© 2026 Abhishek Ahirrao</span>
+    <span class="foot-agents">For agents: <a href="llms.txt">llms.txt</a>, <a href="profile.md">profile.md</a>, <a href="resume.json">resume.json</a></span>
+    <span>Updated November 2026</span>
 </footer>
     </main>
 
-    <script src="js/main.js?v=b91ceba2"></script>
-    <script src="js/demos.js?v=b91ceba2"></script>
-    <script src="js/galaxy.js?v=b91ceba2"></script>
+    <script src="js/main.js?v=cfb94c63"></script>
+    <script src="js/demos.js?v=cfb94c63"></script>
+    <script src="js/galaxy.js?v=cfb94c63"></script>
 </body>
 
 </html>

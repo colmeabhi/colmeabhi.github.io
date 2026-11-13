@@ -25,7 +25,7 @@ B = DATA["basics"]
 CASES = json.loads((ROOT / "case-studies.json").read_text(encoding="utf-8"))
 SITE = DATA["meta"]["site"].rstrip("/")
 TODAY = date.today()
-MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
 # ───────────────────────── helpers ─────────────────────────
@@ -38,12 +38,12 @@ def fmt_month(ym):
 
 def date_range(item):
     end = item.get("endDate")
-    return f"{fmt_month(item['startDate'])} – {fmt_month(end) if end else 'present'}"
+    return f"{fmt_month(item['startDate'])} to {fmt_month(end) if end else 'now'}"
 
 
 def year_range(item):
     """Education shows years only: '2025 – 2027'"""
-    return f"{item['startDate'][:4]} – {item['endDate'][:4]}"
+    return f"{item['startDate'][:4]} to {item['endDate'][:4]}"
 
 
 def fetch_contributions():
@@ -113,13 +113,9 @@ ICONS = {
 
 
 def section(sid, title, body):
-    head = icon(ICONS[sid]).replace('stroke-width="1.75"', 'stroke-width="1.5"')
     return f'''
 <section class="section" id="{sid}">
-    <div class="section-head">
-        <span class="tile">{head}</span>
-        <h2>{e(title)}</h2>
-    </div>
+    <h2>{e(title)}</h2>
 {body}
 </section>'''
 
@@ -131,45 +127,32 @@ def bullets(items):
     return f'<ul class="bullets">{lis}</ul>'
 
 
-def chips(words, plain=False):
-    cls = "chips chips-plain" if plain else "chips"
-    return f'<div class="{cls}">' + "".join(f"<span>{e(w)}</span>" for w in words) + "</div>"
-
-
 # ───────────────────────── HTML sections ─────────────────────────
 
 def render_hero():
-    socials = "".join(
-        f'<a href="{e(p["url"])}" target="_blank" rel="noopener me">{icon(ICONS[p["network"]])}{e(p["network"].lower())}</a>'
-        for p in B["profiles"]
-    )
-    socials += f'<a href="{e(B["resume"])}" target="_blank" rel="noopener">{icon(ICONS["resume"])}resume</a>'
-    intro = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
-    # The photo covers the monogram. It is only used once the file exists.
-    photo = f'<img src="{e(PHOTO)}" alt="" width="160" height="160">' if PHOTO else ""
+    links = [f'<a href="mailto:{e(B["email"])}" data-hello="{e(B["email"])}"><span data-hello-label>Email</span></a>']
+    links += [f'<a href="{e(p["url"])}" target="_blank" rel="noopener me">{e(p["network"])}</a>' for p in B["profiles"]]
+    links += [f'<a href="{e(B["resume"])}" target="_blank" rel="noopener">Resume</a>']
+    bio = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
+    photo = f'<img class="photo" src="{e(PHOTO)}" alt="{e(B["name"])}" width="96" height="96">' if PHOTO else ""
     return f'''
 <header class="hero" id="home">
-    <div class="hero-top">
-        <div class="identity">
-            <div class="avatar" aria-hidden="true">aa{photo}</div>
+    <div class="who">
+        {photo}
+        <div>
             <h1>{e(B["name"])}</h1>
-            <p class="handle"><span>[</span>{e(B["handle"])}<span>]</span> <span class="say">{e(B["nickname"])} · /{e(B["pronunciation"])}/ · {e(B["location"]["region"])}</span></p>
+            <p class="sub">{e(B["label"])} in {e(B["location"]["region"])}. Goes by {e(B["nickname"])} ({e(B["pronunciation"])}).</p>
         </div>
-        <nav class="socials" aria-label="Profiles">{socials}</nav>
     </div>
 
-    <p class="status"><i></i>{e(B["status"])}</p>
-
-    <div class="intro">
-        {intro}
-        <p class="now"><span>Currently</span> {e(B["now"])}</p>
+    <div class="bio">
+        {bio}
     </div>
 
-    <div class="actions">
-        <a class="btn btn-primary" href="mailto:{e(B["email"])}" data-hello="{e(B["email"])}"><span data-hello-label>Say hello</span></a>
-        <button class="btn" type="button" data-copy="{e(B["email"])}">{icon(ICONS["copy"])}<span data-copy-label>Copy email</span></button>
-        <a class="btn" href="{e(B["resume"])}" download>{icon(ICONS["download"])}Resume.pdf</a>
-    </div>
+    <p class="status">{e(B["status"])}</p>
+    <p class="now">Right now: {e(B["now"])}</p>
+
+    <nav class="links" aria-label="Contact and profiles">{"".join(links)}</nav>
 </header>'''
 
 
@@ -178,23 +161,29 @@ def render_glance():
     return f'''
 <section class="glance" aria-label="GitHub activity">
     <div class="strip" id="strip" data-user="{e(B["handle"])}" role="img" aria-label="GitHub contributions per week over the last year"></div>
-    <p class="strip-caption"><span id="strip-count">–</span> contributions on <a class="link" href="{e(github)}" target="_blank" rel="noopener">GitHub</a> in the last year</p>
+    <p class="strip-caption"><span id="strip-count">–</span> contributions on <a href="{e(github)}" target="_blank" rel="noopener">GitHub</a> in the last year, one bar per week. Hover for the numbers.</p>
 </section>'''
 
 
 def render_work():
     rows = []
     for w in DATA["work"]:
-        prog = f'<p class="progression">{e(w["progression"])}</p>' if w.get("progression") else ""
         rows.append(f'''
         <li class="row">
             <div class="row-top">
-                <h3>{e(w["position"])} <span class="at">{e(w["name"])}</span></h3>
-                <span class="date">{date_range(w)} · {e(w["location"].lower())}</span>
+                <h3>{e(w["position"])}, <span class="at">{e(w["name"])}</span></h3>
+                <span class="date">{date_range(w)}</span>
             </div>
-            {prog}{bullets(w["highlights"])}
+            {bullets(w["highlights"])}
         </li>''')
     return section("work", "Work", f'    <ol class="rows">{"".join(rows)}\n    </ol>')
+
+
+def render_demo(name):
+    if name == "galaxy":
+        return ('<figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>'
+                '<figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure>')
+    return f'<div class="demo" data-demo="{e(name)}"></div>'
 
 
 def render_projects():
@@ -203,48 +192,33 @@ def render_projects():
 
     cards = []
     for p in featured:
-        badge = f'<span class="badge">{e(p["badge"])}</span>' if p.get("badge") else ""
-        demo = f'<div class="demo" data-demo="{e(p["demo"])}"></div>' if p.get("demo") else ""
-        links = (f'<a class="proj-link" href="{e(p["url"])}" target="_blank" rel="noopener">Code on GitHub{icon(ICONS["arrow"], "arrow")}</a>'
-                 if p.get("url") else "")
+        tag = f'<span class="tag">{e(p["badge"])}</span>' if p.get("badge") else ""
+        story = "".join(f"<p>{e(par)}</p>" for par in p.get("story", [p["description"]]))
+        links = []
         if p.get("caseStudy"):
-            links = (f'<a class="proj-link proj-link-primary" href="case-studies/{e(p["caseStudy"])}.html">Read the case study'
-                     f'{icon(ICONS["right"], "arrow")}</a>' + links)
+            links.append(f'<a href="case-studies/{e(p["caseStudy"])}.html">Read the full story</a>')
+        if p.get("url"):
+            links.append(f'<a href="{e(p["url"])}" target="_blank" rel="noopener">Code on GitHub</a>')
         cards.append(f'''
         <article class="proj">
             <div class="proj-top">
-                <h3>{e(p["title"])}</h3>{badge}
+                <h3>{e(p["title"])}</h3>{tag}
             </div>
-            <p>{e(p["description"])}</p>
-            {bullets(p.get("highlights"))}
-            {demo}
-            {chips(p["keywords"])}
-            {f'<div class="proj-links">{links}</div>' if links else ""}
+            {story}
+            {render_demo(p["demo"]) if p.get("demo") else ""}
+            <p class="proj-meta"><span>{e(", ".join(p["keywords"]))}</span>{"".join(links)}</p>
         </article>''')
 
     more = []
     for p in rest:
-        badge = f' <span class="badge badge-quiet">{e(p["badge"])}</span>' if p.get("badge") else ""
-        inner = f'''<span class="more-name">{e(p["title"])}{badge}</span>
-            <span class="more-desc">{e(p["description"])}</span>'''
-        if p.get("url"):
-            more.append(f'''
-        <a class="more-row" href="{e(p["url"])}" target="_blank" rel="noopener">
-            {inner}
-            {icon(ICONS["arrow"], "arrow")}
-        </a>''')
-        else:
-            more.append(f'''
-        <div class="more-row">
-            {inner}
-        </div>''')
+        name = (f'<a href="{e(p["url"])}" target="_blank" rel="noopener">{e(p["title"])}</a>' if p.get("url") else e(p["title"]))
+        more.append(f'<li><span class="more-name">{name}</span> {e(p["description"])}</li>')
 
     body = f'''    <div class="projects">{"".join(cards)}
     </div>
 
-    <h3 class="sub-head">More things I've built</h3>
-    <div class="more">{"".join(more)}
-    </div>'''
+    <h3 class="sub-head">Smaller things</h3>
+    <ul class="more">{"".join(more)}</ul>'''
     return section("projects", "Projects", body)
 
 
@@ -287,34 +261,27 @@ def render_case(case):
         f'<section class="case-section"><h2>{e(sec["heading"])}</h2>' + "".join(render_block(b) for b in sec["body"]) + "</section>"
         for sec in case["sections"])
     others = "".join(
-        f'<a class="more-row" href="{e(c["slug"])}.html"><span class="more-name">{e(c["title"])}</span>'
-        f'<span class="more-desc">{e(c["subtitle"])}</span>{icon(ICONS["right"], "arrow")}</a>'
+        f'<li><span class="more-name"><a href="{e(c["slug"])}.html">{e(c["title"])}</a></span> {e(c["subtitle"])}</li>'
         for c in CASES if c["slug"] != case["slug"])
     return f'''
 <article class="case">
-    <a class="back" href="../#projects">{icon(ICONS["left"])}{e(B["name"])}</a>
-    <p class="eyebrow">Case study</p>
+    <a class="back" href="../#projects">Back to {e(B["name"])}</a>
     <h1>{e(case["title"])}</h1>
     <p class="case-sub">{e(case["subtitle"])}</p>
     <dl class="case-meta">{meta}</dl>
-    <div class="actions">
-        <a class="btn btn-primary" href="{e(project["url"])}" target="_blank" rel="noopener">Code on GitHub</a>
-        <a class="btn" href="{e(case["slug"])}.md">Read as Markdown</a>
-    </div>
-    <div class="tldr"><span>In short</span><p>{inline(case["tldr"])}</p></div>
+    <nav class="links"><a href="{e(project["url"])}" target="_blank" rel="noopener">Code on GitHub</a><a href="{e(case["slug"])}.md">Plain Markdown version</a></nav>
+    <p class="tldr">{inline(case["tldr"])}</p>
     {sections}
 </article>
 
 <section class="section case-next">
-    <h3 class="sub-head">Another case study</h3>
-    <div class="more">{others}</div>
+    <h2>Keep reading</h2>
+    <ul class="more">{others}</ul>
 </section>
 
 <footer class="foot">
-    <div class="foot-row">
-        <a href="../">© {TODAY.year} {e(B["name"].lower())}</a>
-        <a href="mailto:{e(B["email"])}">{e(B["email"])}</a>
-    </div>
+    <a href="../">{e(B["name"])}</a>
+    <a href="mailto:{e(B["email"])}">{e(B["email"])}</a>
 </footer>'''
 
 
@@ -349,7 +316,7 @@ def render_education():
         rows.append(f'''
         <li class="row">
             <div class="row-top">
-                <h3>{e(ed["studyType"])}, {e(ed["area"])} <span class="at">{e(ed["institution"])}</span></h3>
+                <h3>{e(ed["studyType"])} {e(ed["area"])}, <span class="at">{e(ed["institution"])}</span></h3>
                 <span class="date">{year_range(ed)}</span>
             </div>
             {bullets(ed["highlights"])}
@@ -362,19 +329,19 @@ def render_skills():
         f'''
         <div class="skill">
             <dt>{e(s["name"])}</dt>
-            <dd>{chips(s["keywords"], plain=True)}</dd>
+            <dd>{e(", ".join(s["keywords"]))}</dd>
         </div>''' for s in DATA["skills"])
-    return section("skills", "Skills", f'    <dl class="skills">{rows}\n    </dl>')
+    return section("skills", "What I work with", f'    <dl class="skills">{rows}\n    </dl>')
 
 
 def render_certs():
     items = "".join(
-        f'<li><span class="cert-name">{e(c["name"])}</span><span class="date">{e(c["issuer"].lower())}</span></li>'
+        f'<li><span>{e(c["name"])}</span><span class="date">{e(c["issuer"])}</span></li>'
         for c in DATA["certificates"])
     items += "".join(
-        f'<li><span class="cert-name">{e(a["title"])}</span><span class="date">{e(a.get("awarder", "").lower())}</span></li>'
+        f'<li><span>{e(a["title"])}</span><span class="date">{e(a.get("awarder", ""))}</span></li>'
         for a in DATA["awards"])
-    return section("certs", "Certifications & awards", f'    <ul class="certs">{items}</ul>')
+    return section("certs", "Certifications and awards", f'    <ul class="certs">{items}</ul>')
 
 
 def render_contact():
@@ -392,17 +359,9 @@ def render_contact():
 </section>
 
 <footer class="foot">
-    <blockquote>"{e(DATA["quote"])}"</blockquote>
-    <nav class="foot-agents" aria-label="Machine-readable versions">
-        <span class="foot-agents-label">{icon(ICONS["agent"])}for agents</span>
-        <a href="llms.txt">/llms.txt</a>
-        <a href="profile.md">/profile.md</a>
-        <a href="resume.json">/resume.json</a>
-    </nav>
-    <div class="foot-row">
-        <span>© {TODAY.year} {e(B["name"].lower())}</span>
-        <span>last updated: {TODAY.strftime("%B %Y").lower()}</span>
-    </div>
+    <span>© {TODAY.year} {e(B["name"])}</span>
+    <span class="foot-agents">For agents: <a href="llms.txt">llms.txt</a>, <a href="profile.md">profile.md</a>, <a href="resume.json">resume.json</a></span>
+    <span>Updated {TODAY.strftime("%B %Y")}</span>
 </footer>'''
 
 
@@ -430,14 +389,12 @@ def json_ld():
 
 def page(content, *, title, description, canonical, root="", og_type="website",
          json_ld_text="{}", alternate="", extra_js="", body_class=""):
-    ask = quote(f"Read {SITE}/llms.txt and {SITE}/profile.md, then tell me about "
-                f"{B['name']}: what he has built, what he is good at, and which roles he would fit.")
     html = (ROOT / "template.html").read_text(encoding="utf-8")
     for key, value in {
         "{{TITLE}}": e(title), "{{DESCRIPTION}}": e(description), "{{CANONICAL}}": canonical,
         "{{OGTYPE}}": og_type, "{{ALTERNATE}}": alternate, "{{EXTRA_JS}}": extra_js,
         "{{BODYCLASS}}": body_class, "{{ROOT}}": root,
-        "{{EMAIL}}": e(B["email"]), "{{SITE}}": SITE, "{{ASK}}": ask,
+        "{{EMAIL}}": e(B["email"]), "{{SITE}}": SITE,
         "{{JSONLD}}": json_ld_text, "{{CONTENT}}": content, "{{V}}": asset_version(),
     }.items():
         html = html.replace(key, value)
@@ -449,8 +406,7 @@ def build_html():
         render_hero(), render_glance(), render_work(), render_projects(),
         render_education(), render_skills(), render_certs(), render_contact(),
     ])
-    canvas = '<canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>'
-    return page(canvas + content, title=f"{B['name']} | {B['label']}", description=B["summary"],
+    return page(content, title=f"{B['name']} | {B['label']}", description=B["summary"],
                 canonical=f"{SITE}/", og_type="profile", json_ld_text=json_ld(),
                 extra_js=f'\n    <script src="js/galaxy.js?v={asset_version()}"></script>')
 
@@ -500,8 +456,8 @@ def build_markdown():
         L += [f"### {p['title']}{tag}", ""]
         if p.get("url"):
             L += [f"<{p['url']}>", ""]
-        L += [p["description"], ""]
-        L += [f"- {h}" for h in p.get("highlights", [])]
+        for par in p.get("story", [p["description"]]):
+            L += [par, ""]
         if p.get("caseStudy"):
             L += [f"- Case study: {SITE}/case-studies/{p['caseStudy']}.md"]
         L += [f"- See also: [{l['label']}]({l['url']})" for l in p.get("links", [])]

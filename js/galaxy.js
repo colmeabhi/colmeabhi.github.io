@@ -1,6 +1,6 @@
 /* ============================================
-   Galaxy: a small N-body simulation drawn behind
-   the hero. Direct-sum gravity with Plummer
+   Galaxy: a small N-body simulation drawn inside
+   the N-body project card. Direct-sum gravity with Plummer
    softening and a kick-drift-kick leapfrog
    integrator, the same scheme as the N-body
    project (there in C++/CUDA, here in plain JS).
@@ -81,15 +81,15 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, W, H);
         ctx.fillStyle = color;
-        var scale = small ? 150 : Math.min(W * 0.2, 260);
-        var cx = small ? W * 0.86 : Math.min(W - 150, W / 2 + 520), cy = small ? 110 : 190;
+        var scale = Math.min(W * 0.34, H * 1.05);
+        var cx = W / 2, cy = H / 2;
         for (var i = 0; i < N; i++) {
             var px = cx + x[i] * scale;
             var py = cy + y[i] * scale * TILT;
             var r2 = x[i] * x[i] + y[i] * y[i];
             // brighter and slightly larger towards the centre
             var glow = 1 / (1 + r2 * 3);
-            ctx.globalAlpha = 0.22 + 0.5 * glow;
+            ctx.globalAlpha = 0.3 + 0.6 * glow;
             ctx.beginPath();
             ctx.arc(px, py, 0.7 + 0.7 * glow, 0, Math.PI * 2);
             ctx.fill();

@@ -47,30 +47,10 @@ document.querySelectorAll('[data-hello]').forEach(function (link) {
         var email = link.getAttribute('data-hello');
         if (!navigator.clipboard || !navigator.clipboard.writeText) return;
         navigator.clipboard.writeText(email).then(function () {
-            label.textContent = 'Email copied, opening mail…';
+            label.textContent = 'Email (copied)';
             clearTimeout(timer);
             timer = setTimeout(function () { label.textContent = original; }, 2600);
         }, function () {});
-    });
-});
-
-/* ============================================
-   Agent menu: copy the Markdown profile
-   (data-copy-url="file" fetches it first)
-   ============================================ */
-
-document.querySelectorAll('[data-copy-url]').forEach(function (btn) {
-    var label = btn.querySelector('[data-copy-label]');
-    var original = label.textContent;
-    var url = btn.getAttribute('data-copy-url');
-
-    btn.addEventListener('click', function () {
-        fetch(url)
-            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-            .then(function (text) { return navigator.clipboard.writeText(text); })
-            .then(function () { label.textContent = 'Copied!'; })
-            .catch(function () { window.open(url, '_blank'); })
-            .then(function () { setTimeout(function () { label.textContent = original; }, 1600); });
     });
 });
 
@@ -177,23 +157,4 @@ document.querySelectorAll('[data-copy-url]').forEach(function (btn) {
         .catch(snapshot)
         .then(render)
         .catch(function () { strip.parentNode.hidden = false; strip.hidden = true; });
-})();
-
-/* ============================================
-   Reveal sections as they scroll into view
-   ============================================ */
-
-(function () {
-    var items = document.querySelectorAll('.section, .glance, .foot');
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            en.target.classList.add('in');
-            io.unobserve(en.target);
-        });
-    }, { rootMargin: '0px 0px -8% 0px' });
-
-    items.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
 })();
