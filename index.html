@@ -236,13 +236,13 @@
     <div class="projects">
         <article class="proj">
             <div class="proj-top">
-                <h3>Phantom: IaC Drift Reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
+                <h3>driftfix: IaC drift reconciliation SaaS</h3><span class="badge">hackathon winner · led team of 3</span>
             </div>
-            <p>Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.</p>
-            <ul class="bullets"><li>Reads each customer&#x27;s CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
+            <p>Finds manual AWS console changes that drifted from CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. It began as Phantom, the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-tenant SaaS.</p>
+            <ul class="bullets"><li>My part: the multi-tenant architecture, the four-stage Lambda pipeline with DynamoDB de-duplication and a dead-letter queue, cross-account IAM (STS AssumeRole with ExternalId), and the Terraform.</li><li>Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.</li></ul>
             
             <div class="chips"><span>python</span><span>aws lambda</span><span>bedrock</span><span>dynamodb</span><span>terraform</span></div>
-            <div class="proj-links"><a class="proj-link" href="https://github.com/Kunal23002/iac-drift-saas" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+            <div class="proj-links"><a class="proj-link" href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
         </article>
         <article class="proj">
             <div class="proj-top">

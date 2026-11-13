@@ -12,7 +12,7 @@
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
 - **Instagram:** https://instagram.com/colmeabhi
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-12. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-13. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 
@@ -40,13 +40,13 @@ _jul 2021 – dec 2021 · Remote_
 
 ## Projects
 
-### Phantom: IaC Drift Reconciliation SaaS (hackathon winner · led team of 3)
+### driftfix: IaC drift reconciliation SaaS (hackathon winner · led team of 3)
 
-<https://github.com/Kunal23002/iac-drift-saas>
+<https://github.com/colmeabhi/driftfix>
 
-Finds AWS console changes that drifted from Terraform and CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. Started as the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-account SaaS.
+Finds manual AWS console changes that drifted from CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. It began as Phantom, the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-tenant SaaS.
 
-- Reads each customer's CloudTrail through STS and fans out one Lambda per drifted stack, with DynamoDB de-duplication and a dead-letter queue.
+- My part: the multi-tenant architecture, the four-stage Lambda pipeline with DynamoDB de-duplication and a dead-letter queue, cross-account IAM (STS AssumeRole with ExternalId), and the Terraform.
 - Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck.
 - See also: [hackathon prototype](https://github.com/krishmula/phantom)
 - Stack: python, aws lambda, bedrock, dynamodb, terraform
