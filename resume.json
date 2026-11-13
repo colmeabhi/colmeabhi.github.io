@@ -18,13 +18,14 @@
       "region": "San Jose, CA",
       "countryCode": "US"
     },
-    "status": "Open to full-time platform, infrastructure and backend roles · MS CS, 2027",
+    "status": "Looking for full-time platform, infrastructure or backend roles, starting 2027.",
     "summary": "Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.",
     "intro": [
-      "I build cloud platforms, data pipelines and the infrastructure underneath AI/ML workloads. I believe the best engineering is quiet: systems that just work and let people focus on what actually matters.",
-      "At Quantiphi I built a self-service infrastructure platform that 50 data engineers used instead of filing tickets, and cut incident recovery from three hours to ten minutes. These days I'm in grad school, building things like a Kubernetes controller that keeps warm LLM caches alive during scale-down."
+      "I got into tech because it is one of the few fields where things change fast enough that you can actually watch it happen. Amazon changed how we shop almost overnight. Social media put everyone in the same room, in some good ways and some bad ones. Now we have neural nets and LLMs, and it feels like it is happening all over again.",
+      "I wanted to make an impact, and I wanted to be able to see it. I am early in my career, so for now that mostly means building the parts nobody notices: the platforms, pipelines and infrastructure that other people's work runs on. I spent three and a half years doing that at Quantiphi, and I am now doing my master's at San José State, working on how LLMs get served.",
+      "I am not where I want to be yet. I am working on it."
     ],
-    "now": "MS Computer Science at San José State · LLM serving infra, distributed systems, GPU programming",
+    "now": "Finishing my M.S. project on LLM serving and learning Go on the side.",
     "resume": "assets/Abhishek_Ahirrao_Resume.pdf",
     "profiles": [
       {
@@ -87,15 +88,11 @@
   "projects": [
     {
       "name": "driftfix",
-      "title": "driftfix: IaC drift reconciliation SaaS",
+      "title": "driftfix",
       "featured": true,
-      "badge": "hackathon winner · led team of 3",
+      "badge": "hackathon winner, then a team of three",
       "url": "https://github.com/colmeabhi/driftfix",
-      "description": "Finds manual AWS console changes that drifted from CloudFormation, has an LLM on Bedrock write the fix, validates it with cfn-lint and opens a GitHub pull request. It began as Phantom, the winning prototype at the AWS × Datadog GenAI Hackathon; I then led a 3-person rebuild into a multi-tenant SaaS.",
-      "highlights": [
-        "My part: the multi-tenant architecture, the four-stage Lambda pipeline with DynamoDB de-duplication and a dead-letter queue, cross-account IAM (STS AssumeRole with ExternalId), and the Terraform.",
-        "Load tests on 10 live stacks scaled 1:1 with zero errors and isolated Bedrock P99 latency as the bottleneck."
-      ],
+      "description": "Finds manual AWS console changes that drifted from CloudFormation, has an LLM write the fix, and opens a pull request.",
       "keywords": [
         "python",
         "aws lambda",
@@ -108,19 +105,20 @@
           "label": "hackathon prototype",
           "url": "https://github.com/krishmula/phantom"
         }
+      ],
+      "story": [
+        "Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.",
+        "driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.",
+        "It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us."
       ]
     },
     {
       "name": "cache-aware-scale-in",
-      "title": "Cache-aware scale-in for vLLM on Kubernetes",
+      "title": "Cache-aware scale-in",
       "featured": true,
-      "badge": "M.S. project · in progress",
+      "badge": "M.S. project, in progress",
       "url": "https://github.com/colmeabhi/cache-aware-scale-in",
-      "description": "A Kubernetes controller that scores each vLLM replica's KV-cache value and sets pod-deletion-cost, so scale-in removes the coldest replica instead of an arbitrary one. Fewer warm caches get thrown away, which lowers time to first token.",
-      "highlights": [
-        "Benchmarking TTFT and cache hit rate on Llama 3 8B across 3 A100 replicas with llm-d routing.",
-        "Ships as an in-cluster image with RBAC and Prometheus/Loki/Grafana dashboards; CI runs the scale-in trial on kind for every push."
-      ],
+      "description": "A Kubernetes controller that tells the cluster which vLLM replica is cheapest to lose when scaling down.",
       "keywords": [
         "python",
         "kubernetes",
@@ -129,19 +127,19 @@
         "prometheus"
       ],
       "demo": "scale-in",
-      "caseStudy": "cache-aware-scale-in"
+      "caseStudy": "cache-aware-scale-in",
+      "story": [
+        "When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.",
+        "I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.",
+        "The controller, the tests and the CI are done. The GPU benchmark is next, so I do not have a performance number yet and I am not going to make one up."
+      ]
     },
     {
       "name": "idempotent-order-cloud-api",
-      "title": "Duplicate-Safe Order Ledger Service",
+      "title": "Duplicate-safe order ledger",
       "featured": true,
       "url": "https://github.com/colmeabhi/idempotent-order-cloud-api",
-      "description": "An idempotent order API: same-key retries replay the stored response inside one Postgres transaction, so a client that retries never creates a second order.",
-      "highlights": [
-        "Deployed on ECS Fargate behind an ALB with RDS Postgres and SSM-stored secrets, via Terraform and GitHub Actions.",
-        "k6 load tests sustained 250 req/s at 13 ms p95 with zero errors.",
-        "Found and fixed a select-then-insert race that returned 500s under parallel retries."
-      ],
+      "description": "An order API where a retry never becomes a second order, even when retries arrive at the same instant.",
       "keywords": [
         "python",
         "fastapi",
@@ -151,40 +149,49 @@
         "k6"
       ],
       "demo": "idempotency",
-      "caseStudy": "idempotent-order-api"
+      "caseStudy": "idempotent-order-api",
+      "story": [
+        "If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.",
+        "My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.",
+        "It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button."
+      ]
     },
     {
       "name": "parallelized-nbody-simulation-cuda-cpp",
       "title": "Parallel N-body simulation",
       "featured": true,
       "url": "https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp",
-      "description": "A galaxy simulation with five solvers compared like-for-like: SIMD serial, OpenMP, a Barnes–Hut octree, and naive versus shared-memory-tiled CUDA kernels.",
-      "highlights": [
-        "Removed a cross-block data race by splitting force and position updates across kernel launches.",
-        "Switched to a kick-drift-kick leapfrog integrator and measured the Barnes–Hut crossover at N ≈ 12.7K bodies under OpenMP.",
-        "The particles drifting at the top of this page run the same kick-drift-kick integrator, in your browser."
-      ],
+      "description": "A galaxy simulation written five ways, from one CPU thread to tiled CUDA kernels, to compare them like for like.",
       "keywords": [
         "c++",
         "cuda",
         "openmp",
         "barnes–hut",
         "nsight"
-      ]
+      ],
+      "story": [
+        "A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.",
+        "Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.",
+        "The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet."
+      ],
+      "demo": "galaxy"
     },
     {
       "name": "ai-sprint-planning-assistant",
-      "title": "AI Sprint Planning Assistant",
+      "title": "AI sprint planning assistant",
       "featured": true,
-      "badge": "1st of ~50 teams",
-      "description": "Turns a planning spreadsheet into Jira work with a RAG pipeline and multi-tool orchestration. Took 1st place of ~50 teams at the Composio × Redis “Agents with Superpowers” hackathon.",
-      "highlights": [],
+      "badge": "1st of about 50 teams",
+      "description": "Turns a planning spreadsheet into Jira tickets with a RAG pipeline and tool calls.",
       "keywords": [
         "python",
         "langchain",
         "openai",
         "redis",
         "composio"
+      ],
+      "story": [
+        "A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.",
+        "It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet."
       ]
     },
     {
@@ -192,10 +199,7 @@
       "title": "SDN load balancer",
       "featured": true,
       "url": "https://github.com/colmeabhi/sdn-load-balance",
-      "description": "A RYU (OpenFlow 1.3) controller that balances HTTP traffic to a virtual IP by installing rewrite rules straight into the switch, with five swappable algorithms.",
-      "highlights": [
-        "Automated Locust sweep across 5 algorithms and 5 load levels, with throughput and p95/p99 latency plots."
-      ],
+      "description": "An OpenFlow controller that load-balances HTTP traffic with five swappable algorithms.",
       "keywords": [
         "python",
         "ryu",
@@ -203,14 +207,17 @@
         "mininet",
         "locust"
       ],
-      "demo": "load-balancer"
+      "demo": "load-balancer",
+      "story": [
+        "An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.",
+        "It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land."
+      ]
     },
     {
       "name": "cuda-gpu-matrix-multiplication",
       "title": "GPU matrix multiplication",
-      "badge": "team project",
       "url": "https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication",
-      "description": "CUDA kernels reaching a 60× speedup over sequential CPU execution.",
+      "description": "CUDA kernels that run about 60 times faster than the plain CPU version. Team project.",
       "keywords": [
         "c++",
         "cuda"
@@ -220,7 +227,7 @@
       "name": "regulated-fish-classification",
       "title": "California fishing compliance",
       "url": "https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining",
-      "description": "Dataset builder, training and evaluation for classifying regulated fish species; 91% accuracy.",
+      "description": "Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.",
       "keywords": [
         "python",
         "pytorch",
@@ -230,9 +237,8 @@
     {
       "name": "resumatch",
       "title": "ResuMatch",
-      "badge": "hackathon · team",
       "url": "https://github.com/7shantanu7/Weave-Hackathon",
-      "description": "Agent that refines a resume against feedback from a judge LLM and finds matching jobs. Built at WeaveHacks 2.0.",
+      "description": "An agent that rewrites a resume against feedback from a judge LLM. Built at WeaveHacks 2.0 with a team.",
       "keywords": [
         "python",
         "agents",
@@ -274,63 +280,42 @@
   ],
   "skills": [
     {
-      "name": "cloud",
+      "name": "Every day",
       "keywords": [
-        "AWS (Lambda, ECS Fargate, EC2, Step Functions, S3, VPC, IAM, RDS, Redshift, DMS, DynamoDB, Bedrock)",
-        "GCP"
-      ]
-    },
-    {
-      "name": "infra & delivery",
-      "keywords": [
+        "AWS",
         "Terraform",
         "CloudFormation",
-        "Docker",
-        "Kubernetes",
-        "Jenkins",
-        "GitHub Actions",
-        "Vault",
-        "Trivy"
-      ]
-    },
-    {
-      "name": "observability",
-      "keywords": [
-        "CloudWatch",
-        "Prometheus",
-        "Grafana",
-        "Loki",
-        "SLOs",
-        "Incident response",
-        "Disaster recovery"
-      ]
-    },
-    {
-      "name": "languages",
-      "keywords": [
         "Python",
         "SQL",
         "Bash",
-        "C++ / CUDA"
+        "Docker",
+        "Jenkins",
+        "Grafana",
+        "Prometheus",
+        "Loki"
       ]
     },
     {
-      "name": "data",
+      "name": "Comfortable with",
       "keywords": [
+        "Kubernetes",
         "PostgreSQL",
         "Redshift",
         "Snowflake",
-        "DynamoDB"
+        "DynamoDB",
+        "GitHub Actions",
+        "Vault",
+        "Trivy",
+        "C++ and CUDA",
+        "Amazon Bedrock"
       ]
     },
     {
-      "name": "ai infra",
+      "name": "Learning now",
       "keywords": [
-        "vLLM",
-        "llm-d",
-        "Amazon Bedrock",
-        "LangChain",
-        "MCP"
+        "Go",
+        "vLLM and LLM serving",
+        "llm-d"
       ]
     }
   ],
@@ -357,6 +342,5 @@
       "title": "1st place of ~50 teams, Composio × Redis Hackathon",
       "awarder": "2025"
     }
-  ],
-  "quote": "how you do anything is how you do everything"
+  ]
 }

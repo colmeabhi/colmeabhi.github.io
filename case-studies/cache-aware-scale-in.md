@@ -1,68 +1,79 @@
-# Cache-aware scale-in for vLLM on Kubernetes
+# Teaching Kubernetes which pod to delete
 
-> When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.
+> When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.
 
 Case study by Abhishek Ahirrao (https://colmeabhi.github.io). Code: https://github.com/colmeabhi/cache-aware-scale-in
 
-- **Context:** M.S. project (CS 297), San José State
-- **Status:** In progress: GPU benchmark pending
-- **Stack:** Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana
+- **What:** M.S. project (CS 297) at San José State
+- **State:** Controller done, GPU benchmark still to run
+- **Built with:** Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana
 
-**In short:** A small controller scores each vLLM replica's prefix cache and writes the score to the `pod-deletion-cost` annotation. On scale-down Kubernetes removes the lowest cost first, so the replica with the least valuable cache goes instead of whichever pod happens to be newest.
+**In short:** A small controller looks at each vLLM replica's cache, gives it a score, and writes that score into an annotation Kubernetes already understands. When the deployment shrinks, the replica with the least useful cache goes first.
 
-## The problem
+## Why this bothered me
 
-vLLM keeps a KV cache of prompt prefixes it has already processed. A request whose prefix is cached skips most of the prefill work, which is what makes time to first token (TTFT) low for repeated system prompts.
+LLM servers like vLLM keep a cache of prompts they have already worked through. If your request starts with the same system prompt as the last hundred requests, the server skips most of the work and answers quickly. If it does not have that prompt cached, it has to read the whole thing again from the top.
 
-That cache lives inside each replica. Three replicas behind a prefix-aware router end up with three very different caches: one holds the popular system prompts, another holds mostly one-off prompts.
+Here is the catch. Every replica has its own cache. Run three replicas and you get three different caches, a bit like three baristas who each remember a different set of regulars.
 
-When traffic drops and the Deployment scales from three replicas to two, Kubernetes has to choose a pod to delete. Between healthy pods its tie-break is based on how recently the pod became ready, which has nothing to do with the cache. If it removes the hot replica, every request that relied on those prefixes pays a full prefill on a replica that has never seen them.
+Now traffic drops at night, and the deployment goes from three replicas to two. Kubernetes has to fire one barista. It picks, roughly, the one who started most recently. It does not ask who knows the most regulars.
 
-## The approach
+If the newest replica happens to hold the popular prompts, they are gone, and the next requests for them are slow until another replica learns them again. One time in three is bad enough odds that I wanted to fix it.
 
-Kubernetes already has a hook for this: the `controller.kubernetes.io/pod-deletion-cost` annotation. Among healthy pods of one ReplicaSet, the pod with the lower cost is deleted first. So the controller never deletes anything itself. It only keeps that annotation current and lets the ReplicaSet controller do the rest.
+## The lazy solution, which is the good one
 
-_Diagram: Every 5 seconds: scrape each pod's metrics, score its cache, patch the annotation if the cost moved enough._
+My first instinct was to write something that watches for scale-downs and deletes the right pod itself. That means racing the part of Kubernetes whose whole job is deleting pods. I would lose that race, probably in production, probably on a Friday.
+
+It turns out Kubernetes already has a knob for this. You can put an annotation called `pod-deletion-cost` on a pod, and when it has to choose, it deletes the cheapest one first. So the controller never deletes anything. It just keeps the price tags up to date and lets Kubernetes do what it was going to do anyway.
+
+_Diagram: Every 5 seconds: read each pod's cache metrics, work out a score, update the price tag if it changed enough._
+
+The score itself is three lines:
 
 ```
-recent_hit_rate = hits_in_last_window / lookups_in_last_window   (0..1)
-cache_value     = 0.7 * recent_hit_rate + 0.3 * kv_usage           (0..1)
+recent_hit_rate = hits_in_last_window / lookups_in_last_window
+cache_value     = 0.7 * recent_hit_rate + 0.3 * kv_usage
 deletion_cost   = round(cache_value * 1000)
 ```
 
-## Decisions and why
+A pod with a 70% hit rate ends up around 700. A pod with 5% ends up near 50. Guess which one goes.
 
-- **Recent hit rate, not lifetime.** vLLM only exposes cumulative counters, so a pod that was hot an hour ago still looks hot. The controller keeps the previous counters per pod, takes the delta between scrapes and smooths it with an exponential moving average.
-- **Hit rate and usage together.** Hit rate says how useful the cached prefixes are; KV usage says how much is cached. A full cache of prefixes nobody asks for again is worthless, so usage alone was rejected.
-- **A dead band on writes.** The cost is only written when it has moved by at least 25. Kubernetes' own documentation warns against updating the annotation on every metric tick, because each update is an API-server write.
-- **Use the built-in annotation instead of deleting pods.** Deleting pods from the controller would race the ReplicaSet controller. Autoscalers such as HPA and KEDA decide how many replicas, not which ones.
-- **Fail safe.** If a scrape fails the pod keeps its previous cost. Writing 0 on a transient error could get a hot pod deleted. If the controller dies, the annotations stay as they were.
-- **An honest baseline.** For the comparison runs the controller is stopped and the annotations are removed. Stopping alone would leave stale costs that Kubernetes would still honour.
+## Things I went back and forth on
 
-## How it is tested
+Recent or lifetime hit rate? vLLM only gives you counters that go up forever, so a pod that was busy an hour ago and has done nothing since still looks great. I keep the previous reading for each pod and work out the rate between two scrapes, then smooth it so one noisy interval does not flip the ranking.
 
-The project is built as a ladder of six stages. Each stage reuses the code of the one before and adds one capability plus a check that proves it.
+Why not just use how full the cache is? Because a cache full of prompts nobody asks for again is worth nothing. Hit rate tells you if the cache is useful, usage tells you how much there is to lose. I use both, weighted 0.7 and 0.3. Those weights are a judgment call. I have not tuned them yet.
 
-| Stage | Runs on | What it proves |
+How often to write? Kubernetes' own docs warn you not to update this annotation on every metric tick, because each update is a write to the API server. So I only write when the score has moved by at least 25. The ranking needs to be in the right order, not precise.
+
+What if a scrape fails? The pod keeps its old score. Writing zero because of a network blip would be a great way to get the best pod deleted.
+
+And for the comparison runs, turning the controller off is not enough. The old price tags would still be sitting on the pods and Kubernetes would still read them. The baseline has to strip the annotations too.
+
+## How I know it works so far
+
+GPUs are expensive, so I built this as a ladder where the first rungs cost nothing.
+
+| Stage | Runs on | What it checks |
 |---|---|---|
-| 1 | Laptop, fake pods | Metric parsing and scoring give the expected costs |
-| 2 | kind / k3s | Scaling 3 to 2 removes the lowest-cost pod |
-| 3 | 1 GPU | Prefix caching works on the real vLLM build |
+| 1 | My laptop, fake pods | The scoring maths gives the costs I expect |
+| 2 | A local cluster (kind or k3s) | Scaling 3 to 2 removes the cheapest pod |
+| 3 | 1 GPU | Prefix caching really works on the vLLM build I am using |
 | 4 | 3 GPUs | A real scale-in removes the coldest replica |
-| 5 | 3 GPUs + gateway | TTFT and hit rate, default against cache-aware |
-| 6 | 3 GPUs | The whole run from one script, controller in-cluster with RBAC |
+| 5 | 3 GPUs and a gateway | Time to first token and hit rate, default against mine |
+| 6 | 3 GPUs | The whole thing from one script, controller running in the cluster |
 
-Stages 1 and 2 need no GPU, so they run in CI on every push: unit tests plus the scale-in trial on a kind cluster.
+Stages 1 and 2 run in CI on every push, with unit tests and a scale-in trial on a kind cluster. Stage 2 is the one I trust most right now: the cheapest pod is the one that gets removed.
 
-## Result so far
+## The honest part
 
-> Note: The GPU benchmark (Llama 3 8B on three A100 replicas with llm-d routing) has not been run yet. This section will carry the measured TTFT and cache hit rate, default against cache-aware, once it has. Until then there is no performance number to claim.
+> Note: I have not run the GPU benchmark yet. Llama 3 8B on three A100 replicas is the plan. Until that is done I do not have a time-to-first-token number, and I would rather leave this section empty than put a guess in it.
 
-What exists today: the controller, the scoring and trial harness, an in-cluster image with RBAC, Prometheus, Loki and Grafana dashboards, and a one-command runner for the GPU day.
+What does exist: the controller, the scoring, the trial harness, an image that runs inside the cluster with the right permissions, dashboards in Grafana, and a script that runs the whole GPU day so I do not burn rented hours typing commands.
 
-## Limits and next steps
+## What I already know is wrong with it
 
-- The cost is at most 5 seconds stale, so a sudden traffic shift can beat it.
-- `pod-deletion-cost` is best-effort and only orders pods of the same ReplicaSet.
-- Node spreading is considered after cost, so on a multi-node cluster the controller could concentrate pods on one node.
-- The 0.7 / 0.3 weights are a judgment call, not fitted. A sweep with the same benchmark harness is the natural next experiment.
+- The score can be up to 5 seconds old. A sudden traffic shift can beat it.
+- The annotation is best effort, and it only ranks pods inside one ReplicaSet.
+- Kubernetes looks at my cost before it thinks about spreading pods across nodes, so on a bigger cluster this could pile pods onto one node.
+- The 0.7 and 0.3 weights are my guess. A proper sweep is the obvious next experiment.

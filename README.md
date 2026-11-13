@@ -19,4 +19,5 @@ My portfolio. The whole site is generated from one file, `resume.json`.
 
 Photo: put a square image in `assets/` and rebuild.
 
-Demos in the project cards live in `js/demos.js`; the galaxy behind the header is `js/galaxy.js`.
+Demos in the project write-ups live in `js/demos.js`; the small galaxy in the N-body project is `js/galaxy.js`.
+Colours and fonts are set at the top of `css/style.css`.

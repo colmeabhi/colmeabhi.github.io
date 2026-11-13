@@ -11,8 +11,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cache-aware scale-in for vLLM on Kubernetes | Abhishek Ahirrao</title>
-    <meta name="description" content="When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.">
+    <title>Teaching Kubernetes which pod to delete | Abhishek Ahirrao</title>
+    <meta name="description" content="When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.">
     <meta name="author" content="{{NAME}}">
     <meta name="color-scheme" content="light dark">
     <link rel="canonical" href="https://colmeabhi.github.io/case-studies/cache-aware-scale-in.html">
@@ -24,16 +24,16 @@
     <link rel="alternate" type="text/markdown" href="https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md" title="This case study (Markdown)">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Cache-aware scale-in for vLLM on Kubernetes | Abhishek Ahirrao">
-    <meta property="og:description" content="When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.">
+    <meta property="og:title" content="Teaching Kubernetes which pod to delete | Abhishek Ahirrao">
+    <meta property="og:description" content="When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://colmeabhi.github.io/case-studies/cache-aware-scale-in.html">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=b91ceba2">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=cfb94c63">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -48,20 +48,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="../favicon.svg?v=b91ceba2" type="image/svg+xml">
-    <link rel="icon" href="../favicon-32.png?v=b91ceba2" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=b91ceba2">
+    <link rel="icon" href="../favicon.svg?v=cfb94c63" type="image/svg+xml">
+    <link rel="icon" href="../favicon-32.png?v=cfb94c63" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=cfb94c63">
 
     <!-- Structured data -->
     <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Cache-aware scale-in for vLLM on Kubernetes",
-    "description": "When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.",
+    "headline": "Teaching Kubernetes which pod to delete",
+    "description": "When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.",
     "url": "https://colmeabhi.github.io/case-studies/cache-aware-scale-in.html",
     "author": {
         "@type": "Person",
@@ -71,59 +71,27 @@
 }
     </script>
 
-    <link rel="stylesheet" href="../css/style.css?v=b91ceba2">
+    <link rel="stylesheet" href="../css/style.css?v=cfb94c63">
 </head>
 
 <body class="case-page">
 
-    <!-- ─── Floating controls ─── -->
-    <div class="controls">
-        <button class="pill-btn" type="button" popovertarget="agent-menu" aria-label="Open the menu for AI agents">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 13v1.5M15 13v1.5M2 13v2M22 13v2"/><circle cx="12" cy="3.5" r="0.75"/></svg>
-            agents
-        </button>
-        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-    </div>
-
-    <!-- ─── Agent menu ─── -->
-    <div class="agent-menu" id="agent-menu" popover>
-        <p class="agent-title">For AI agents <span>&amp; the people using them</span></p>
-        <p class="agent-sub">Everything on this page, in formats a model can read without scraping.</p>
-
-        <nav class="agent-list" aria-label="Machine-readable versions">
-            <a href="../llms.txt"><code>/llms.txt</code><span>short index &middot; start here</span></a>
-            <a href="../profile.md"><code>/profile.md</code><span>full profile as Markdown</span></a>
-            <a href="../resume.json"><code>/resume.json</code><span>structured data &middot; JSON Resume</span></a>
-        </nav>
-
-        <div class="agent-actions">
-            <button class="btn" type="button" data-copy-url="../profile.md">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                <span data-copy-label>Copy profile as Markdown</span>
-            </button>
-            <a class="btn" href="https://claude.ai/new?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask Claude about me</a>
-            <a class="btn" href="https://chatgpt.com/?q=Read%20https%3A//colmeabhi.github.io/llms.txt%20and%20https%3A//colmeabhi.github.io/profile.md%2C%20then%20tell%20me%20about%20Abhishek%20Ahirrao%3A%20what%20he%20has%20built%2C%20what%20he%20is%20good%20at%2C%20and%20which%20roles%20he%20would%20fit." target="_blank" rel="noopener">Ask ChatGPT about me</a>
-        </div>
-    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
 
     <!-- ─── Main container ─── -->
     <main class="container">
 
 <article class="case">
-    <a class="back" href="../#projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Abhishek Ahirrao</a>
-    <p class="eyebrow">Case study</p>
-    <h1>Cache-aware scale-in for vLLM on Kubernetes</h1>
-    <p class="case-sub">When an LLM deployment scales down, Kubernetes picks which replica to delete without knowing which one holds the useful cache. This controller tells it.</p>
-    <dl class="case-meta"><div><dt>Context</dt><dd>M.S. project (CS 297), San José State</dd></div><div><dt>Status</dt><dd>In progress: GPU benchmark pending</dd></div><div><dt>Stack</dt><dd>Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana</dd></div></dl>
-    <div class="actions">
-        <a class="btn btn-primary" href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a>
-        <a class="btn" href="cache-aware-scale-in.md">Read as Markdown</a>
-    </div>
-    <div class="tldr"><span>In short</span><p>A small controller scores each vLLM replica&#x27;s prefix cache and writes the score to the <code>pod-deletion-cost</code> annotation. On scale-down Kubernetes removes the lowest cost first, so the replica with the least valuable cache goes instead of whichever pod happens to be newest.</p></div>
-    <section class="case-section"><h2>The problem</h2><p>vLLM keeps a KV cache of prompt prefixes it has already processed. A request whose prefix is cached skips most of the prefill work, which is what makes time to first token (TTFT) low for repeated system prompts.</p><p>That cache lives inside each replica. Three replicas behind a prefix-aware router end up with three very different caches: one holds the popular system prompts, another holds mostly one-off prompts.</p><p>When traffic drops and the Deployment scales from three replicas to two, Kubernetes has to choose a pod to delete. Between healthy pods its tie-break is based on how recently the pod became ready, which has nothing to do with the cache. If it removes the hot replica, every request that relied on those prefixes pays a full prefill on a replica that has never seen them.</p><div class="demo demo-boxed" data-demo="scale-in"></div></section><section class="case-section"><h2>The approach</h2><p>Kubernetes already has a hook for this: the <code>controller.kubernetes.io/pod-deletion-cost</code> annotation. Among healthy pods of one ReplicaSet, the pod with the lower cost is deleted first. So the controller never deletes anything itself. It only keeps that annotation current and lets the ReplicaSet controller do the rest.</p><figure class="diagram"><svg viewBox="0 0 680 270" role="img" aria-label="Control loop: the controller scrapes cache metrics from each vLLM pod, scores them, and writes a pod-deletion-cost annotation that the ReplicaSet controller uses on scale-down">
+    <a class="back" href="../#projects">Back to Abhishek Ahirrao</a>
+    <h1>Teaching Kubernetes which pod to delete</h1>
+    <p class="case-sub">When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.</p>
+    <dl class="case-meta"><div><dt>What</dt><dd>M.S. project (CS 297) at San José State</dd></div><div><dt>State</dt><dd>Controller done, GPU benchmark still to run</dd></div><div><dt>Built with</dt><dd>Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana</dd></div></dl>
+    <nav class="links"><a href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a><a href="cache-aware-scale-in.md">Plain Markdown version</a></nav>
+    <p class="tldr">A small controller looks at each vLLM replica&#x27;s cache, gives it a score, and writes that score into an annotation Kubernetes already understands. When the deployment shrinks, the replica with the least useful cache goes first.</p>
+    <section class="case-section"><h2>Why this bothered me</h2><p>LLM servers like vLLM keep a cache of prompts they have already worked through. If your request starts with the same system prompt as the last hundred requests, the server skips most of the work and answers quickly. If it does not have that prompt cached, it has to read the whole thing again from the top.</p><p>Here is the catch. Every replica has its own cache. Run three replicas and you get three different caches, a bit like three baristas who each remember a different set of regulars.</p><p>Now traffic drops at night, and the deployment goes from three replicas to two. Kubernetes has to fire one barista. It picks, roughly, the one who started most recently. It does not ask who knows the most regulars.</p><div class="demo demo-boxed" data-demo="scale-in"></div><p>If the newest replica happens to hold the popular prompts, they are gone, and the next requests for them are slow until another replica learns them again. One time in three is bad enough odds that I wanted to fix it.</p></section><section class="case-section"><h2>The lazy solution, which is the good one</h2><p>My first instinct was to write something that watches for scale-downs and deletes the right pod itself. That means racing the part of Kubernetes whose whole job is deleting pods. I would lose that race, probably in production, probably on a Friday.</p><p>It turns out Kubernetes already has a knob for this. You can put an annotation called <code>pod-deletion-cost</code> on a pod, and when it has to choose, it deletes the cheapest one first. So the controller never deletes anything. It just keeps the price tags up to date and lets Kubernetes do what it was going to do anyway.</p><figure class="diagram"><svg viewBox="0 0 680 270" role="img" aria-label="Control loop: the controller scrapes cache metrics from each vLLM pod, scores them, and writes a pod-deletion-cost annotation that the ReplicaSet controller uses on scale-down">
   <defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
   <g class="d-box">
     <rect x="10" y="20" width="150" height="54" rx="8"/><rect x="10" y="94" width="150" height="54" rx="8"/><rect x="10" y="168" width="150" height="54" rx="8"/>
@@ -152,26 +120,24 @@
   <path class="d-accent" marker-end="url(#ah1)" d="M520 222 C380 262 240 250 160 206"/>
   <text class="d-accent-text" x="345" y="262" text-anchor="middle">removes pod C, the coldest cache</text>
 </svg>
-<figcaption>Every 5 seconds: scrape each pod&#x27;s metrics, score its cache, patch the annotation if the cost moved enough.</figcaption></figure><pre class="code"><code>recent_hit_rate = hits_in_last_window / lookups_in_last_window   (0..1)
-cache_value     = 0.7 * recent_hit_rate + 0.3 * kv_usage           (0..1)
-deletion_cost   = round(cache_value * 1000)</code></pre></section><section class="case-section"><h2>Decisions and why</h2><ul class="bullets"><li><strong>Recent hit rate, not lifetime.</strong> vLLM only exposes cumulative counters, so a pod that was hot an hour ago still looks hot. The controller keeps the previous counters per pod, takes the delta between scrapes and smooths it with an exponential moving average.</li><li><strong>Hit rate and usage together.</strong> Hit rate says how useful the cached prefixes are; KV usage says how much is cached. A full cache of prefixes nobody asks for again is worthless, so usage alone was rejected.</li><li><strong>A dead band on writes.</strong> The cost is only written when it has moved by at least 25. Kubernetes&#x27; own documentation warns against updating the annotation on every metric tick, because each update is an API-server write.</li><li><strong>Use the built-in annotation instead of deleting pods.</strong> Deleting pods from the controller would race the ReplicaSet controller. Autoscalers such as HPA and KEDA decide how many replicas, not which ones.</li><li><strong>Fail safe.</strong> If a scrape fails the pod keeps its previous cost. Writing 0 on a transient error could get a hot pod deleted. If the controller dies, the annotations stay as they were.</li><li><strong>An honest baseline.</strong> For the comparison runs the controller is stopped and the annotations are removed. Stopping alone would leave stale costs that Kubernetes would still honour.</li></ul></section><section class="case-section"><h2>How it is tested</h2><p>The project is built as a ladder of six stages. Each stage reuses the code of the one before and adds one capability plus a check that proves it.</p><div class="table-wrap"><table><thead><tr><th>Stage</th><th>Runs on</th><th>What it proves</th></tr></thead><tbody><tr><td>1</td><td>Laptop, fake pods</td><td>Metric parsing and scoring give the expected costs</td></tr><tr><td>2</td><td>kind / k3s</td><td>Scaling 3 to 2 removes the lowest-cost pod</td></tr><tr><td>3</td><td>1 GPU</td><td>Prefix caching works on the real vLLM build</td></tr><tr><td>4</td><td>3 GPUs</td><td>A real scale-in removes the coldest replica</td></tr><tr><td>5</td><td>3 GPUs + gateway</td><td>TTFT and hit rate, default against cache-aware</td></tr><tr><td>6</td><td>3 GPUs</td><td>The whole run from one script, controller in-cluster with RBAC</td></tr></tbody></table></div><p>Stages 1 and 2 need no GPU, so they run in CI on every push: unit tests plus the scale-in trial on a kind cluster.</p></section><section class="case-section"><h2>Result so far</h2><p class="note">The GPU benchmark (Llama 3 8B on three A100 replicas with llm-d routing) has not been run yet. This section will carry the measured TTFT and cache hit rate, default against cache-aware, once it has. Until then there is no performance number to claim.</p><p>What exists today: the controller, the scoring and trial harness, an in-cluster image with RBAC, Prometheus, Loki and Grafana dashboards, and a one-command runner for the GPU day.</p></section><section class="case-section"><h2>Limits and next steps</h2><ul class="bullets"><li>The cost is at most 5 seconds stale, so a sudden traffic shift can beat it.</li><li><code>pod-deletion-cost</code> is best-effort and only orders pods of the same ReplicaSet.</li><li>Node spreading is considered after cost, so on a multi-node cluster the controller could concentrate pods on one node.</li><li>The 0.7 / 0.3 weights are a judgment call, not fitted. A sweep with the same benchmark harness is the natural next experiment.</li></ul></section>
+<figcaption>Every 5 seconds: read each pod&#x27;s cache metrics, work out a score, update the price tag if it changed enough.</figcaption></figure><p>The score itself is three lines:</p><pre class="code"><code>recent_hit_rate = hits_in_last_window / lookups_in_last_window
+cache_value     = 0.7 * recent_hit_rate + 0.3 * kv_usage
+deletion_cost   = round(cache_value * 1000)</code></pre><p>A pod with a 70% hit rate ends up around 700. A pod with 5% ends up near 50. Guess which one goes.</p></section><section class="case-section"><h2>Things I went back and forth on</h2><p>Recent or lifetime hit rate? vLLM only gives you counters that go up forever, so a pod that was busy an hour ago and has done nothing since still looks great. I keep the previous reading for each pod and work out the rate between two scrapes, then smooth it so one noisy interval does not flip the ranking.</p><p>Why not just use how full the cache is? Because a cache full of prompts nobody asks for again is worth nothing. Hit rate tells you if the cache is useful, usage tells you how much there is to lose. I use both, weighted 0.7 and 0.3. Those weights are a judgment call. I have not tuned them yet.</p><p>How often to write? Kubernetes&#x27; own docs warn you not to update this annotation on every metric tick, because each update is a write to the API server. So I only write when the score has moved by at least 25. The ranking needs to be in the right order, not precise.</p><p>What if a scrape fails? The pod keeps its old score. Writing zero because of a network blip would be a great way to get the best pod deleted.</p><p>And for the comparison runs, turning the controller off is not enough. The old price tags would still be sitting on the pods and Kubernetes would still read them. The baseline has to strip the annotations too.</p></section><section class="case-section"><h2>How I know it works so far</h2><p>GPUs are expensive, so I built this as a ladder where the first rungs cost nothing.</p><div class="table-wrap"><table><thead><tr><th>Stage</th><th>Runs on</th><th>What it checks</th></tr></thead><tbody><tr><td>1</td><td>My laptop, fake pods</td><td>The scoring maths gives the costs I expect</td></tr><tr><td>2</td><td>A local cluster (kind or k3s)</td><td>Scaling 3 to 2 removes the cheapest pod</td></tr><tr><td>3</td><td>1 GPU</td><td>Prefix caching really works on the vLLM build I am using</td></tr><tr><td>4</td><td>3 GPUs</td><td>A real scale-in removes the coldest replica</td></tr><tr><td>5</td><td>3 GPUs and a gateway</td><td>Time to first token and hit rate, default against mine</td></tr><tr><td>6</td><td>3 GPUs</td><td>The whole thing from one script, controller running in the cluster</td></tr></tbody></table></div><p>Stages 1 and 2 run in CI on every push, with unit tests and a scale-in trial on a kind cluster. Stage 2 is the one I trust most right now: the cheapest pod is the one that gets removed.</p></section><section class="case-section"><h2>The honest part</h2><p class="note">I have not run the GPU benchmark yet. Llama 3 8B on three A100 replicas is the plan. Until that is done I do not have a time-to-first-token number, and I would rather leave this section empty than put a guess in it.</p><p>What does exist: the controller, the scoring, the trial harness, an image that runs inside the cluster with the right permissions, dashboards in Grafana, and a script that runs the whole GPU day so I do not burn rented hours typing commands.</p></section><section class="case-section"><h2>What I already know is wrong with it</h2><ul class="bullets"><li>The score can be up to 5 seconds old. A sudden traffic shift can beat it.</li><li>The annotation is best effort, and it only ranks pods inside one ReplicaSet.</li><li>Kubernetes looks at my cost before it thinks about spreading pods across nodes, so on a bigger cluster this could pile pods onto one node.</li><li>The 0.7 and 0.3 weights are my guess. A proper sweep is the obvious next experiment.</li></ul></section>
 </article>
 
 <section class="section case-next">
-    <h3 class="sub-head">Another case study</h3>
-    <div class="more"><a class="more-row" href="idempotent-order-api.html"><span class="more-name">Duplicate-Safe Order Ledger Service</span><span class="more-desc">A client that times out will retry. This API makes sure a retry never becomes a second order, even when the retries arrive at the same instant.</span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <h2>Keep reading</h2>
+    <ul class="more"><li><span class="more-name"><a href="idempotent-order-api.html">One click, one order</a></span> How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.</li></ul>
 </section>
 
 <footer class="foot">
-    <div class="foot-row">
-        <a href="../">© 2026 abhishek ahirrao</a>
-        <a href="mailto:abhishekahirrao09@gmail.com">abhishekahirrao09@gmail.com</a>
-    </div>
+    <a href="../">Abhishek Ahirrao</a>
+    <a href="mailto:abhishekahirrao09@gmail.com">abhishekahirrao09@gmail.com</a>
 </footer>
     </main>
 
-    <script src="../js/main.js?v=b91ceba2"></script>
-    <script src="../js/demos.js?v=b91ceba2"></script>
+    <script src="../js/main.js?v=cfb94c63"></script>
+    <script src="../js/demos.js?v=cfb94c63"></script>
 </body>
 
 </html>
