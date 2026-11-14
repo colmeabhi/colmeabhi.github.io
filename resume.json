@@ -92,17 +92,17 @@
     },
     {
       "name": "Quantiphi",
-      "position": "Framework Engineer Intern",
+      "position": "Engineering Intern",
       "location": "Remote",
       "startDate": "2021-07",
-      "endDate": "2021-12",
+      "endDate": "2021-11",
       "highlights": [
-        "Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS."
+        "Built Grafana dashboards on CloudWatch, Prometheus and Loki tracking 20+ signals across AWS data pipelines, with health checks and SNS alerts that cut issue detection time ~70%."
       ],
       "story": [
-        "I rebuilt it on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS."
+        "Grafana on top of CloudWatch, Prometheus and Loki, tracking more than twenty signals: replication lag, stream throughput, container health, Lambda errors and whether Redshift loads had landed. Health checks for stale data and failed or late jobs sent SNS alerts, and we started finding problems about 70% sooner."
       ],
-      "hook": "Six months before full time, breaking a monolithic ETL job into small event-driven services."
+      "hook": "Five months before full time, building the dashboards and alerts that told us when the data pipelines were unhealthy."
     }
   ],
   "projects": [
@@ -246,10 +246,21 @@
       ]
     },
     {
+      "name": "tcp-sliding-window",
+      "title": "Sliding-window transfer protocol",
+      "featured": false,
+      "url": "https://github.com/colmeabhi/tcp-client-server-protocol-implementation",
+      "description": "Delivers 10 million packets with 1% of them dropped on purpose, using a 256-packet window, wrapping sequence numbers and selective resends. Course project with a teammate.",
+      "keywords": [
+        "python",
+        "sockets"
+      ]
+    },
+    {
       "name": "regulated-fish-classification",
       "title": "California fishing compliance",
       "url": "https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining",
-      "description": "Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.",
+      "description": "Tells an angler whether a California catch is legal to keep. I owned the ML in a team of two: about 4,900 photos of 28 species and a two-stage ResNet50 that powers a mobile app.",
       "keywords": [
         "python",
         "pytorch",
