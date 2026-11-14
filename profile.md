@@ -140,7 +140,7 @@ An agent that rewrites a resume against feedback from a judge LLM. Built at Weav
 _2025 to 2027_
 
 - GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.
-- Coursework: Design & Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning.
+- Coursework: Cloud Computing, Computer Communication Systems, Advanced Parallel Processing, Design and Analysis of Algorithms, Machine Learning.
 
 ### BE Computer Engineering, University of Mumbai
 _2017 to 2021_
