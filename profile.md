@@ -10,7 +10,6 @@
 - **Resume (PDF):** https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf
 - **GitHub:** https://github.com/colmeabhi
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
-- **Instagram:** https://instagram.com/colmeabhi
 
 _Goes by abhi (/uh-bhee/). Last updated 2026-11-14. Structured version: https://colmeabhi.github.io/resume.json_
 

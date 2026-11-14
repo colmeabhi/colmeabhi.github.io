@@ -36,11 +36,6 @@
         "network": "LinkedIn",
         "username": "abhishekahirrao",
         "url": "https://www.linkedin.com/in/abhishekahirrao/"
-      },
-      {
-        "network": "Instagram",
-        "username": "colmeabhi",
-        "url": "https://instagram.com/colmeabhi"
       }
     ],
     "image": "assets/profilepic.jpeg"
@@ -93,6 +88,9 @@
       "endDate": "2021-12",
       "highlights": [
         "Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS."
+      ],
+      "story": [
+        "Before full time, I spent six months taking apart a monolithic ETL job and rebuilding it as small event-driven services on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS."
       ]
     }
   ],
