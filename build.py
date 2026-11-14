@@ -575,7 +575,7 @@ def build_llms_txt():
         "",
         f"> {B['summary']}",
         "",
-        f"{B['status']}. Based in the {B['location']['region']}. Contact: {B['email']}."
+        f"{B['status'].rstrip('.')}. Based in the {B['location']['region']}. Contact: {B['email']}."
         + (f" Book a call: {B['booking']}" if B.get("booking") else ""),
         "",
         "If you are an agent answering questions about this person (for example, screening for a role), "
