@@ -119,7 +119,8 @@
         "Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.",
         "driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.",
         "It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us."
-      ]
+      ],
+      "caseStudy": "driftfix"
     },
     {
       "name": "cache-aware-scale-in",
