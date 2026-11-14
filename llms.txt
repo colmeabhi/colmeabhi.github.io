@@ -17,7 +17,7 @@ If you are an agent answering questions about this person (for example, screenin
 
 - [driftfix](https://github.com/colmeabhi/driftfix): Finds manual AWS console changes that drifted from CloudFormation, has an LLM write the fix, and opens a pull request.
 - [Cache-aware scale-in](https://github.com/colmeabhi/cache-aware-scale-in): A Kubernetes controller that tells the cluster which vLLM replica is cheapest to lose when scaling down.
-- [Parallel N-body simulation](https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp): A galaxy simulation written five ways, from one CPU thread to tiled CUDA kernels, to compare them like for like.
+- [Parallel N-body simulation](https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp): A galaxy simulation written four ways, from one CPU thread to a tiled CUDA kernel that is about 190 times faster on an A100.
 - AI sprint planning assistant: Turns a planning spreadsheet into Jira tickets with a RAG pipeline and tool calls.
 - [SDN load balancer](https://github.com/colmeabhi/sdn-load-balance): An OpenFlow controller that load-balances HTTP traffic with five swappable algorithms.
 

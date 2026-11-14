@@ -159,18 +159,20 @@
       "title": "Parallel N-body simulation",
       "featured": true,
       "url": "https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp",
-      "description": "A galaxy simulation written five ways, from one CPU thread to tiled CUDA kernels, to compare them like for like.",
+      "description": "A galaxy simulation written four ways, from one CPU thread to a tiled CUDA kernel that is about 190 times faster on an A100.",
       "keywords": [
         "c++",
         "cuda",
         "openmp",
-        "barnes–hut",
-        "nsight"
+        "nsight compute",
+        "modal"
       ],
       "story": [
-        "A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.",
-        "Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.",
-        "The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet."
+        "A small galaxy, with a black hole, a disk of stars and a bulge, where every star pulls on every other star. I wrote it four ways: one CPU thread, OpenMP, a plain CUDA kernel, and a tiled one where each block shares positions through shared memory.",
+        "With 65,536 stars on an A100, the tiled kernel takes 8 ms per step and one CPU thread takes 1.5 seconds, so about 190 times faster. At 1,024 stars the GPU barely helps, because starting a kernel costs about as much as the work.",
+        "Along the way I found a data race in my own GPU kernel. Some stars felt forces from the past and some from the future, which is not how gravity works. Splitting each step into separate kernels fixed it.",
+        "Nsight Compute showed why tiling wins: at 16K stars it cuts reads from global memory by 16 times. And the leapfrog step keeps energy about ten times better than plain Euler, for the same cost.",
+        "The galaxy below starts from the same setup and uses the same leapfrog step, in plain JavaScript and with fewer stars."
       ],
       "demo": "galaxy"
     },

@@ -248,7 +248,7 @@ def render_work():
 def render_demo(name):
     if name == "galaxy":
         return ('<figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>'
-                '<figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure>')
+                '<figcaption>A black hole and a few hundred stars, every pair pulling on each other, kick-drift-kick leapfrog. Same starting galaxy as the repo. The disk starts cold, so it breaks into clumps; it starts over every 12 seconds.</figcaption></figure>')
     return f'<div class="demo" data-demo="{e(name)}"></div>'
 
 
