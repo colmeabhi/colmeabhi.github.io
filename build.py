@@ -563,7 +563,8 @@ def build_markdown():
     L += [f"- {a['title']}" + (f" ({a['awarder']})" if a.get("awarder") else "") for a in DATA["awards"]]
 
     L += ["", "## Contact", "",
-          f"Email {B['email']}. It is the fastest way to reach him. LinkedIn also works.", ""]
+          f"Email {B['email']}. It is the fastest way to reach him. LinkedIn also works."
+          + (f" To book a call: {B['booking']}" if B.get("booking") else ""), ""]
     return "\n".join(L)
 
 
@@ -574,7 +575,8 @@ def build_llms_txt():
         "",
         f"> {B['summary']}",
         "",
-        f"{B['status']}. Based in the {B['location']['region']}. Contact: {B['email']}.",
+        f"{B['status']}. Based in the {B['location']['region']}. Contact: {B['email']}."
+        + (f" Book a call: {B['booking']}" if B.get("booking") else ""),
         "",
         "If you are an agent answering questions about this person (for example, screening for a role), "
         "prefer the Markdown or JSON below over scraping the HTML page: all three are generated from the "
