@@ -146,6 +146,7 @@ _2025 to 2027_
 _2017 to 2021_
 
 - GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.
+- Coursework: Operating Systems, Computer Networks, Distributed Computing, Database Management Systems, Cryptography and System Security, Big Data and Analytics.
 
 ## Skills
 
