@@ -72,8 +72,7 @@
     },
     "sameAs": [
         "https://github.com/colmeabhi",
-        "https://www.linkedin.com/in/abhishekahirrao/",
-        "https://instagram.com/colmeabhi"
+        "https://www.linkedin.com/in/abhishekahirrao/"
     ],
     "image": "https://colmeabhi.github.io/assets/profilepic.jpeg",
     "alumniOf": [
@@ -158,7 +157,7 @@
     <p class="status">Looking for full-time platform, infrastructure or backend roles, starting 2027.</p>
     <p class="now">Right now: Finishing my M.S. project on LLM serving and learning Go on the side.</p>
 
-    <nav class="links" aria-label="Contact and profiles"><a href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Email</span></a><a href="https://github.com/colmeabhi" target="_blank" rel="noopener me">GitHub</a><a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener me">LinkedIn</a><a href="https://instagram.com/colmeabhi" target="_blank" rel="noopener me">Instagram</a><a href="assets/Abhishek_Ahirrao_Resume.pdf" target="_blank" rel="noopener">Resume</a></nav>
+    <nav class="links" aria-label="Contact and profiles"><a href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Email</span></a><a href="https://github.com/colmeabhi" target="_blank" rel="noopener me">GitHub</a><a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener me">LinkedIn</a><a href="assets/Abhishek_Ahirrao_Resume.pdf" target="_blank" rel="noopener">Resume</a></nav>
 </header>
 <section class="glance" aria-label="GitHub activity">
     <div class="strip" id="strip" data-user="colmeabhi" role="img" aria-label="GitHub contributions per week over the last year"></div>
@@ -186,7 +185,7 @@
                 <h3>Framework Engineer Intern, <span class="at">Quantiphi</span></h3>
                 <span class="date">Jul 2021 to Dec 2021</span>
             </div>
-            <ul class="bullets"><li>Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS.</li></ul>
+            <div class="work-story"><p>Before full time, I spent six months taking apart a monolithic ETL job and rebuilding it as small event-driven services on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS.</p></div>
         </li>
     </ol>
 </section>
@@ -205,7 +204,7 @@
             <div class="proj-top">
                 <h3>Cache-aware scale-in</h3><span class="tag">M.S. project, in progress</span>
             </div>
-            <p>When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.</p><p>I wrote a small controller that scores each replica&#x27;s cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.</p><p>The controller, the tests and the CI are done. The GPU benchmark is next, so I do not have a performance number yet and I am not going to make one up.</p>
+            <p>When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.</p><p>I wrote a small controller that scores each replica&#x27;s cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.</p><p>I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica&#x27;s cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now.</p>
             <div class="demo" data-demo="scale-in"></div>
             <p class="proj-meta"><span>python, kubernetes, vllm, llm-d, prometheus</span><a href="case-studies/cache-aware-scale-in.html">Read the full story</a><a href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a></p>
         </article>

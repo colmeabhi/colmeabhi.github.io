@@ -1,12 +1,12 @@
 # Teaching Kubernetes which pod to delete
 
-> When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.
+> When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project. The first GPU run showed no difference, and why turned out to be the interesting part.
 
 Case study by Abhishek Ahirrao (https://colmeabhi.github.io). Code: https://github.com/colmeabhi/cache-aware-scale-in
 
 - **What:** M.S. project (CS 297) at San José State
-- **State:** Controller done, GPU benchmark still to run
-- **Built with:** Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana
+- **State:** Controller done. First GPU run done, with no difference between the two sides. The reason is below
+- **Built with:** Python, Kubernetes, vLLM, llm-d, k3s, Prometheus, Grafana, Modal
 
 **In short:** A small controller looks at each vLLM replica's cache, gives it a score, and writes that score into an annotation Kubernetes already understands. When the deployment shrinks, the replica with the least useful cache goes first.
 
@@ -65,14 +65,34 @@ GPUs are expensive, so I built this as a ladder where the first rungs cost nothi
 
 Stages 1 and 2 run in CI on every push, with unit tests and a scale-in trial on a kind cluster. Stage 2 is the one I trust most right now: the cheapest pod is the one that gets removed.
 
-## The honest part
+## What the GPUs said
 
-> Note: I have not run the GPU benchmark yet. Llama 3 8B on three A100 replicas is the plan. Until that is done I do not have a time-to-first-token number, and I would rather leave this section empty than put a guess in it.
+I ran the benchmark on Modal: three vLLM replicas of Qwen2.5-7B on three A100s, with my router, my scoring and my load generator. Modal rents GPU containers, not machines, so there is no Kubernetes there. Scaling down meant taking a replica out of the router and stopping it. That tests the effect of the choice. Stages 2 and 4 are what show Kubernetes respects the annotation.
 
-What does exist: the controller, the scoring, the trial harness, an image that runs inside the cluster with the right permissions, dashboards in Grafana, and a script that runs the whole GPU day so I do not burn rented hours typing commands.
+Getting it to run took two lessons I will not forget: vLLM needs the CUDA compiler at runtime, not just the driver, and its metric names had changed again in version 0.32.
+
+Then it worked end to end, with zero failed requests, and the controller removed the pod it was meant to. And it made no difference at all:
+
+| One trial each | Default | Cache-aware |
+|---|---|---|
+| Scores at scale-in | 666 / 663 / 677 | 666 / 663 / 677 |
+| Pod removed | The middle one | The least valuable one |
+| Time to first token after scale-in (median, first 30 s) | 41 ms | 43 ms |
+| Hit rate on the pods that stayed | 94.6% | 94.6% |
+
+> Note: This was a small first run: one trial per side, one minute of warm-up, one minute of measuring. I treat the numbers as a first look, not a result to quote.
+
+The reason is a little embarrassing. My test traffic was too friendly. Every request was about 1,800 tokens of shared prompt and a few tokens of its own, so once a replica had seen a prompt, almost every token after that was a hit. All three replicas reached about 95% within 45 seconds. There was no cold barista to fire. The router did spread the work unevenly, 235 requests on one replica and 69 on another, but my score looks at hit rate, not volume, so it could not see that.
+
+Losing a cache was also cheap. Reading an 1,800-token prompt again on an A100 takes a few tens of milliseconds, so time to first token stayed around 41 ms whichever pod went.
+
+So there are two things to do next. Make the test unfair on purpose, with a truly cold replica, longer prompts and less cache memory, so that losing a cache actually hurts. And score cached tokens per second instead of hit rate, because a pod at 70% on one request a second is protecting less than a pod at 55% on ten.
+
+"No difference" is not the result I wanted. It is the one I got, and it taught me more about my score than a nice number would have.
 
 ## What I already know is wrong with it
 
+- Hit rate is the wrong thing to score when every replica's cache is warm. Cached tokens per second is probably the better one.
 - The score can be up to 5 seconds old. A sudden traffic shift can beat it.
 - The annotation is best effort, and it only ranks pods inside one ReplicaSet.
 - Kubernetes looks at my cost before it thinks about spreading pods across nodes, so on a bigger cluster this could pile pods onto one node.
