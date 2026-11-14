@@ -27,12 +27,12 @@
     <meta property="og:description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://colmeabhi.github.io/">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=3a15b59d">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=58e151c7">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=3a15b59d">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=58e151c7">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -50,9 +50,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="favicon.svg?v=3a15b59d" type="image/svg+xml">
-    <link rel="icon" href="favicon-32.png?v=3a15b59d" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3a15b59d">
+    <link rel="icon" href="favicon.svg?v=58e151c7" type="image/svg+xml">
+    <link rel="icon" href="favicon-32.png?v=58e151c7" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=58e151c7">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -128,7 +128,7 @@
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v=3a15b59d">
+    <link rel="stylesheet" href="css/style.css?v=58e151c7">
 </head>
 
 <body class="">
@@ -212,8 +212,8 @@
         </article>
         <article class="proj">
             <details class="fold">
-                <summary><div class="proj-top"><h3>Parallel N-body simulation</h3></div><p class="hook">A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
-                <div class="fold-body"><p>Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.</p><p>The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.</p><figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas><figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure><p class="proj-meta"><span>c++, cuda, openmp, barnes–hut, nsight</span><a href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+                <summary><div class="proj-top"><h3>Parallel N-body simulation</h3></div><p class="hook">A small galaxy, with a black hole, a disk of stars and a bulge, where every star pulls on every other star. I wrote it four ways: one CPU thread, OpenMP, a plain CUDA kernel, and a tiled one where each block shares positions through shared memory.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>With 65,536 stars on an A100, the tiled kernel takes 8 ms per step and one CPU thread takes 1.5 seconds, so about 190 times faster. At 1,024 stars the GPU barely helps, because starting a kernel costs about as much as the work.</p><p>Along the way I found a data race in my own GPU kernel. Some stars felt forces from the past and some from the future, which is not how gravity works. Splitting each step into separate kernels fixed it.</p><p>Nsight Compute showed why tiling wins: at 16K stars it cuts reads from global memory by 16 times. And the leapfrog step keeps energy about ten times better than plain Euler, for the same cost.</p><p>The galaxy below starts from the same setup and uses the same leapfrog step, in plain JavaScript and with fewer stars.</p><figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas><figcaption>A black hole and a few hundred stars, every pair pulling on each other, kick-drift-kick leapfrog. Same starting galaxy as the repo. The disk starts cold, so it breaks into clumps; it starts over every 12 seconds.</figcaption></figure><p class="proj-meta"><span>c++, cuda, openmp, nsight compute, modal</span><a href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
             </details>
         </article>
         <article class="proj">
@@ -321,9 +321,9 @@
 </footer>
     </main>
 
-    <script src="js/main.js?v=3a15b59d"></script>
-    <script src="js/demos.js?v=3a15b59d"></script>
-    <script src="js/galaxy.js?v=3a15b59d"></script>
+    <script src="js/main.js?v=58e151c7"></script>
+    <script src="js/demos.js?v=58e151c7"></script>
+    <script src="js/galaxy.js?v=58e151c7"></script>
 </body>
 
 </html>

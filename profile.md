@@ -71,13 +71,17 @@ I have run the benchmark on three A100s. The controller removed the pod it was m
 
 <https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp>
 
-A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.
+A small galaxy, with a black hole, a disk of stars and a bulge, where every star pulls on every other star. I wrote it four ways: one CPU thread, OpenMP, a plain CUDA kernel, and a tiled one where each block shares positions through shared memory.
 
-Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.
+With 65,536 stars on an A100, the tiled kernel takes 8 ms per step and one CPU thread takes 1.5 seconds, so about 190 times faster. At 1,024 stars the GPU barely helps, because starting a kernel costs about as much as the work.
 
-The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.
+Along the way I found a data race in my own GPU kernel. Some stars felt forces from the past and some from the future, which is not how gravity works. Splitting each step into separate kernels fixed it.
 
-- Stack: c++, cuda, openmp, barnes–hut, nsight
+Nsight Compute showed why tiling wins: at 16K stars it cuts reads from global memory by 16 times. And the leapfrog step keeps energy about ten times better than plain Euler, for the same cost.
+
+The galaxy below starts from the same setup and uses the same leapfrog step, in plain JavaScript and with fewer stars.
+
+- Stack: c++, cuda, openmp, nsight compute, modal
 
 ### AI sprint planning assistant (1st of about 50 teams)
 
