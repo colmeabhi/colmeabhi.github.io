@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Hello, agent. This page is generated from structured data you can read directly:
+    /llms.txt      short index of everything here
+    /profile.md    full profile as Markdown
+    /resume.json   full profile as JSON Resume (https://jsonresume.org/schema)
+  Contact: abhishekahirrao09@gmail.com
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 2 am fix that CloudFormation undoes | Abhishek Ahirrao</title>
+    <meta name="description" content="Someone changes production by hand, and the template in Git quietly stops telling the truth. driftfix notices, has an LLM write the template change, and opens a pull request for a person to decide on. It started as a hackathon win and became a three-person rebuild that I led.">
+    <meta name="author" content="{{NAME}}">
+    <meta name="color-scheme" content="light dark">
+    <link rel="canonical" href="https://colmeabhi.github.io/case-studies/driftfix.html">
+
+    <!-- Machine-readable versions of this page -->
+    <link rel="alternate" type="text/markdown" href="https://colmeabhi.github.io/profile.md" title="Profile (Markdown)">
+    <link rel="alternate" type="application/json" href="https://colmeabhi.github.io/resume.json" title="Profile (JSON Resume)">
+    <link rel="alternate" type="text/plain" href="https://colmeabhi.github.io/llms.txt" title="llms.txt">
+    <link rel="alternate" type="text/markdown" href="https://colmeabhi.github.io/case-studies/driftfix.md" title="This case study (Markdown)">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="The 2 am fix that CloudFormation undoes | Abhishek Ahirrao">
+    <meta property="og:description" content="Someone changes production by hand, and the template in Git quietly stops telling the truth. driftfix notices, has an LLM write the template change, and opens a pull request for a person to decide on. It started as a hackathon win and became a three-person rebuild that I led.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://colmeabhi.github.io/case-studies/driftfix.html">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=6489cd8d">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=6489cd8d">
+
+    <!-- Theme: set before first paint to avoid a flash -->
+    <script>
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (dark) document.documentElement.classList.add('dark');
+        })();
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon.svg?v=6489cd8d" type="image/svg+xml">
+    <link rel="icon" href="../favicon-32.png?v=6489cd8d" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6489cd8d">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The 2 am fix that CloudFormation undoes",
+    "description": "Someone changes production by hand, and the template in Git quietly stops telling the truth. driftfix notices, has an LLM write the template change, and opens a pull request for a person to decide on. It started as a hackathon win and became a three-person rebuild that I led.",
+    "url": "https://colmeabhi.github.io/case-studies/driftfix.html",
+    "author": {
+        "@type": "Person",
+        "name": "Abhishek Ahirrao",
+        "url": "https://colmeabhi.github.io/"
+    }
+}
+    </script>
+
+    <link rel="stylesheet" href="../css/style.css?v=6489cd8d">
+</head>
+
+<body class="case-page">
+
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+
+    <!-- ─── Main container ─── -->
+    <main class="container">
+
+<article class="case">
+    <a class="back" href="../#projects">Back to Abhishek Ahirrao</a>
+    <h1>The 2 am fix that CloudFormation undoes</h1>
+    <p class="case-sub">Someone changes production by hand, and the template in Git quietly stops telling the truth. driftfix notices, has an LLM write the template change, and opens a pull request for a person to decide on. It started as a hackathon win and became a three-person rebuild that I led.</p>
+    <dl class="case-meta"><div><dt>What</dt><dd>Won the AWS x Datadog GenAI hackathon as Phantom, then rebuilt as a multi-tenant service by a team of three</dd></div><div><dt>State</dt><dd>Deployed on AWS and load tested with 10 stacks. Not ready for real customers yet, for reasons listed at the end</dd></div><div><dt>Built with</dt><dd>Python, AWS Lambda, Amazon Bedrock, CloudTrail, DynamoDB, EventBridge, SQS, CloudWatch, Terraform, React, FastAPI</dd></div></dl>
+    <nav class="links"><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a><a href="driftfix.md">Plain Markdown version</a></nav>
+    <p class="tldr">Once a day, four Lambdas read each customer&#x27;s CloudTrail logs, find write calls that did not come from CloudFormation, ask Bedrock to update the template, check the result with cfn-lint and open a pull request. driftfix can read the customer&#x27;s account and nothing else, and a person merges or closes every fix.</p>
+    <section class="case-section"><h2>The fix that gets undone</h2><p>Infrastructure as Code rests on one promise: the template in Git describes what is running. That promise lasts until the first incident.</p><p>It is late, production is slow, and an engineer opens the AWS console and bumps an instance from <code>t3.large</code> to <code>t3.xlarge</code>. The incident ends. Everyone goes to bed. Nobody updates the template.</p><p>Nothing goes wrong for a while. Then someone deploys an unrelated change, CloudFormation reads the template, sees <code>t3.large</code>, and helpfully resizes the instance back down. Same incident, second time, and now nobody remembers why.</p><p>AWS can tell you that a stack has drifted. It will not write the fix. Someone still has to find what changed, find the right file, and open a pull request. That is the boring part I wanted to automate.</p></section><section class="case-section"><h2>How a change becomes a pull request</h2><figure class="diagram"><svg viewBox="0 0 700 250" role="img" aria-label="driftfix pipeline: someone changes a resource in the AWS console, CloudTrail records the call, the daily Orchestrator finds it and groups it by stack, the Stack Processor asks Bedrock to update the template, the Validator runs cfn-lint and sends errors back up to three times, the PR Creator opens a pull request, and a person merges or closes it.">
+  <defs><marker id="ah-df" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
+  <g class="d-box">
+    <rect x="10" y="20" width="140" height="64" rx="8"/>
+    <rect x="186" y="20" width="140" height="64" rx="8"/>
+    <rect x="362" y="20" width="140" height="64" rx="8" class="d-strong"/>
+    <rect x="538" y="20" width="132" height="64" rx="8" class="d-strong"/>
+    <rect x="538" y="150" width="132" height="64" rx="8" class="d-strong"/>
+    <rect x="362" y="150" width="140" height="64" rx="8" class="d-strong"/>
+    <rect x="186" y="150" width="140" height="64" rx="8"/>
+    <rect x="10" y="150" width="140" height="64" rx="8"/>
+  </g>
+  <g class="d-text">
+    <text x="24" y="46" class="d-title">Console change</text>
+    <text x="200" y="46" class="d-title">CloudTrail</text>
+    <text x="376" y="46" class="d-title">Orchestrator</text>
+    <text x="552" y="46" class="d-title">Stack Processor</text>
+    <text x="552" y="176" class="d-title">Validator</text>
+    <text x="376" y="176" class="d-title">PR Creator</text>
+    <text x="200" y="176" class="d-title">Pull request</text>
+    <text x="24" y="176" class="d-title">A person</text>
+  </g>
+  <g class="d-muted">
+    <text x="24" y="66">a click in the AWS</text><text x="24" y="79">console at 2 am</text>
+    <text x="200" y="66">records the API call</text>
+    <text x="376" y="66">daily, 72 h of logs</text><text x="376" y="79">groups by stack</text>
+    <text x="552" y="66">Bedrock edits the</text><text x="552" y="79">template or params</text>
+    <text x="552" y="196">cfn-lint, at most</text><text x="552" y="209">3 tries</text>
+    <text x="376" y="196">branch + PR</text>
+    <text x="200" y="196">what changed, who,</text><text x="200" y="209">how confident</text>
+    <text x="24" y="196">merges or closes it</text>
+  </g>
+  <g class="d-line">
+    <path d="M150 52H184" marker-end="url(#ah-df)"/>
+    <path d="M326 52H360" marker-end="url(#ah-df)"/>
+    <path d="M502 52H536" marker-end="url(#ah-df)"/>
+    <path d="M584 84V148" marker-end="url(#ah-df)"/>
+    <path d="M630 150V86" marker-end="url(#ah-df)" class="d-dash"/>
+    <path d="M538 182H504" marker-end="url(#ah-df)"/>
+    <path d="M362 182H328" marker-end="url(#ah-df)"/>
+    <path d="M186 182H152" marker-end="url(#ah-df)"/>
+  </g>
+  <text x="576" y="122" text-anchor="end" class="d-muted">new files</text>
+  <text x="638" y="122" class="d-muted">errors</text>
+  <rect x="356" y="12" width="336" height="210" rx="11" class="d-accent"/>
+  <text x="524" y="240" text-anchor="middle" class="d-accent-text">the four Lambdas, in driftfix's own AWS account</text>
+</svg>
+<figcaption>One manual change, followed from the console to a pull request. The dashed arrow is the retry when cfn-lint rejects the model&#x27;s output.</figcaption></figure><p>The Orchestrator runs every morning at 07:00 UTC. For each customer it reads the last 72 hours of CloudTrail logs and keeps only successful write calls that CloudFormation did not make itself, so a normal deploy is not mistaken for drift. It reads the <code>aws:cloudformation:stack-name</code> tag on each changed resource to find which stack owns it.</p><p>Then it starts one Stack Processor per drifted stack, so ten drifted stacks means ten Lambdas running side by side. Each one sends the template, the parameter files next to it and the CloudTrail events to Bedrock, and gets back the changed files plus a summary, a root cause and a confidence score. The Validator checks them and the PR Creator opens the pull request.</p></section><section class="case-section"><h2>Decisions I would defend</h2><p>My part of the rebuild was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. These are the choices that shaped it.</p><ul class="bullets"><li><strong>Read-only, one hour at a time.</strong> Each run assumes a read-only role in the customer&#x27;s account and gets credentials that last one hour. The role only works with a secret <code>ExternalId</code> made at sign-up, so one customer cannot point driftfix at someone else&#x27;s account.</li><li><strong>Send the parameter files too.</strong> If the template says <code>InstanceType: !Ref Size</code> and <code>prod.json</code> sets <code>Size</code>, the right fix is one line in <code>prod.json</code>. A model that only sees the template would hardcode <code>t3.xlarge</code> into it and quietly change every other environment as well.</li><li><strong>Expect the model to be wrong sometimes.</strong> When cfn-lint finds errors, they go back to the model with its previous answer, up to three times. Only errors block a template. Warnings are ignored, because most hand-written templates already have some.</li><li><strong>Let the model say it is unsure.</strong> Below 0.6 confidence, or when the model asks for a review itself, the pull request gets <code>needs review</code> in its title and a warning banner.</li><li><strong>Never lose or repeat an event.</strong> DynamoDB keeps one record per CloudTrail event: <code>queued</code>, <code>pr_opened</code>, <code>no_change</code> or <code>failed</code>. Failed events are retried on later runs, which is why it reads 72 hours of logs while running every 24. Branch names are built from the event ID, so a retried Lambda finds its own branch instead of opening a second pull request.</li></ul></section><section class="case-section"><h2>Did it hold up?</h2><p>We created real drift in a test account with 10 CloudFormation stacks, by calling APIs like <code>PutBucketEncryption</code> and <code>ModifyDBInstance</code> directly, and then started the Orchestrator by hand.</p><div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Drifted stacks</th><th>Bedrock median</th><th>Bedrock slowest 1%</th><th>Errors</th></tr></thead><tbody><tr><td>Functional</td><td>1</td><td>1.7 s</td><td>1.7 s</td><td>0</td></tr><tr><td>Scaling</td><td>3</td><td>4.6 s</td><td>7.4 s</td><td>0</td></tr><tr><td>Security</td><td>6</td><td>4.3 s</td><td>9.7 s</td><td>0</td></tr><tr><td>Performance</td><td>10</td><td>5.1 s</td><td>13.3 s</td><td>0</td></tr><tr><td>Failure isolation</td><td>10, plus 1 broken tenant</td><td>5.3 s</td><td>14.9 s</td><td>0</td></tr></tbody></table></div><p class="note">One run per scenario, on 2026-05-04, against one AWS account. The single-stack run had one Bedrock call, so its median and slowest 1% are the same call.</p><p>Lambda did exactly what it says on the box: concurrency went up one for one with the number of drifted stacks, with no throttles. The slow part was the LLM. The median call stayed around 5 seconds, but the slowest calls grew to almost 15 seconds once ten stacks asked Bedrock at the same time.</p><p>The tenant with a broken IAM role was logged and skipped, and the other ten stacks finished normally. A search of every Lambda log group for <code>AKIA</code>, <code>ghp_</code>, <code>password</code> and friends found nothing. We also broke it on purpose three ways, with an invalid template, a throttle and a starved Lambda, and each one set off the alarm it should have.</p></section><section class="case-section"><h2>What is still wrong with it</h2><ul class="bullets"><li>The sign-up portal has no login. Anyone who can reach it can add or remove customers. That has to be fixed before it faces the internet.</li><li>All customers share one 15-minute Orchestrator run, one after another. That caps how many customers a run can serve.</li><li>If the template is not in the customer&#x27;s repository, driftfix falls back to the copy CloudFormation keeps and proposes it as <code>template.yaml</code> in the root, which may be the wrong place.</li><li>It only fixes CloudFormation, not Terraform.</li><li>The unit tests are run by hand. There is no CI yet.</li></ul></section><section class="case-section"><h2>Who did what</h2><p>This was a team of three. Kunal Elchipuram built the sign-up portal, deployed it on App Runner, ran the load tests and tuned the Bedrock integration. Ethan Machado built the dashboards, the alarms, the health checks and the failure scenarios. I designed the system and built the pipeline, the IAM and the Terraform.</p></section>
+</article>
+
+<section class="section case-next">
+    <h2>Keep reading</h2>
+    <ul class="more"><li><span class="more-name"><a href="cache-aware-scale-in.html">Teaching Kubernetes which pod to delete</a></span> When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project. The first GPU run showed no difference, and why turned out to be the interesting part.</li><li><span class="more-name"><a href="idempotent-order-api.html">One click, one order</a></span> How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.</li><li><span class="more-name"><a href="self-service-infra.html">An LLM that could only fill in the blanks</a></span> How about fifty data engineers got their own test infrastructure in minutes instead of a day, and why the LLM in the middle was never allowed to write any of it.</li></ul>
+</section>
+
+<footer class="foot">
+    <a href="../">Abhishek Ahirrao</a>
+    <a href="mailto:abhishekahirrao09@gmail.com">abhishekahirrao09@gmail.com</a>
+</footer>
+    </main>
+
+    <script src="../js/main.js?v=6489cd8d"></script>
+    <script src="../js/demos.js?v=6489cd8d"></script>
+</body>
+
+</html>
