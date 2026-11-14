@@ -66,19 +66,6 @@ I have run the benchmark on three A100s. The controller removed the pod it was m
 - Case study: https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md
 - Stack: python, kubernetes, vllm, llm-d, prometheus
 
-### Duplicate-safe order ledger
-
-<https://github.com/colmeabhi/idempotent-order-cloud-api>
-
-If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.
-
-My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.
-
-It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button.
-
-- Case study: https://colmeabhi.github.io/case-studies/idempotent-order-api.md
-- Stack: python, fastapi, postgresql, ecs fargate, rds, k6
-
 ### Parallel N-body simulation
 
 <https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp>
@@ -108,6 +95,19 @@ An OpenFlow controller that spreads HTTP traffic across four servers. The contro
 It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land.
 
 - Stack: python, ryu, openflow, mininet, locust
+
+### Duplicate-safe order ledger
+
+<https://github.com/colmeabhi/idempotent-order-cloud-api>
+
+If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.
+
+My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.
+
+It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button.
+
+- Case study: https://colmeabhi.github.io/case-studies/idempotent-order-api.md
+- Stack: python, fastapi, postgresql, ecs fargate, rds, k6
 
 ### GPU matrix multiplication
 

@@ -144,28 +144,6 @@
       ]
     },
     {
-      "name": "idempotent-order-cloud-api",
-      "title": "Duplicate-safe order ledger",
-      "featured": true,
-      "url": "https://github.com/colmeabhi/idempotent-order-cloud-api",
-      "description": "An order API where a retry never becomes a second order, even when retries arrive at the same instant.",
-      "keywords": [
-        "python",
-        "fastapi",
-        "postgresql",
-        "ecs fargate",
-        "rds",
-        "k6"
-      ],
-      "demo": "idempotency",
-      "caseStudy": "idempotent-order-api",
-      "story": [
-        "If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.",
-        "My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.",
-        "It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button."
-      ]
-    },
-    {
       "name": "parallelized-nbody-simulation-cuda-cpp",
       "title": "Parallel N-body simulation",
       "featured": true,
@@ -220,6 +198,28 @@
       "story": [
         "An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.",
         "It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land."
+      ]
+    },
+    {
+      "name": "idempotent-order-cloud-api",
+      "title": "Duplicate-safe order ledger",
+      "featured": false,
+      "url": "https://github.com/colmeabhi/idempotent-order-cloud-api",
+      "description": "An order API where a retry never becomes a second order, even when retries arrive at the same instant.",
+      "keywords": [
+        "python",
+        "fastapi",
+        "postgresql",
+        "ecs fargate",
+        "rds",
+        "k6"
+      ],
+      "demo": "idempotency",
+      "caseStudy": "idempotent-order-api",
+      "story": [
+        "If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.",
+        "My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.",
+        "It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button."
       ]
     },
     {

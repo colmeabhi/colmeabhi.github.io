@@ -223,7 +223,8 @@ def render_projects():
     more = []
     for p in rest:
         name = (f'<a href="{e(p["url"])}" target="_blank" rel="noopener">{e(p["title"])}</a>' if p.get("url") else e(p["title"]))
-        more.append(f'<li><span class="more-name">{name}</span> {e(p["description"])}</li>')
+        story = f' <a href="case-studies/{e(p["caseStudy"])}.html">Read the write-up</a>' if p.get("caseStudy") else ""
+        more.append(f'<li><span class="more-name">{name}</span> {e(p["description"])}{story}</li>')
 
     body = f'''    <div class="projects">{"".join(cards)}
     </div>
