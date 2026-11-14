@@ -265,15 +265,15 @@
       "endDate": "2027-05",
       "score": "3.71/4.0",
       "courses": [
-        "Design & Analysis of Algorithms",
-        "Computer Communication",
         "Cloud Computing",
-        "Parallel Programming",
+        "Computer Communication Systems",
+        "Advanced Parallel Processing",
+        "Design and Analysis of Algorithms",
         "Machine Learning"
       ],
       "highlights": [
         "GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.",
-        "Coursework: Design & Analysis of Algorithms, Computer Communication, Cloud Computing, Parallel Programming, Machine Learning."
+        "Coursework: Cloud Computing, Computer Communication Systems, Advanced Parallel Processing, Design and Analysis of Algorithms, Machine Learning."
       ]
     },
     {
@@ -284,7 +284,14 @@
       "endDate": "2021-07",
       "score": "8.4/10",
       "highlights": [
-        "GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering."
+        "GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.",
+        "Coursework: Operating Systems, Computer Networks, Distributed Computing, Database Management Systems."
+      ],
+      "courses": [
+        "Operating Systems",
+        "Computer Networks",
+        "Distributed Computing",
+        "Database Management Systems"
       ]
     }
   ],
