@@ -27,12 +27,12 @@
     <meta property="og:description" content="Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://colmeabhi.github.io/">
-    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=6489cd8d">
+    <meta property="og:image" content="https://colmeabhi.github.io/og-image.png?v=3a15b59d">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Abhishek Ahirrao, platform and software engineer">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=6489cd8d">
+    <meta name="twitter:image" content="https://colmeabhi.github.io/og-image.png?v=3a15b59d">
 
     <!-- Theme: set before first paint to avoid a flash -->
     <script>
@@ -50,9 +50,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="favicon.svg?v=6489cd8d" type="image/svg+xml">
-    <link rel="icon" href="favicon-32.png?v=6489cd8d" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6489cd8d">
+    <link rel="icon" href="favicon.svg?v=3a15b59d" type="image/svg+xml">
+    <link rel="icon" href="favicon-32.png?v=3a15b59d" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3a15b59d">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -128,7 +128,7 @@
 }
     </script>
 
-    <link rel="stylesheet" href="css/style.css?v=6489cd8d">
+    <link rel="stylesheet" href="css/style.css?v=3a15b59d">
 </head>
 
 <body class="">
@@ -155,7 +155,7 @@
     </div>
 
     <p class="status">Looking for full-time platform, infrastructure or backend roles, starting 2027.</p>
-    <p class="now">Right now: Finishing my M.S. project on LLM serving and learning Go on the side.</p>
+    <p class="now"><span class="now-label">Currently</span> <span class="sr-only">learning Go; going deeper on Kubernetes; building fault-tolerant services; reading about database internals; finishing my M.S. project; making my benchmark harder on purpose.</span><span class="ticker" data-items="[&quot;learning Go&quot;, &quot;going deeper on Kubernetes&quot;, &quot;building fault-tolerant services&quot;, &quot;reading about database internals&quot;, &quot;finishing my M.S. project&quot;, &quot;making my benchmark harder on purpose&quot;]" aria-hidden="true"><span class="ticker-word">learning Go</span></span></p>
 
     <nav class="links" aria-label="Contact and profiles"><a href="mailto:abhishekahirrao09@gmail.com" data-hello="abhishekahirrao09@gmail.com"><span data-hello-label>Email</span></a><a href="https://github.com/colmeabhi" target="_blank" rel="noopener me">GitHub</a><a href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener me">LinkedIn</a><a href="assets/Abhishek_Ahirrao_Resume.pdf" target="_blank" rel="noopener">Resume</a></nav>
 </header>
@@ -164,73 +164,69 @@
     <p class="strip-caption"><span id="strip-count">–</span> contributions on <a href="https://github.com/colmeabhi" target="_blank" rel="noopener">GitHub</a> in the last year, one bar per week. Hover for the numbers.</p>
 </section>
 <section class="section" id="work">
-    <h2>Work</h2>
+    <div class="section-head"><h2>Work</h2><button type="button" class="open-all" data-open-all aria-pressed="false">Open all</button></div>
     <ol class="rows">
         <li class="row">
-            <div class="row-top">
+            <details class="fold">
+                <summary><div class="row-top">
                 <h3>SDE-Platform II, <span class="at">Quantiphi</span></h3>
                 <span class="date">Jan 2024 to Jun 2025</span>
-            </div>
-            <div class="work-story"><p>I was on the platform team for a large insurer&#x27;s data platform. Most of my time went to two things.</p><p>The first was moving the ETL off Informatica servers onto Lambda and Fargate, run by Step Functions. I wrote the design and the cost model and took it through review with the platform, data, business and finance people. On paper it cuts compute cost by about 70%. That is a projection, not a bill.</p><p>The part I liked most was smaller. Full loads took a whole day, so a failure late in the run meant starting over and hitting the source databases twice the next day. I split them into batches of about two hours that restart on their own, so a failure only reruns its own batch. We met the next-day deadline on 95%+ of runs while the data doubled to about 600 GB a day. Most of the misses came from other teams changing their source databases, which is a sentence I said in a lot of meetings.</p><p>The second was a self-service tool that let about fifty data engineers get their own test infrastructure by asking for it, with an LLM in the middle that was only allowed to fill in blanks. There is a longer write-up on it.</p><p>I was also on call for six services. Putting all three environments on one Grafana dashboard, with alerts on what users actually felt, took a typical fix from about three hours to about ten minutes. Releases went out every two weeks, and a release that failed its checks rolled itself back to the last version that worked. I mentored two junior engineers for a year and handed the platform over to a five-person support team.</p><p class="proj-meta"><a href="case-studies/self-service-infra.html">Read the full story</a></p></div>
+            </div><p class="hook">I was on the platform team for a large insurer&#x27;s data platform. I designed the move of its ETL off Informatica, made day-long loads restartable, and built a self-service tool that gave about fifty engineers infrastructure on request.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>The ETL move started with a design and a cost model. I wrote both and took them through review with the platform, data, business and finance people. Lambda and Fargate, run by Step Functions, replaced the Informatica servers, and on paper that cuts compute cost by about 70%. That is a projection, not a bill.</p><p>The part I liked most was smaller. Full loads took a whole day, so a failure late in the run meant starting over and hitting the source databases twice the next day. I split them into batches of about two hours that restart on their own, so a failure only reruns its own batch. We met the next-day deadline on 95%+ of runs while the data doubled to about 600 GB a day. Most of the misses came from other teams changing their source databases, which is a sentence I said in a lot of meetings.</p><p>The self-service tool let about fifty data engineers get their own test infrastructure by asking for it, with an LLM in the middle that was only allowed to fill in blanks. There is a longer write-up on it.</p><p>I was also on call for six services. Putting all three environments on one Grafana dashboard, with alerts on what users actually felt, took a typical fix from about three hours to about ten minutes. Releases went out every two weeks, and a release that failed its checks rolled itself back to the last version that worked. I mentored two junior engineers for a year and handed the platform over to a five-person support team.</p><p class="proj-meta"><a href="case-studies/self-service-infra.html">Read the full story</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </li>
         <li class="row">
-            <div class="row-top">
+            <details class="fold">
+                <summary><div class="row-top">
                 <h3>SDE-Platform I, <span class="at">Quantiphi</span></h3>
                 <span class="date">Jan 2022 to Dec 2023</span>
-            </div>
-            <div class="work-story"><p>My first role was learning the platform by building it. I wrote the CloudFormation and Terraform for about forty stacks per environment, which depended on each other in ways you mostly find out about at deploy time. I also built the network that kept each team&#x27;s workloads apart, and spent a fair share of my time working out why one service could not talk to another.</p><p>I ran about thirty ETL Lambdas a day per environment, and disaster-recovery drills every four months. So when a production database actually failed, restoring it from a snapshot took about an hour. I also moved a database to a new AWS account with no downtime, which was mostly careful preparation followed by one quick switch.</p></div>
+            </div><p class="hook">My first role was learning the platform by building it: the infrastructure code, the network that kept teams apart, and the ETL jobs that ran every day.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>I wrote the CloudFormation and Terraform for about forty stacks per environment, which depended on each other in ways you mostly find out about at deploy time. I also built the network that kept each team&#x27;s workloads apart, and spent a fair share of my time working out why one service could not talk to another.</p><p>I ran about thirty ETL Lambdas a day per environment, and disaster-recovery drills every four months. So when a production database actually failed, restoring it from a snapshot took about an hour. I also moved a database to a new AWS account with no downtime, which was mostly careful preparation followed by one quick switch.</p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </li>
         <li class="row">
-            <div class="row-top">
+            <details class="fold">
+                <summary><div class="row-top">
                 <h3>Framework Engineer Intern, <span class="at">Quantiphi</span></h3>
                 <span class="date">Jul 2021 to Dec 2021</span>
-            </div>
-            <div class="work-story"><p>Before full time, I spent six months taking apart a monolithic ETL job and rebuilding it as small event-driven services on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS.</p></div>
+            </div><p class="hook">Six months before full time, breaking a monolithic ETL job into small event-driven services.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>I rebuilt it on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS.</p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </li>
     </ol>
 </section>
 <section class="section" id="projects">
-    <h2>Projects</h2>
+    <div class="section-head"><h2>Projects</h2><button type="button" class="open-all" data-open-all aria-pressed="false">Open all</button></div>
     <div class="projects">
         <article class="proj">
-            <div class="proj-top">
-                <h3>driftfix</h3><span class="tag">hackathon winner, then a team of three</span>
-            </div>
-            <p>Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.</p><p>driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.</p><p>It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.</p>
-            
-            <p class="proj-meta"><span>python, aws lambda, bedrock, dynamodb, terraform</span><a href="case-studies/driftfix.html">Read the full story</a><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a></p>
+            <details class="fold">
+                <summary><div class="proj-top"><h3>driftfix</h3><span class="tag">hackathon winner, then a team of three</span></div><p class="hook">Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.</p><p>It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.</p><p class="proj-meta"><span>python, aws lambda, bedrock, dynamodb, terraform</span><a href="case-studies/driftfix.html">Read the full story</a><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </article>
         <article class="proj">
-            <div class="proj-top">
-                <h3>Cache-aware scale-in</h3><span class="tag">M.S. project, in progress</span>
-            </div>
-            <p>When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.</p><p>I wrote a small controller that scores each replica&#x27;s cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.</p><p>I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica&#x27;s cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now.</p>
-            <div class="demo" data-demo="scale-in"></div>
-            <p class="proj-meta"><span>python, kubernetes, vllm, llm-d, prometheus</span><a href="case-studies/cache-aware-scale-in.html">Read the full story</a><a href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a></p>
+            <details class="fold">
+                <summary><div class="proj-top"><h3>Cache-aware scale-in</h3><span class="tag">M.S. project, in progress</span></div><p class="hook">When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>I wrote a small controller that scores each replica&#x27;s cache and tells Kubernetes which one is cheapest to lose.</p><p>I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica&#x27;s cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now.</p><p class="proj-meta"><span>python, kubernetes, vllm, llm-d, prometheus</span><a href="case-studies/cache-aware-scale-in.html">Read the full story</a><a href="https://github.com/colmeabhi/cache-aware-scale-in" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </article>
         <article class="proj">
-            <div class="proj-top">
-                <h3>Parallel N-body simulation</h3>
-            </div>
-            <p>A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.</p><p>Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.</p><p>The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.</p>
-            <figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas><figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure>
-            <p class="proj-meta"><span>c++, cuda, openmp, barnes–hut, nsight</span><a href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub</a></p>
+            <details class="fold">
+                <summary><div class="proj-top"><h3>Parallel N-body simulation</h3></div><p class="hook">A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.</p><p>The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.</p><figure class="demo demo-galaxy"><canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas><figcaption>340 bodies, direct-sum gravity, kick-drift-kick leapfrog. Running live.</figcaption></figure><p class="proj-meta"><span>c++, cuda, openmp, barnes–hut, nsight</span><a href="https://github.com/colmeabhi/parallelized-nbody-simulation-cuda-cpp" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </article>
         <article class="proj">
-            <div class="proj-top">
-                <h3>AI sprint planning assistant</h3><span class="tag">1st of about 50 teams</span>
-            </div>
-            <p>A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.</p><p>It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet.</p>
-            
-            <p class="proj-meta"><span>python, langchain, openai, redis, composio</span></p>
+            <details class="fold">
+                <summary><div class="proj-top"><h3>AI sprint planning assistant</h3><span class="tag">1st of about 50 teams</span></div><p class="hook">A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet.</p><p class="proj-meta"><span>python, langchain, openai, redis, composio</span></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </article>
         <article class="proj">
-            <div class="proj-top">
-                <h3>SDN load balancer</h3>
-            </div>
-            <p>An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.</p><p>It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land.</p>
-            <div class="demo" data-demo="load-balancer"></div>
-            <p class="proj-meta"><span>python, ryu, openflow, mininet, locust</span><a href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">Code on GitHub</a></p>
+            <details class="fold">
+                <summary><div class="proj-top"><h3>SDN load balancer</h3></div><p class="hook">An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>It has five algorithms you can swap, and I benchmarked all five with Locust. The demo below runs on its own and cycles through them. Click one to stay on it.</p><div class="demo" data-demo="load-balancer"></div><p class="proj-meta"><span>python, ryu, openflow, mininet, locust</span><a href="https://github.com/colmeabhi/sdn-load-balance" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </article>
     </div>
 
@@ -238,26 +234,30 @@
     <ul class="more"><li><span class="more-name"><a href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Duplicate-safe order ledger</a></span> An order API where a retry never becomes a second order, even when retries arrive at the same instant. <a href="case-studies/idempotent-order-api.html">Read the write-up</a></li><li><span class="more-name"><a href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">GPU matrix multiplication</a></span> CUDA kernels that run about 60 times faster than the plain CPU version. Team project.</li><li><span class="more-name"><a href="https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining" target="_blank" rel="noopener">California fishing compliance</a></span> Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.</li><li><span class="more-name"><a href="https://github.com/7shantanu7/Weave-Hackathon" target="_blank" rel="noopener">ResuMatch</a></span> An agent that rewrites a resume against feedback from a judge LLM. Built at WeaveHacks 2.0 with a team.</li></ul>
 </section>
 <section class="section" id="education">
-    <h2>Education</h2>
+    <div class="section-head"><h2>Education</h2><button type="button" class="open-all" data-open-all aria-pressed="false">Open all</button></div>
     <ol class="rows">
         <li class="row">
-            <div class="row-top">
+            <details class="fold">
+                <summary><div class="row-top">
                 <h3>MS Computer Science, <span class="at">San José State University</span></h3>
                 <span class="date">2025 to 2027</span>
-            </div>
-            <ul class="bullets"><li>GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.</li><li>Coursework: Cloud Computing, Computer Communication Systems, Advanced Parallel Processing, Design and Analysis of Algorithms, Machine Learning.</li></ul>
+            </div><p class="hook">GPA 3.71/4.0 · Student Assistant, CFETI · expected 2027.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>Coursework: Cloud Computing, Computer Communication Systems, Advanced Parallel Processing, Design and Analysis of Algorithms, Machine Learning.</p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </li>
         <li class="row">
-            <div class="row-top">
+            <details class="fold">
+                <summary><div class="row-top">
                 <h3>BE Computer Engineering, <span class="at">University of Mumbai</span></h3>
                 <span class="date">2017 to 2021</span>
-            </div>
-            <ul class="bullets"><li>GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.</li><li>Coursework: Operating Systems, Computer Networks, Distributed Computing, Database Management Systems.</li></ul>
+            </div><p class="hook">GPA 8.4/10 · Fr. Conceicao Rodrigues College of Engineering.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body"><p>Coursework: Operating Systems, Computer Networks, Distributed Computing, Database Management Systems.</p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>
         </li>
     </ol>
 </section>
 <section class="section" id="skills">
-    <h2>What I work with</h2>
+    <div class="section-head"><h2>What I work with</h2></div>
     <dl class="skills">
         <div class="skill">
             <dt>Every day</dt>
@@ -274,8 +274,33 @@
     </dl>
 </section>
 <section class="section" id="certs">
-    <h2>Certifications and awards</h2>
+    <div class="section-head"><h2>Certifications and awards</h2></div>
     <ul class="certs"><li><span>AWS Solutions Architect Associate</span><span class="date">AWS</span></li><li><span>AWS Developer Associate</span><span class="date">AWS</span></li><li><span>HashiCorp Terraform Associate</span><span class="date">HashiCorp</span></li><li><span>Winner, AWS × Datadog GenAI Hackathon</span><span class="date">2025</span></li><li><span>1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">2025</span></li></ul>
+</section>
+<section class="section" id="writing">
+    <div class="section-head"><h2>Writing</h2></div>
+    <ul class="writing">
+        <li>
+            <a class="w-title" href="case-studies/driftfix.html">The 2 am fix that CloudFormation undoes</a>
+            <p>Someone changes production by hand, and the template in Git quietly stops telling the truth. driftfix notices, has an LLM write the template change, and opens a pull request for a person to decide on. It started as a hackathon win and became a three-person rebuild that I led.</p>
+            <span class="w-meta">4 min read</span>
+        </li>
+        <li>
+            <a class="w-title" href="case-studies/cache-aware-scale-in.html">Teaching Kubernetes which pod to delete</a>
+            <p>When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project. The first GPU run showed no difference, and why turned out to be the interesting part.</p>
+            <span class="w-meta">6 min read</span>
+        </li>
+        <li>
+            <a class="w-title" href="case-studies/idempotent-order-api.html">One click, one order</a>
+            <p>How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.</p>
+            <span class="w-meta">3 min read</span>
+        </li>
+        <li>
+            <a class="w-title" href="case-studies/self-service-infra.html">An LLM that could only fill in the blanks</a>
+            <p>How about fifty data engineers got their own test infrastructure in minutes instead of a day, and why the LLM in the middle was never allowed to write any of it.</p>
+            <span class="w-meta">3 min read</span>
+        </li>
+    </ul>
 </section>
 <section class="section chat" id="contact" aria-label="Contact">
     <p class="bubble them">nice work! what's the best way to reach you?</p>
@@ -284,6 +309,7 @@
         write to <button type="button" class="link" data-copy="abhishekahirrao09@gmail.com"><span data-copy-label>abhishekahirrao09@gmail.com</span></button>
         or ping me on <a class="link" href="https://www.linkedin.com/in/abhishekahirrao/" target="_blank" rel="noopener">linkedin</a>
     </p>
+    
     <p class="bubble them">perfect, talk soon</p>
     <p class="bubble me">looking forward to it</p>
 </section>
@@ -295,9 +321,9 @@
 </footer>
     </main>
 
-    <script src="js/main.js?v=6489cd8d"></script>
-    <script src="js/demos.js?v=6489cd8d"></script>
-    <script src="js/galaxy.js?v=6489cd8d"></script>
+    <script src="js/main.js?v=3a15b59d"></script>
+    <script src="js/demos.js?v=3a15b59d"></script>
+    <script src="js/galaxy.js?v=3a15b59d"></script>
 </body>
 
 </html>

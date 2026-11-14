@@ -274,34 +274,45 @@
             redraw();
         }
 
-        function burst(n) {
-            if (running) return;
-            running = true;
-            var left = n;
-            timer = setInterval(function () {
-                request();
-                if (--left <= 0) { clearInterval(timer); running = false; }
-            }, 90);
+        // Runs on its own: a steady trickle of requests while the demo is on
+        // screen, moving to the next algorithm every few seconds until someone
+        // picks one, which pins it.
+        var pinned = false, visible = false, sent = 0, PER_ALGO = 36;
+
+        function tick() {
+            if (!visible || document.hidden) return;
+            if (!pinned && sent >= PER_ALGO) {
+                var i = ALGOS.map(function (a) { return a[0]; }).indexOf(algo);
+                select(ALGOS[(i + 1) % ALGOS.length][0]);
+            }
+            request();
+            sent++;
         }
 
         function select(id) {
             algo = id;
-            clearInterval(timer); running = false;
+            sent = 0;
             Array.prototype.forEach.call(tabs.children, function (t) { t.setAttribute('aria-selected', t.getAttribute('data-id') === id); });
             note.textContent = ALGOS.filter(function (a) { return a[0] === id; })[0][2];
             reset();
         }
 
         ALGOS.forEach(function (a) {
-            tabs.appendChild(el('button.lb-tab', { type: 'button', role: 'tab', 'data-id': a[0], text: a[1], onclick: function () { select(a[0]); burst(24); } }));
+            tabs.appendChild(el('button.lb-tab', { type: 'button', role: 'tab', 'data-id': a[0], text: a[1], onclick: function () { pinned = true; select(a[0]); } }));
         });
 
-        root.appendChild(header('Try it: pick an algorithm', 'simulation'));
+        root.appendChild(header('Requests through the switch', 'live'));
         root.appendChild(tabs);
         root.appendChild(stage);
-        root.appendChild(el('div.demo-row', {}, [button('Send 24 requests', function () { burst(24); }, true), button('Reset', reset)]));
         root.appendChild(note);
         select('round_robin');
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(root);
+        } else {
+            visible = true;
+        }
+        timer = setInterval(tick, reduced ? 700 : 240);
     }
 
     var DEMOS = { 'scale-in': scaleIn, 'idempotency': idempotency, 'load-balancer': loadBalancer };
