@@ -210,14 +210,6 @@
         </article>
         <article class="proj">
             <div class="proj-top">
-                <h3>Duplicate-safe order ledger</h3>
-            </div>
-            <p>If a client times out and sends the order again, you do not want to charge them twice. This API takes an idempotency key and guarantees exactly one order, however many times you hit send.</p><p>My first version looked correct and was not. Under parallel retries, 7 out of 20 test rounds returned a 500. The fix was a single INSERT ... ON CONFLICT, which is a lot less code than the bug was.</p><p>It runs on ECS Fargate with Postgres on RDS, all in Terraform. Go ahead and hammer the button.</p>
-            <div class="demo" data-demo="idempotency"></div>
-            <p class="proj-meta"><span>python, fastapi, postgresql, ecs fargate, rds, k6</span><a href="case-studies/idempotent-order-api.html">Read the full story</a><a href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Code on GitHub</a></p>
-        </article>
-        <article class="proj">
-            <div class="proj-top">
                 <h3>Parallel N-body simulation</h3>
             </div>
             <p>A galaxy simulation that I wrote five different ways: one thread, OpenMP, Barnes-Hut, and two CUDA kernels. Same physics every time, so the only thing that changes is how the work is split up.</p><p>Along the way I found a data race in my own GPU kernel. Some bodies were feeling forces from the past and some from the future, which is not how gravity works. Splitting the update across two kernel launches fixed it.</p><p>The small galaxy below runs the same integrator in your browser. The GPU numbers are not measured yet.</p>
@@ -243,7 +235,7 @@
     </div>
 
     <h3 class="sub-head">Smaller things</h3>
-    <ul class="more"><li><span class="more-name"><a href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">GPU matrix multiplication</a></span> CUDA kernels that run about 60 times faster than the plain CPU version. Team project.</li><li><span class="more-name"><a href="https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining" target="_blank" rel="noopener">California fishing compliance</a></span> Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.</li><li><span class="more-name"><a href="https://github.com/7shantanu7/Weave-Hackathon" target="_blank" rel="noopener">ResuMatch</a></span> An agent that rewrites a resume against feedback from a judge LLM. Built at WeaveHacks 2.0 with a team.</li></ul>
+    <ul class="more"><li><span class="more-name"><a href="https://github.com/colmeabhi/idempotent-order-cloud-api" target="_blank" rel="noopener">Duplicate-safe order ledger</a></span> An order API where a retry never becomes a second order, even when retries arrive at the same instant. <a href="case-studies/idempotent-order-api.html">Read the write-up</a></li><li><span class="more-name"><a href="https://github.com/rahuldadlani/cuda-gpu-matrix-multiplication" target="_blank" rel="noopener">GPU matrix multiplication</a></span> CUDA kernels that run about 60 times faster than the plain CPU version. Team project.</li><li><span class="more-name"><a href="https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining" target="_blank" rel="noopener">California fishing compliance</a></span> Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.</li><li><span class="more-name"><a href="https://github.com/7shantanu7/Weave-Hackathon" target="_blank" rel="noopener">ResuMatch</a></span> An agent that rewrites a resume against feedback from a judge LLM. Built at WeaveHacks 2.0 with a team.</li></ul>
 </section>
 <section class="section" id="education">
     <h2>Education</h2>
