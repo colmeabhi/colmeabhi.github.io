@@ -165,6 +165,17 @@ def render_glance():
 </section>'''
 
 
+def work_body(w):
+    """A role reads as short paragraphs when it has a `story`, otherwise as bullets.
+    The bullets stay in resume.json either way (the PDF and profile.md use them)."""
+    if not w.get("story"):
+        return bullets(w["highlights"])
+    body = "".join(f"<p>{e(par)}</p>" for par in w["story"])
+    if w.get("caseStudy"):
+        body += f'<p class="proj-meta"><a href="case-studies/{e(w["caseStudy"])}.html">Read the full story</a></p>'
+    return f'<div class="work-story">{body}</div>'
+
+
 def render_work():
     rows = []
     for w in DATA["work"]:
@@ -174,7 +185,7 @@ def render_work():
                 <h3>{e(w["position"])}, <span class="at">{e(w["name"])}</span></h3>
                 <span class="date">{date_range(w)}</span>
             </div>
-            {bullets(w["highlights"])}
+            {work_body(w)}
         </li>''')
     return section("work", "Work", f'    <ol class="rows">{"".join(rows)}\n    </ol>')
 
@@ -254,8 +265,15 @@ def render_block(block):
     raise ValueError(f"unknown case-study block: {block}")
 
 
+def case_code_url(case):
+    if not case.get("project"):
+        return None
+    return next(p for p in DATA["projects"] if p["name"] == case["project"]).get("url")
+
+
 def render_case(case):
-    project = next(p for p in DATA["projects"] if p["name"] == case["project"])
+    code = case_code_url(case)
+    code_link = f'<a href="{e(code)}" target="_blank" rel="noopener">Code on GitHub</a>' if code else ""
     meta = "".join(f"<div><dt>{e(k)}</dt><dd>{e(v)}</dd></div>" for k, v in case["meta"])
     sections = "".join(
         f'<section class="case-section"><h2>{e(sec["heading"])}</h2>' + "".join(render_block(b) for b in sec["body"]) + "</section>"
@@ -269,7 +287,7 @@ def render_case(case):
     <h1>{e(case["title"])}</h1>
     <p class="case-sub">{e(case["subtitle"])}</p>
     <dl class="case-meta">{meta}</dl>
-    <nav class="links"><a href="{e(project["url"])}" target="_blank" rel="noopener">Code on GitHub</a><a href="{e(case["slug"])}.md">Plain Markdown version</a></nav>
+    <nav class="links">{code_link}<a href="{e(case["slug"])}.md">Plain Markdown version</a></nav>
     <p class="tldr">{inline(case["tldr"])}</p>
     {sections}
 </article>
@@ -286,9 +304,9 @@ def render_case(case):
 
 
 def case_markdown(case):
-    project = next(p for p in DATA["projects"] if p["name"] == case["project"])
+    code = case_code_url(case)
     L = [f"# {case['title']}", "", f"> {case['subtitle']}", "",
-         f"Case study by {B['name']} ({SITE}). Code: {project['url']}", ""]
+         f"Case study by {B['name']} ({SITE})." + (f" Code: {code}" if code else ""), ""]
     L += [f"- **{k}:** {v}" for k, v in case["meta"]]
     L += ["", f"**In short:** {case['tldr']}", ""]
     for sec in case["sections"]:
@@ -448,7 +466,10 @@ def build_markdown():
         L += [f"### {w['position']}, {w['name']}", f"_{date_range(w)} · {w['location']}_", ""]
         if w.get("progression"):
             L += [f"Progression: {w['progression']}", ""]
-        L += [f"- {h}" for h in w["highlights"]] + [""]
+        L += [f"- {h}" for h in w["highlights"]]
+        if w.get("caseStudy"):
+            L += [f"- Case study: {SITE}/case-studies/{w['caseStudy']}.md"]
+        L += [""]
 
     L += ["## Projects", ""]
     for p in DATA["projects"]:

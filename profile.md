@@ -12,7 +12,7 @@
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
 - **Instagram:** https://instagram.com/colmeabhi
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-13. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-14. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 
@@ -25,6 +25,7 @@ _Jan 2024 to Jun 2025 · Mumbai_
 - Enforced policy-as-code guardrails on 120 CloudFormation and Terraform stacks across 3 accounts with Control Tower, SCPs and Lambda checks; non-compliant stacks rolled back automatically.
 - On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.
 - Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image.
+- Case study: https://colmeabhi.github.io/case-studies/self-service-infra.md
 
 ### SDE-Platform I, Quantiphi
 _Jan 2022 to Dec 2023 · Mumbai_

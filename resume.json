@@ -60,7 +60,15 @@
         "Enforced policy-as-code guardrails on 120 CloudFormation and Terraform stacks across 3 accounts with Control Tower, SCPs and Lambda checks; non-compliant stacks rolled back automatically.",
         "On-call for 6 production services; consolidated 3 environments into one Grafana dashboard with symptom-based CloudWatch alerts, cutting MTTR from 3 hours to 10 minutes.",
         "Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image."
-      ]
+      ],
+      "story": [
+        "I was on the platform team for a large insurer's data platform. Most of my time went to two things.",
+        "The first was moving the ETL off Informatica servers onto Lambda and Fargate, run by Step Functions. I wrote the design and the cost model and took it through review with the platform, data, business and finance people. On paper it cuts compute cost by about 70%. That is a projection, not a bill.",
+        "The part I liked most was smaller. Full loads took a whole day, so a failure late in the run meant starting over and hitting the source databases twice the next day. I split them into batches of about two hours that restart on their own, so a failure only reruns its own batch. We met the next-day deadline on 95%+ of runs while the data doubled to about 600 GB a day. Most of the misses came from other teams changing their source databases, which is a sentence I said in a lot of meetings.",
+        "The second was a self-service tool that let about fifty data engineers get their own test infrastructure by asking for it, with an LLM in the middle that was only allowed to fill in blanks. There is a longer write-up on it.",
+        "I was also on call for six services. Putting all three environments on one Grafana dashboard, with alerts on what users actually felt, took a typical fix from about three hours to about ten minutes. Releases went out every two weeks, and a release that failed its checks rolled itself back to the last version that worked. I mentored two junior engineers for a year and handed the platform over to a five-person support team."
+      ],
+      "caseStudy": "self-service-infra"
     },
     {
       "name": "Quantiphi",
@@ -72,6 +80,10 @@
         "Authored CloudFormation and Terraform for 40 interdependent stacks per environment and built the platform network: segmented VPC subnets, NACLs, security groups and IAM isolation between team workloads.",
         "Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.",
         "Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour."
+      ],
+      "story": [
+        "My first role was learning the platform by building it. I wrote the CloudFormation and Terraform for about forty stacks per environment, which depended on each other in ways you mostly find out about at deploy time. I also built the network that kept each team's workloads apart, and spent a fair share of my time working out why one service could not talk to another.",
+        "I ran about thirty ETL Lambdas a day per environment, and disaster-recovery drills every four months. So when a production database actually failed, restoring it from a snapshot took about an hour. I also moved a database to a new AWS account with no downtime, which was mostly careful preparation followed by one quick switch."
       ]
     },
     {
