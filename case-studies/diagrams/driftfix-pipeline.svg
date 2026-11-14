@@ -1,0 +1,47 @@
+<svg viewBox="0 0 700 250" role="img" aria-label="driftfix pipeline: someone changes a resource in the AWS console, CloudTrail records the call, the daily Orchestrator finds it and groups it by stack, the Stack Processor asks Bedrock to update the template, the Validator runs cfn-lint and sends errors back up to three times, the PR Creator opens a pull request, and a person merges or closes it.">
+  <defs><marker id="ah-df" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker></defs>
+  <g class="d-box">
+    <rect x="10" y="20" width="140" height="64" rx="8"/>
+    <rect x="186" y="20" width="140" height="64" rx="8"/>
+    <rect x="362" y="20" width="140" height="64" rx="8" class="d-strong"/>
+    <rect x="538" y="20" width="132" height="64" rx="8" class="d-strong"/>
+    <rect x="538" y="150" width="132" height="64" rx="8" class="d-strong"/>
+    <rect x="362" y="150" width="140" height="64" rx="8" class="d-strong"/>
+    <rect x="186" y="150" width="140" height="64" rx="8"/>
+    <rect x="10" y="150" width="140" height="64" rx="8"/>
+  </g>
+  <g class="d-text">
+    <text x="24" y="46" class="d-title">Console change</text>
+    <text x="200" y="46" class="d-title">CloudTrail</text>
+    <text x="376" y="46" class="d-title">Orchestrator</text>
+    <text x="552" y="46" class="d-title">Stack Processor</text>
+    <text x="552" y="176" class="d-title">Validator</text>
+    <text x="376" y="176" class="d-title">PR Creator</text>
+    <text x="200" y="176" class="d-title">Pull request</text>
+    <text x="24" y="176" class="d-title">A person</text>
+  </g>
+  <g class="d-muted">
+    <text x="24" y="66">a click in the AWS</text><text x="24" y="79">console at 2 am</text>
+    <text x="200" y="66">records the API call</text>
+    <text x="376" y="66">daily, 72 h of logs</text><text x="376" y="79">groups by stack</text>
+    <text x="552" y="66">Bedrock edits the</text><text x="552" y="79">template or params</text>
+    <text x="552" y="196">cfn-lint, at most</text><text x="552" y="209">3 tries</text>
+    <text x="376" y="196">branch + PR</text>
+    <text x="200" y="196">what changed, who,</text><text x="200" y="209">how confident</text>
+    <text x="24" y="196">merges or closes it</text>
+  </g>
+  <g class="d-line">
+    <path d="M150 52H184" marker-end="url(#ah-df)"/>
+    <path d="M326 52H360" marker-end="url(#ah-df)"/>
+    <path d="M502 52H536" marker-end="url(#ah-df)"/>
+    <path d="M584 84V148" marker-end="url(#ah-df)"/>
+    <path d="M630 150V86" marker-end="url(#ah-df)" class="d-dash"/>
+    <path d="M538 182H504" marker-end="url(#ah-df)"/>
+    <path d="M362 182H328" marker-end="url(#ah-df)"/>
+    <path d="M186 182H152" marker-end="url(#ah-df)"/>
+  </g>
+  <text x="576" y="122" text-anchor="end" class="d-muted">new files</text>
+  <text x="638" y="122" class="d-muted">errors</text>
+  <rect x="356" y="12" width="336" height="210" rx="11" class="d-accent"/>
+  <text x="524" y="240" text-anchor="middle" class="d-accent-text">the four Lambdas, in driftfix's own AWS account</text>
+</svg>

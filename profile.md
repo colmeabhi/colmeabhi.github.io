@@ -50,6 +50,7 @@ driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Be
 
 It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.
 
+- Case study: https://colmeabhi.github.io/case-studies/driftfix.md
 - See also: [hackathon prototype](https://github.com/krishmula/phantom)
 - Stack: python, aws lambda, bedrock, dynamodb, terraform
 
