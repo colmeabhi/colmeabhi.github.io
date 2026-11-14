@@ -21,9 +21,8 @@
     "status": "Looking for full-time platform, infrastructure or backend roles, starting 2027.",
     "summary": "Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.",
     "intro": [
-      "I got into tech because it is one of the few fields where things change fast enough that you can actually watch it happen. Amazon changed how we shop almost overnight. Social media put everyone in the same room, in some good ways and some bad ones. Now we have neural nets and LLMs, and it feels like it is happening all over again.",
-      "I wanted to make an impact, and I wanted to be able to see it. I am early in my career, so for now that mostly means building the parts nobody notices: the platforms, pipelines and infrastructure that other people's work runs on. I spent three and a half years doing that at Quantiphi, and I am now doing my master's at San José State, working on how LLMs get served.",
-      "I am not where I want to be yet. I am working on it."
+      "Most of what changed the world while I was growing up was software. Amazon changed how people shop. Social media changed how people talk, not always for the better. Now LLMs are changing how people work, and I wanted to help build that, not just watch it.",
+      "So far that has meant the unglamorous layer: the platforms, pipelines and infrastructure other people's work runs on. I spent three and a half years there at Quantiphi, and I am now doing my master's at San José State, working on how LLMs get served. It turns out the unglamorous layer is where a lot of the interesting problems are."
     ],
     "now": "Finishing my M.S. project on LLM serving and learning Go on the side.",
     "resume": "assets/Abhishek_Ahirrao_Resume.pdf",
