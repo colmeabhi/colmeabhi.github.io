@@ -33,10 +33,10 @@ _Jan 2022 to Dec 2023 · Mumbai_
 - Built and operated 30 daily ETL Lambdas per environment with run-locking, health checks and control-table backups, deployed through Jenkins pipelines with Trivy scanning.
 - Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour.
 
-### Framework Engineer Intern, Quantiphi
-_Jul 2021 to Dec 2021 · Remote_
+### Engineering Intern, Quantiphi
+_Jul 2021 to Nov 2021 · Remote_
 
-- Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS.
+- Built Grafana dashboards on CloudWatch, Prometheus and Loki tracking 20+ signals across AWS data pipelines, with health checks and SNS alerts that cut issue detection time ~70%.
 
 ## Projects
 
@@ -122,11 +122,19 @@ CUDA kernels that run about 60 times faster than the plain CPU version. Team pro
 
 - Stack: c++, cuda
 
+### Sliding-window transfer protocol
+
+<https://github.com/colmeabhi/tcp-client-server-protocol-implementation>
+
+Delivers 10 million packets with 1% of them dropped on purpose, using a 256-packet window, wrapping sequence numbers and selective resends. Course project with a teammate.
+
+- Stack: python, sockets
+
 ### California fishing compliance
 
 <https://github.com/colmeabhi/regulated-fish-classification-california-datasetcreator-modeltraining>
 
-Scrapes a dataset and trains a model to tell regulated fish species apart. 91% accuracy.
+Tells an angler whether a California catch is legal to keep. I owned the ML in a team of two: about 4,900 photos of 28 species and a two-stage ResNet50 that powers a mobile app.
 
 - Stack: python, pytorch, opencv
 
