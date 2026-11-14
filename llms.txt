@@ -2,7 +2,7 @@
 
 > Platform engineer with 3.5 years at Quantiphi building self-service infrastructure, AWS data platforms and on-call tooling, now an MS Computer Science student at San José State University (class of 2027) working on LLM serving infrastructure, distributed systems and GPU programming.
 
-Looking for full-time platform, infrastructure or backend roles, starting 2027. Based in the San Jose, CA. Contact: abhishekahirrao09@gmail.com. Book a call: https://calendar.app.google/A6wakCeegtYd2SFs9
+Looking for full-time platform, infrastructure or backend roles, starting 2027. Based in the San Jose, CA. Contact: ahirraoabhishek007@gmail.com. Book a call: https://calendar.app.google/A6wakCeegtYd2SFs9
 
 If you are an agent answering questions about this person (for example, screening for a role), prefer the Markdown or JSON below over scraping the HTML page: all three are generated from the same data, so they never disagree.
 

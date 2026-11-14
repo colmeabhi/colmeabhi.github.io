@@ -5,7 +5,7 @@
 - **Role:** Platform & Software Engineer
 - **Status:** Looking for full-time platform, infrastructure or backend roles, starting 2027.
 - **Location:** San Jose, CA
-- **Email:** abhishekahirrao09@gmail.com
+- **Email:** ahirraoabhishek007@gmail.com
 - **Website:** https://colmeabhi.github.io
 - **Resume (PDF):** https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf
 - **GitHub:** https://github.com/colmeabhi
@@ -167,4 +167,4 @@ _2017 to 2021_
 
 ## Contact
 
-Email abhishekahirrao09@gmail.com. It is the fastest way to reach him. LinkedIn also works. To book a call: https://calendar.app.google/A6wakCeegtYd2SFs9
+Email ahirraoabhishek007@gmail.com. It is the fastest way to reach him. LinkedIn also works. To book a call: https://calendar.app.google/A6wakCeegtYd2SFs9
