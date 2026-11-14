@@ -11,7 +11,7 @@
     "pronunciation": "uh-bhee",
     "handle": "colmeabhi",
     "label": "Platform & Software Engineer",
-    "email": "abhishekahirrao09@gmail.com",
+    "email": "ahirraoabhishek007@gmail.com",
     "url": "https://colmeabhi.github.io",
     "location": {
       "city": "San Jose",
@@ -38,7 +38,16 @@
         "url": "https://www.linkedin.com/in/abhishekahirrao/"
       }
     ],
-    "image": "assets/profilepic.jpeg"
+    "image": "assets/profilepic.jpeg",
+    "currently": [
+      "learning Go",
+      "going deeper on Kubernetes",
+      "building fault-tolerant services",
+      "reading about database internals",
+      "finishing my M.S. project",
+      "making my benchmark harder on purpose"
+    ],
+    "booking": "https://calendar.app.google/A6wakCeegtYd2SFs9"
   },
   "work": [
     {
@@ -56,13 +65,13 @@
         "Shipped a major release every 2 weeks via Jenkins with two-layer rollback: CloudFormation reverted failed stack updates, and failed post-deploy checks redeployed the last known-good template and image."
       ],
       "story": [
-        "I was on the platform team for a large insurer's data platform. Most of my time went to two things.",
-        "The first was moving the ETL off Informatica servers onto Lambda and Fargate, run by Step Functions. I wrote the design and the cost model and took it through review with the platform, data, business and finance people. On paper it cuts compute cost by about 70%. That is a projection, not a bill.",
+        "The ETL move started with a design and a cost model. I wrote both and took them through review with the platform, data, business and finance people. Lambda and Fargate, run by Step Functions, replaced the Informatica servers, and on paper that cuts compute cost by about 70%. That is a projection, not a bill.",
         "The part I liked most was smaller. Full loads took a whole day, so a failure late in the run meant starting over and hitting the source databases twice the next day. I split them into batches of about two hours that restart on their own, so a failure only reruns its own batch. We met the next-day deadline on 95%+ of runs while the data doubled to about 600 GB a day. Most of the misses came from other teams changing their source databases, which is a sentence I said in a lot of meetings.",
-        "The second was a self-service tool that let about fifty data engineers get their own test infrastructure by asking for it, with an LLM in the middle that was only allowed to fill in blanks. There is a longer write-up on it.",
+        "The self-service tool let about fifty data engineers get their own test infrastructure by asking for it, with an LLM in the middle that was only allowed to fill in blanks. There is a longer write-up on it.",
         "I was also on call for six services. Putting all three environments on one Grafana dashboard, with alerts on what users actually felt, took a typical fix from about three hours to about ten minutes. Releases went out every two weeks, and a release that failed its checks rolled itself back to the last version that worked. I mentored two junior engineers for a year and handed the platform over to a five-person support team."
       ],
-      "caseStudy": "self-service-infra"
+      "caseStudy": "self-service-infra",
+      "hook": "I was on the platform team for a large insurer's data platform. I designed the move of its ETL off Informatica, made day-long loads restartable, and built a self-service tool that gave about fifty engineers infrastructure on request."
     },
     {
       "name": "Quantiphi",
@@ -76,9 +85,10 @@
         "Ran 5 types of disaster-recovery drill every 4 months; restored a failed production RDS instance in about an hour."
       ],
       "story": [
-        "My first role was learning the platform by building it. I wrote the CloudFormation and Terraform for about forty stacks per environment, which depended on each other in ways you mostly find out about at deploy time. I also built the network that kept each team's workloads apart, and spent a fair share of my time working out why one service could not talk to another.",
+        "I wrote the CloudFormation and Terraform for about forty stacks per environment, which depended on each other in ways you mostly find out about at deploy time. I also built the network that kept each team's workloads apart, and spent a fair share of my time working out why one service could not talk to another.",
         "I ran about thirty ETL Lambdas a day per environment, and disaster-recovery drills every four months. So when a production database actually failed, restoring it from a snapshot took about an hour. I also moved a database to a new AWS account with no downtime, which was mostly careful preparation followed by one quick switch."
-      ]
+      ],
+      "hook": "My first role was learning the platform by building it: the infrastructure code, the network that kept teams apart, and the ETL jobs that ran every day."
     },
     {
       "name": "Quantiphi",
@@ -90,8 +100,9 @@
         "Broke a monolithic ETL into event-driven microservices on Lambda, Step Functions and SQS, and ran containerised ETL workloads on ECS."
       ],
       "story": [
-        "Before full time, I spent six months taking apart a monolithic ETL job and rebuilding it as small event-driven services on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS."
-      ]
+        "I rebuilt it on Lambda, Step Functions and SQS, with the heavier parts running as containers on ECS."
+      ],
+      "hook": "Six months before full time, breaking a monolithic ETL job into small event-driven services."
     }
   ],
   "projects": [
@@ -136,11 +147,10 @@
         "llm-d",
         "prometheus"
       ],
-      "demo": "scale-in",
       "caseStudy": "cache-aware-scale-in",
       "story": [
         "When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.",
-        "I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.",
+        "I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose.",
         "I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica's cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now."
       ]
     },
@@ -198,7 +208,7 @@
       "demo": "load-balancer",
       "story": [
         "An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.",
-        "It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land."
+        "It has five algorithms you can swap, and I benchmarked all five with Locust. The demo below runs on its own and cycles through them. Click one to stay on it."
       ]
     },
     {

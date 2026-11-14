@@ -158,3 +158,73 @@ document.querySelectorAll('[data-hello]').forEach(function (link) {
         .then(render)
         .catch(function () { strip.parentNode.hidden = false; strip.hidden = true; });
 })();
+
+/* ============================================
+   Folds: "Open all" per section, and open
+   everything before printing.
+   ============================================ */
+
+document.querySelectorAll('[data-open-all]').forEach(function (btn) {
+    var section = btn.closest('section');
+    var folds = section.querySelectorAll('details.fold');
+    var sync = function () {
+        var allOpen = Array.prototype.every.call(folds, function (d) { return d.open; });
+        btn.textContent = allOpen ? 'Close all' : 'Open all';
+        btn.setAttribute('aria-pressed', allOpen);
+    };
+    btn.addEventListener('click', function () {
+        var open = !Array.prototype.every.call(folds, function (d) { return d.open; });
+        folds.forEach(function (d) { d.open = open; });
+        sync();
+    });
+    folds.forEach(function (d) { d.addEventListener('toggle', sync); });
+});
+
+document.querySelectorAll('[data-fold-close]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var d = btn.closest('details');
+        d.open = false;
+        var top = d.getBoundingClientRect().top;
+        if (top < 0) d.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+});
+
+window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('details.fold').forEach(function (d) { d.open = true; });
+});
+
+/* ============================================
+   "Currently ..." ticker. One phrase at a time;
+   the old one lifts out, the new one settles in.
+   Pauses on hover and when the tab is hidden.
+   Reduced motion: it just shows the first one.
+   ============================================ */
+
+(function () {
+    var ticker = document.querySelector('.ticker');
+    if (!ticker) return;
+    var items;
+    try { items = JSON.parse(ticker.getAttribute('data-items')); } catch (e) { return; }
+    if (!items || items.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var i = 0, paused = false;
+    ticker.addEventListener('mouseenter', function () { paused = true; });
+    ticker.addEventListener('mouseleave', function () { paused = false; });
+
+    setInterval(function () {
+        if (paused || document.hidden) return;
+        i = (i + 1) % items.length;
+        var old = ticker.querySelector('.ticker-word');
+        var next = document.createElement('span');
+        next.className = 'ticker-word is-entering';
+        next.textContent = items[i];
+        old.classList.add('is-leaving');
+        ticker.appendChild(next);
+        ticker.style.width = next.offsetWidth + 'px';
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () { next.classList.remove('is-entering'); });
+        });
+        setTimeout(function () { old.remove(); }, 650);
+    }, 2800);
+})();

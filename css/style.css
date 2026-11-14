@@ -151,7 +151,48 @@ h1 { font-size: 2.6rem; line-height: 1.08; letter-spacing: -0.022em; }
     border-left: 2px solid var(--sage);
     font-weight: 500;
 }
-.now { margin-top: 0.35rem; padding-left: calc(0.9rem + 2px); font-size: 0.9375rem; color: var(--muted); }
+.now { margin-top: 0.35rem; padding-left: calc(0.9rem + 2px); font-size: 0.9375rem; line-height: 1.5; color: var(--muted); }
+.now-label { margin-right: 0.15rem; }
+
+/* "Currently ..." ticker: the phrase lifts out and the next settles in */
+.ticker {
+    position: relative;
+    display: inline-block;
+    height: 1.5em;
+    line-height: 1.5em;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--fg);
+    transition: width 0.5s var(--ease);
+}
+.ticker-word {
+    display: inline-block;
+    transition: transform 0.6s var(--ease), opacity 0.45s ease, filter 0.45s ease;
+}
+.ticker-word.is-entering { transform: translateY(0.85em); opacity: 0; filter: blur(2px); }
+.ticker-word.is-leaving {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(-0.85em);
+    opacity: 0;
+    filter: blur(2px);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.book {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+}
 
 .links {
     display: flex;
@@ -245,6 +286,107 @@ h2 {
 }
 
 h3 { font-size: 1.2rem; line-height: 1.3; }
+
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.7rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border);
+}
+.section-head h2 { padding: 0; margin: 0; border: 0; }
+
+.open-all {
+    font: inherit;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+}
+.open-all:hover { color: var(--fg); text-decoration-color: currentColor; }
+
+/* ─── Folds: heading and a two-line hook, opening to the rest ─── */
+
+.fold > summary {
+    display: block;
+    list-style: none;
+    cursor: pointer;
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 2px; }
+
+.hook {
+    margin-top: 0.45rem;
+    color: var(--fg-soft);
+    text-wrap: pretty;
+}
+.fold:not([open]) .hook {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.fold-cue {
+    display: inline-block;
+    margin-top: 0.45rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+}
+.fold-cue::after {
+    content: '';
+    display: inline-block;
+    width: 0.38em;
+    height: 0.38em;
+    margin-left: 0.45em;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: translateY(-0.2em) rotate(45deg);
+    transition: transform 0.25s var(--ease);
+}
+.fold > summary:hover .fold-cue { color: var(--fg); }
+.cue-close { display: none; }
+/* once open, the cue moves to the end of the text, where you finish reading */
+.fold[open] > summary .fold-cue { display: none; }
+.fold-close {
+    font-family: inherit;
+    line-height: inherit;
+    margin-top: 1rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.fold-close::after { transform: translateY(0.05em) rotate(-135deg); }
+.proj .hook { margin-top: 0; }
+.fold-body > p { margin-top: 0.7rem; color: var(--fg-soft); text-wrap: pretty; }
+.fold-body > .demo { margin-top: 1.25rem; }
+.fold[open] .fold-body { animation: fold-in 0.35s var(--ease); }
+@keyframes fold-in { from { opacity: 0; transform: translateY(-4px); } }
+.fold-static .hook { margin-top: 0.45rem; }
+
+/* ─── Writing ─── */
+
+.writing { display: grid; gap: 1.6rem; }
+.writing li { display: grid; gap: 0.25rem; }
+.w-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.3;
+    color: var(--fg);
+    text-decoration: none;
+}
+.w-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.writing p { color: var(--fg-soft); font-size: 0.9375rem; text-wrap: pretty; }
+.w-meta { font-size: 0.8125rem; color: var(--muted); }
 
 /* ─── Work and education ─── */
 
@@ -701,7 +843,8 @@ td:first-child { color: var(--fg); }
 
 @media print {
     :root { --bg: #fff; --surface: #fff; --fg: #000; --fg-soft: #222; --muted: #555; --border: #ccc; }
-    .theme-toggle, .glance, .demo, .chat, .foot-agents { display: none !important; }
+    .theme-toggle, .glance, .demo, .chat, .foot-agents, .open-all, .fold-cue, .ticker, .now { display: none !important; }
+    .fold:not([open]) .hook { display: block; -webkit-line-clamp: unset; }
     .container { max-width: none; padding: 0; }
     body { font-size: 11pt; }
     .section { margin-top: 1.75rem; }

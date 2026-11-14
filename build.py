@@ -112,12 +112,34 @@ ICONS = {
 }
 
 
-def section(sid, title, body):
+def section(sid, title, body, foldable=False):
+    toggle = ('<button type="button" class="open-all" data-open-all aria-pressed="false">Open all</button>'
+              if foldable else "")
     return f'''
 <section class="section" id="{sid}">
-    <h2>{e(title)}</h2>
+    <div class="section-head"><h2>{e(title)}</h2>{toggle}</div>
 {body}
 </section>'''
+
+
+def fold(head, hook, body):
+    """An item that shows its heading and a two-line hook, and opens to the rest.
+    Built on <details>, so it works without JavaScript and find-in-page opens it."""
+    hook_html = f'<p class="hook">{e(hook)}</p>' if hook else ""
+    if not body.strip():
+        return f'<div class="fold-static">{head}{hook_html}</div>'
+    return f'''<details class="fold">
+                <summary>{head}{hook_html}<span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
+                <div class="fold-body">{body}<button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+            </details>'''
+
+
+def split_story(item):
+    """(hook, remaining paragraphs). An explicit `hook` leads; otherwise the first paragraph is the hook."""
+    story = list(item.get("story") or [])
+    if item.get("hook"):
+        return item["hook"], story
+    return (story[0] if story else ""), story[1:]
 
 
 def bullets(items):
@@ -133,6 +155,8 @@ def render_hero():
     links = [f'<a href="mailto:{e(B["email"])}" data-hello="{e(B["email"])}"><span data-hello-label>Email</span></a>']
     links += [f'<a href="{e(p["url"])}" target="_blank" rel="noopener me">{e(p["network"])}</a>' for p in B["profiles"]]
     links += [f'<a href="{e(B["resume"])}" target="_blank" rel="noopener">Resume</a>']
+    if B.get("booking"):
+        links.insert(0, f'<a class="book" href="{e(B["booking"])}" target="_blank" rel="noopener">Book a call</a>')
     bio = "".join(f"<p>{e(p)}</p>" for p in B["intro"])
     photo = f'<img class="photo" src="{e(PHOTO)}" alt="{e(B["name"])}" width="96" height="96">' if PHOTO else ""
     return f'''
@@ -150,10 +174,40 @@ def render_hero():
     </div>
 
     <p class="status">{e(B["status"])}</p>
-    <p class="now">Right now: {e(B["now"])}</p>
+    {render_currently()}
 
     <nav class="links" aria-label="Contact and profiles">{"".join(links)}</nav>
 </header>'''
+
+
+def render_currently():
+    items = B.get("currently") or [B["now"]]
+    first = items[0]
+    data = e(json.dumps(items, ensure_ascii=False))
+    return (f'<p class="now"><span class="now-label">Currently</span> '
+            f'<span class="sr-only">{e("; ".join(items))}.</span>'
+            f'<span class="ticker" data-items="{data}" aria-hidden="true"><span class="ticker-word">{e(first)}</span></span></p>')
+
+
+def render_writing():
+    items = []
+    for c in CASES:
+        words = len(json.dumps(c["sections"], ensure_ascii=False).split())
+        minutes = max(2, round(words / 220))
+        items.append(f'''
+        <li>
+            <a class="w-title" href="case-studies/{e(c["slug"])}.html">{e(c["title"])}</a>
+            <p>{e(plain(c["subtitle"]))}</p>
+            <span class="w-meta">{minutes} min read</span>
+        </li>''')
+    for w in DATA.get("writing", []):
+        items.append(f'''
+        <li>
+            <a class="w-title" href="{e(w["url"])}" target="_blank" rel="noopener">{e(w["title"])}</a>
+            <p>{e(w.get("summary", ""))}</p>
+            <span class="w-meta">{e(w.get("date", ""))}</span>
+        </li>''')
+    return section("writing", "Writing", f'    <ul class="writing">{"".join(items)}\n    </ul>')
 
 
 def render_glance():
@@ -165,15 +219,20 @@ def render_glance():
 </section>'''
 
 
-def work_body(w):
-    """A role reads as short paragraphs when it has a `story`, otherwise as bullets.
+def work_item(w):
+    """A role reads as a two-line hook that opens to short paragraphs.
     The bullets stay in resume.json either way (the PDF and profile.md use them)."""
+    head = f'''<div class="row-top">
+                <h3>{e(w["position"])}, <span class="at">{e(w["name"])}</span></h3>
+                <span class="date">{date_range(w)}</span>
+            </div>'''
     if not w.get("story"):
-        return bullets(w["highlights"])
-    body = "".join(f"<p>{e(par)}</p>" for par in w["story"])
+        return head + bullets(w["highlights"])
+    hook, rest = split_story(w)
+    body = "".join(f"<p>{e(par)}</p>" for par in rest)
     if w.get("caseStudy"):
         body += f'<p class="proj-meta"><a href="case-studies/{e(w["caseStudy"])}.html">Read the full story</a></p>'
-    return f'<div class="work-story">{body}</div>'
+    return fold(head, hook, body)
 
 
 def render_work():
@@ -181,13 +240,9 @@ def render_work():
     for w in DATA["work"]:
         rows.append(f'''
         <li class="row">
-            <div class="row-top">
-                <h3>{e(w["position"])}, <span class="at">{e(w["name"])}</span></h3>
-                <span class="date">{date_range(w)}</span>
-            </div>
-            {work_body(w)}
+            {work_item(w)}
         </li>''')
-    return section("work", "Work", f'    <ol class="rows">{"".join(rows)}\n    </ol>')
+    return section("work", "Work", f'    <ol class="rows">{"".join(rows)}\n    </ol>', foldable=True)
 
 
 def render_demo(name):
@@ -204,20 +259,19 @@ def render_projects():
     cards = []
     for p in featured:
         tag = f'<span class="tag">{e(p["badge"])}</span>' if p.get("badge") else ""
-        story = "".join(f"<p>{e(par)}</p>" for par in p.get("story", [p["description"]]))
+        hook, paras = split_story(p) if p.get("story") else (p["description"], [])
         links = []
         if p.get("caseStudy"):
             links.append(f'<a href="case-studies/{e(p["caseStudy"])}.html">Read the full story</a>')
         if p.get("url"):
             links.append(f'<a href="{e(p["url"])}" target="_blank" rel="noopener">Code on GitHub</a>')
+        body = "".join(f"<p>{e(par)}</p>" for par in paras)
+        body += render_demo(p["demo"]) if p.get("demo") else ""
+        body += f'<p class="proj-meta"><span>{e(", ".join(p["keywords"]))}</span>{"".join(links)}</p>'
+        head = f'<div class="proj-top"><h3>{e(p["title"])}</h3>{tag}</div>'
         cards.append(f'''
         <article class="proj">
-            <div class="proj-top">
-                <h3>{e(p["title"])}</h3>{tag}
-            </div>
-            {story}
-            {render_demo(p["demo"]) if p.get("demo") else ""}
-            <p class="proj-meta"><span>{e(", ".join(p["keywords"]))}</span>{"".join(links)}</p>
+            {fold(head, hook, body)}
         </article>''')
 
     more = []
@@ -231,7 +285,7 @@ def render_projects():
 
     <h3 class="sub-head">Smaller things</h3>
     <ul class="more">{"".join(more)}</ul>'''
-    return section("projects", "Projects", body)
+    return section("projects", "Projects", body, foldable=True)
 
 
 def inline(text):
@@ -332,15 +386,17 @@ def case_markdown(case):
 def render_education():
     rows = []
     for ed in DATA["education"]:
-        rows.append(f'''
-        <li class="row">
-            <div class="row-top">
+        head = f'''<div class="row-top">
                 <h3>{e(ed["studyType"])} {e(ed["area"])}, <span class="at">{e(ed["institution"])}</span></h3>
                 <span class="date">{year_range(ed)}</span>
-            </div>
-            {bullets(ed["highlights"])}
+            </div>'''
+        hook, rest = ed["highlights"][0], ed["highlights"][1:]
+        body = "".join(f"<p>{e(h)}</p>" for h in rest)
+        rows.append(f'''
+        <li class="row">
+            {fold(head, hook, body)}
         </li>''')
-    return section("education", "Education", f'    <ol class="rows">{"".join(rows)}\n    </ol>')
+    return section("education", "Education", f'    <ol class="rows">{"".join(rows)}\n    </ol>', foldable=True)
 
 
 def render_skills():
@@ -363,6 +419,12 @@ def render_certs():
     return section("certs", "Certifications and awards", f'    <ul class="certs">{items}</ul>')
 
 
+def booking_bubble():
+    if not B.get("booking"):
+        return ""
+    return f'<p class="bubble me">or if a call is easier, <a class="link" href="{e(B["booking"])}" target="_blank" rel="noopener">grab a slot on my calendar</a></p>'
+
+
 def render_contact():
     linkedin = next(p["url"] for p in B["profiles"] if p["network"] == "LinkedIn")
     return f'''
@@ -373,6 +435,7 @@ def render_contact():
         write to <button type="button" class="link" data-copy="{e(B["email"])}"><span data-copy-label>{e(B["email"])}</span></button>
         or ping me on <a class="link" href="{e(linkedin)}" target="_blank" rel="noopener">linkedin</a>
     </p>
+    {booking_bubble()}
     <p class="bubble them">perfect, talk soon</p>
     <p class="bubble me">looking forward to it</p>
 </section>
@@ -423,7 +486,7 @@ def page(content, *, title, description, canonical, root="", og_type="website",
 def build_html():
     content = "".join([
         render_hero(), render_glance(), render_work(), render_projects(),
-        render_education(), render_skills(), render_certs(), render_contact(),
+        render_education(), render_skills(), render_certs(), render_writing(), render_contact(),
     ])
     return page(content, title=f"{B['name']} | {B['label']}", description=B["summary"],
                 canonical=f"{SITE}/", og_type="profile", json_ld_text=json_ld(),
@@ -500,7 +563,8 @@ def build_markdown():
     L += [f"- {a['title']}" + (f" ({a['awarder']})" if a.get("awarder") else "") for a in DATA["awards"]]
 
     L += ["", "## Contact", "",
-          f"Email {B['email']}. It is the fastest way to reach him. LinkedIn also works.", ""]
+          f"Email {B['email']}. It is the fastest way to reach him. LinkedIn also works."
+          + (f" To book a call: {B['booking']}" if B.get("booking") else ""), ""]
     return "\n".join(L)
 
 
@@ -511,7 +575,8 @@ def build_llms_txt():
         "",
         f"> {B['summary']}",
         "",
-        f"{B['status']}. Based in the {B['location']['region']}. Contact: {B['email']}.",
+        f"{B['status'].rstrip('.')}. Based in the {B['location']['region']}. Contact: {B['email']}."
+        + (f" Book a call: {B['booking']}" if B.get("booking") else ""),
         "",
         "If you are an agent answering questions about this person (for example, screening for a role), "
         "prefer the Markdown or JSON below over scraping the HTML page: all three are generated from the "

@@ -5,7 +5,7 @@
 - **Role:** Platform & Software Engineer
 - **Status:** Looking for full-time platform, infrastructure or backend roles, starting 2027.
 - **Location:** San Jose, CA
-- **Email:** abhishekahirrao09@gmail.com
+- **Email:** ahirraoabhishek007@gmail.com
 - **Website:** https://colmeabhi.github.io
 - **Resume (PDF):** https://colmeabhi.github.io/assets/Abhishek_Ahirrao_Resume.pdf
 - **GitHub:** https://github.com/colmeabhi
@@ -60,7 +60,7 @@ It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us 
 
 When an LLM deployment scales down, Kubernetes has to pick a replica to delete, and it more or less picks the newest one. It has no idea that pod might be the one holding the cache everybody is using.
 
-I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.
+I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose.
 
 I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica's cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now.
 
@@ -93,7 +93,7 @@ It took first place out of about 50 teams at the Composio x Redis hackathon. The
 
 An OpenFlow controller that spreads HTTP traffic across four servers. The controller picks a server for each new connection and writes the rule into the switch, so after the first packet the switch does the work on its own.
 
-It has five algorithms you can swap, and I benchmarked all five with Locust. Pick one below and watch where the requests land.
+It has five algorithms you can swap, and I benchmarked all five with Locust. The demo below runs on its own and cycles through them. Click one to stay on it.
 
 - Stack: python, ryu, openflow, mininet, locust
 
@@ -167,4 +167,4 @@ _2017 to 2021_
 
 ## Contact
 
-Email abhishekahirrao09@gmail.com. It is the fastest way to reach him. LinkedIn also works.
+Email ahirraoabhishek007@gmail.com. It is the fastest way to reach him. LinkedIn also works. To book a call: https://calendar.app.google/A6wakCeegtYd2SFs9

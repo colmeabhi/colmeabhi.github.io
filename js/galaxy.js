@@ -114,6 +114,9 @@
     draw();
 
     window.addEventListener('resize', function () { resize(); draw(); });
+    // the canvas sits inside a folded project; size it when the fold opens
+    var fold = canvas.closest('details');
+    if (fold) fold.addEventListener('toggle', function () { if (fold.open) { resize(); draw(); start(); } });
     document.addEventListener('visibilitychange', start);
     new MutationObserver(function () { resize(); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
