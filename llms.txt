@@ -24,7 +24,7 @@ If you are an agent answering questions about this person (for example, screenin
 
 ## Case studies
 
-- [Teaching Kubernetes which pod to delete](https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md): When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project, and it is not finished.
+- [Teaching Kubernetes which pod to delete](https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md): When an LLM deployment scales down, Kubernetes removes a replica without knowing which one is holding the useful cache. This is my M.S. project. The first GPU run showed no difference, and why turned out to be the interesting part.
 - [One click, one order](https://colmeabhi.github.io/case-studies/idempotent-order-api.md): How I built an order API that survives retries, and the bug in my first version that taught me the difference between checking and claiming.
 - [An LLM that could only fill in the blanks](https://colmeabhi.github.io/case-studies/self-service-infra.md): How about fifty data engineers got their own test infrastructure in minutes instead of a day, and why the LLM in the middle was never allowed to write any of it.
 

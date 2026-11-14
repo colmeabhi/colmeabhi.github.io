@@ -61,7 +61,7 @@ When an LLM deployment scales down, Kubernetes has to pick a replica to delete, 
 
 I wrote a small controller that scores each replica's cache and tells Kubernetes which one is cheapest to lose. You can try the difference below.
 
-The controller, the tests and the CI are done. The GPU benchmark is next, so I do not have a performance number yet and I am not going to make one up.
+I have run the benchmark on three A100s. The controller removed the pod it was meant to, and it made no difference, because my test traffic warmed every replica's cache to about 95%. The fix is a harsher test and a better score, and that is what I am working on now.
 
 - Case study: https://colmeabhi.github.io/case-studies/cache-aware-scale-in.md
 - Stack: python, kubernetes, vllm, llm-d, prometheus
