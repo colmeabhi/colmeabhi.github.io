@@ -11,7 +11,7 @@
 - **GitHub:** https://github.com/colmeabhi
 - **LinkedIn:** https://www.linkedin.com/in/abhishekahirrao/
 
-_Goes by abhi (/uh-bhee/). Last updated 2026-11-14. Structured version: https://colmeabhi.github.io/resume.json_
+_Goes by abhi (/uh-bhee/). Last updated 2026-11-19. Structured version: https://colmeabhi.github.io/resume.json_
 
 ## Experience
 
@@ -48,7 +48,7 @@ Someone fixes a production incident at 2 am by clicking around the AWS console, 
 
 driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.
 
-It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.
+It started as Phantom, which won the AWS x Datadog GenAI hackathon in San Francisco. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.
 
 - Case study: https://colmeabhi.github.io/case-studies/driftfix.md
 - See also: [hackathon prototype](https://github.com/krishmula/phantom)
@@ -87,7 +87,7 @@ The galaxy below starts from the same setup and uses the same leapfrog step, in 
 
 A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.
 
-It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet.
+It took first place out of about 50 teams at the Composio x Redis hackathon in San Francisco. There is no public repo for it yet.
 
 - Stack: python, langchain, openai, redis, composio
 
@@ -174,8 +174,8 @@ _2017 to 2021_
 
 ## Awards
 
-- Winner, AWS × Datadog GenAI Hackathon (2025)
-- 1st place of ~50 teams, Composio × Redis Hackathon (2025)
+- Winner, AWS × Datadog GenAI Hackathon (San Francisco, 2025)
+- 1st place of ~50 teams, Composio × Redis Hackathon (San Francisco, 2025)
 
 ## Contact
 

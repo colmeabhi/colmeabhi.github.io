@@ -201,7 +201,7 @@
         <article class="proj">
             <details class="fold">
                 <summary><div class="proj-top"><h3>driftfix</h3><span class="tag">hackathon winner, then a team of three</span></div><p class="hook">Someone fixes a production incident at 2 am by clicking around the AWS console, and nobody updates the template afterwards. On the next deploy CloudFormation quietly undoes the fix, and everyone gets to enjoy the same incident twice.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
-                <div class="fold-body"><p>driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.</p><p>It started as Phantom, which won the AWS x Datadog GenAI hackathon. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.</p><p class="proj-meta"><span>python, aws lambda, bedrock, dynamodb, terraform</span><a href="case-studies/driftfix.html">Read the full story</a><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+                <div class="fold-body"><p>driftfix reads CloudTrail, works out what was changed by hand, asks an LLM on Bedrock to update the template, checks the result with cfn-lint and opens a pull request. It never touches infrastructure and never merges anything. A person still decides.</p><p>It started as Phantom, which won the AWS x Datadog GenAI hackathon in San Francisco. Three of us then rebuilt it properly as a multi-tenant service. I led that, and my part was the architecture, the Lambda pipeline, the cross-account IAM and the Terraform. In load tests ten stacks ran in parallel with zero errors. The slow part turned out to be the LLM, not us.</p><p class="proj-meta"><span>python, aws lambda, bedrock, dynamodb, terraform</span><a href="case-studies/driftfix.html">Read the full story</a><a href="https://github.com/colmeabhi/driftfix" target="_blank" rel="noopener">Code on GitHub</a></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
             </details>
         </article>
         <article class="proj">
@@ -219,7 +219,7 @@
         <article class="proj">
             <details class="fold">
                 <summary><div class="proj-top"><h3>AI sprint planning assistant</h3><span class="tag">1st of about 50 teams</span></div><p class="hook">A hackathon project. You hand it a planning spreadsheet and it creates the Jira tickets, using a RAG pipeline to work out what goes where. Nobody enjoys copying rows into Jira.</p><span class="fold-cue"><span class="cue-open">Read more</span><span class="cue-close">Show less</span></span></summary>
-                <div class="fold-body"><p>It took first place out of about 50 teams at the Composio x Redis hackathon. There is no public repo for it yet.</p><p class="proj-meta"><span>python, langchain, openai, redis, composio</span></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
+                <div class="fold-body"><p>It took first place out of about 50 teams at the Composio x Redis hackathon in San Francisco. There is no public repo for it yet.</p><p class="proj-meta"><span>python, langchain, openai, redis, composio</span></p><button type="button" class="fold-cue fold-close" data-fold-close>Show less</button></div>
             </details>
         </article>
         <article class="proj">
@@ -275,7 +275,7 @@
 </section>
 <section class="section" id="certs">
     <div class="section-head"><h2>Certifications and awards</h2></div>
-    <ul class="certs"><li><span>AWS Solutions Architect Associate</span><span class="date">AWS</span></li><li><span>AWS Developer Associate</span><span class="date">AWS</span></li><li><span>HashiCorp Terraform Associate</span><span class="date">HashiCorp</span></li><li><span>Winner, AWS × Datadog GenAI Hackathon</span><span class="date">2025</span></li><li><span>1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">2025</span></li></ul>
+    <ul class="certs"><li><span>AWS Solutions Architect Associate</span><span class="date">AWS</span></li><li><span>AWS Developer Associate</span><span class="date">AWS</span></li><li><span>HashiCorp Terraform Associate</span><span class="date">HashiCorp</span></li><li><span>Winner, AWS × Datadog GenAI Hackathon</span><span class="date">San Francisco, 2025</span></li><li><span>1st place of ~50 teams, Composio × Redis Hackathon</span><span class="date">San Francisco, 2025</span></li></ul>
 </section>
 <section class="section" id="writing">
     <div class="section-head"><h2>Writing</h2></div>
